@@ -1,0 +1,23 @@
+{
+  "name": "typrod",
+  "homepage": "https://github.com/mvicens/typrod#readme",
+  "authors": [
+    "Miquel Alejandro Vicens Dalmau <mvicens@proadata.com>"
+  ],
+  "description": "AngularJS library to synthetize info handlings based on values conversions and input/output displays.",
+  "main": "index.js",
+  "keywords": [
+    "angularjs",
+    "type",
+    "property",
+    "data"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.6.0",
+    "angular": "^1.8.2",
+    "angular-translate": "^2.19.0",
+    "specificity": "https://cdn.jsdelivr.net/npm/specificity@0.4.1/dist/specificity.js",
+    "lodash": "^4.17.21"
+  }
+}
