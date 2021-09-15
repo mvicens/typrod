@@ -1,6 +1,6 @@
 # Typrod
 
-Typrod <small>(acronym of "type", "property" and "data"; and pronounced /ˈtaɪprəd/)</small> is an [AngularJS](https://angularjs.org) library to synthetize info handlings based on values conversions and input/output displays, with the goal of extremely simplifying, integrating and making more maintainable and reliable source code.
+Typrod (acronym of "type", "property" and "data"; and pronounced /ˈtaɪprəd/) is an [AngularJS](https://angularjs.org) library to synthetize info handlings based on values conversions and input/output displays, with the goal of extremely simplifying, integrating and making more maintainable and reliable source code.
 
 ## Overview
 
@@ -83,12 +83,6 @@ Full HTML included in TPD components.
 npm install typrod
 ```
 
-#### Bower
-
-```sh
-bower install typrod
-```
-
 ### API
 
 #### Provider
@@ -103,9 +97,9 @@ Registers a TPD type.
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td rowspan="2"><code>name</code></td><td>String</td><td>Name.</td></tr>
 <tr><td>Array</td><td>Name followed by its alias(es).</td></tr>
-<tr><td rowspan="3"><code>opts</code></td><td>Object</td><td>Options <small>(see the concerning section)</small>.</td></tr>
-<tr><td>Function</td><td>To overwrite <small>(see below)</small> existing TPD type:<ul><li>Starting from the original options (argument).</li><li>Returns new ones (obj.).</li></ul></td></tr>
-<tr><td>Array</td><td>Copied TPD type <small>(see below)</small> and options (obj. or fn., like above).</td></tr>
+<tr><td rowspan="3"><code>opts</code></td><td>Object</td><td>Options (see the concerning section).</td></tr>
+<tr><td>Function</td><td>To overwrite (see below) existing TPD type:<ul><li>Starting from the original options (argument).</li><li>Returns new ones (obj.).</li></ul></td></tr>
+<tr><td>Array</td><td>Copied TPD type (see below) and options (obj. or fn., like above).</td></tr>
 </table>
 
 ###### Options
@@ -129,7 +123,7 @@ Registers a TPD type.
 
 If an already added TPD type is register again, it is overwritten. You must to pass either its name (not alias) or the reserved `'*'` value to apply globally on all.
 
-Meanwhile, if there are definitions of a certain TPD type in TPD components' exceptional containers <small>(explanation below)</small>, a new TPD type can inherit these ones by the copy mechanism.
+Meanwhile, if there are definitions of a certain TPD type in TPD components' exceptional containers (explanation below), a new TPD type can inherit these ones by the copy mechanism.
 
 ##### `component(selector, content, [ec])`
 
@@ -140,7 +134,7 @@ Registers a TPD component.
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
 <tr><td rowspan="2"><code>content</code></td><td>String</td><td>HTML template.</td></tr>
 <tr><td>Function</td><td><ul><li>Argument: selector's JQuery element.</li><li>Return: the HTML.</li></ul></td></tr>
-<tr><td><code>ec</code> (optional)</td><td>Object</td><td>Exceptional containers <small>(see below)</small>.</td></tr>
+<tr><td><code>ec</code> (optional)</td><td>Object</td><td>Exceptional containers (see below).</td></tr>
 </table>
 
 Overwriting (but basic one) is also allowed.
