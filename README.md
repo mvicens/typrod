@@ -1,6 +1,8 @@
 # Typrod
 
-Typrod (acronym of "type", "property" and "data"; and pronounced /ˈtaɪprəd/) is an [AngularJS](https://angularjs.org) library to synthetize info handlings based on values conversions and input/output displays, with the goal of extremely simplifying, integrating and making more maintainable and reliable source code.
+Typrod (acronym of "type", "property" and "data"; and abbreviated as TPD) is an [AngularJS](https://angularjs.org) library to synthetize info handlings based on values conversions and input/output displays.
+
+:warning: Important: Here are some words that may create confusion since also are elemental terms of JavaScript or AngularJS. Because of this, for avoid ambiguity, our own concepts will be explicitly designated (e.g. "TPD data").
 
 ## Overview
 
@@ -27,19 +29,17 @@ As we can see, these steps are repeated continuously for each of the lists. Do y
 
 Well, so, using Typrod, all of these involving processes can be only-one-time done or excessively reduced. Accordingly, the same would be achieved like this:
 1. Firstly, some simple settings are defined by a [provider](https://docs.angularjs.org/guide/providers), transmitting:
-   * For each data type (datetimes, booleans, options... whatever!):
+   * For each TPD type (datetimes, booleans, options... whatever!):
      * A conversion function.
      * An HTML template of input.
      * Output's.
      * To come back to JSON, another converting.
-   * About components (in our case, tables and forms), indicating mainly HTML contents.
-2. At last, in the HTML coding, empty tags are printed with some attribute [directives](https://docs.angularjs.org/guide/directive) that contains the captured values and a proper data (group of properties that indicate type, label, param name, etc.).
+   * About TPD components (in our case, tables and forms), indicating mainly HTML contents.
+2. At last, in the HTML coding, empty tags are printed with some attribute [directives](https://docs.angularjs.org/guide/directive) that contains the captured values and a proper data (group of TPD properties that indicate TPD type, label, param name, etc.).
 
-And voilà! It is already prepared and automated. For the next component, you only need to do the 2nd step, anymore.
+And voilà! It is already prepared and automated. For the next TPD component, you only need to do the 2nd step, anymore.
 
 ### Concepts
-
-:warning: Important: Here are some words that may create confusion since also are elemental terms of JavaScript or AngularJS. Because of this, for avoid ambiguity, our own concepts from now will be appellatived explicitly with "TPD" (e.g. "TPD data").
 
 #### TPD types
 
@@ -73,15 +73,31 @@ It is possible customize any tag with any classname(s), attribute(s)...
 
 Full HTML included in TPD components.
 
-## Usage
+## Install
 
-### Install
-
-#### NPM
+### NPM
 
 ```sh
 npm install typrod
 ```
+
+Then add TPD as a dependency for your app:
+
+```js
+angular.module( 'myApp', [ require( 'typrod' ) ] );
+```
+
+### CDN
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/typrod/typrod.js"></script>
+```
+
+```js
+angular.module( 'myApp', [ 'tpd' ] );
+```
+
+## Usage
 
 ### API
 
