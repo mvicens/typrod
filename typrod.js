@@ -26,7 +26,7 @@ angular
 	.filter( 'tpdOptions', tpdOptions );
 
 function $tpdProvider() {
-	var defOptions = {
+	var defOpts = {
 		fromJson: angular.identity,
 		toJson: function( v ) {
 			if ( v && v.toJSON )
@@ -59,10 +59,10 @@ function $tpdProvider() {
 
 	function setType( name, opts ) {
 		var types = registers.types,
-			stored = types.stored;
+			original = types.original;
 
 		if ( name == '*' ) {
-			angular.forEach( _.keys( stored ), function( name ) {
+			angular.forEach( _.keys( original ), function( name ) {
 				setType( name, opts );
 			} );
 			return this;
@@ -92,14 +92,14 @@ function $tpdProvider() {
 		var origOpts = angular.copy( opts );
 
 		var strType = getType( 'string', true );
-		defOptions.input = strType && strType.input;
+		defOpts.input = strType && strType.input;
 		opts = opts || {};
-		angular.forEach( defOptions, function( defOpt, prop ) {
+		angular.forEach( defOpts, function( defOpt, prop ) {
 			opts[ prop ] = opts[ prop ] || defOpt;
 		} );
 
-		types.original[ name ] = origOpts;
-		stored[ name ] = opts;
+		original[ name ] = origOpts;
+		types.stored[ name ] = opts;
 
 		if ( aliases.length ) {
 			var regs = registers.aliases;
@@ -217,15 +217,11 @@ function tpdDataCompile() {
 		if ( angular.isFunction( content ) )
 			content = content( element );
 
-		var ATTR = 'tpd-property';
 		element.html(
 			$( '<div>' )
 				.html( content )
-				.find( '[' + ATTR + ']' )
+				.find( '[tpd-property]' )
 					.attr( 'ng-repeat', '$property in $$data' )
-					.each( function( i ) {
-						$( this ).attr( ATTR, i );
-					} )
 				.end()
 				.html()
 		);
@@ -283,10 +279,8 @@ function tpdProperty( $compile ) {
 		link: link
 	};
 
-	function link( scope, element, attrs ) {
+	function link( scope, element ) {
 		var ec = scope.$$ec;
-		if ( angular.isArray( ec ) )
-			ec = ec[ attrs[ this.name ] ];
 		if ( ec ) {
 			ec = ec[ scope.$property.type ];
 			if ( angular.isFunction( ec ) )
