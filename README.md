@@ -203,30 +203,30 @@ As tagnames, these ones are substituted by the HTML of correspondent options of 
 
 ### Predefinitions
 
-Typrod proportions some built-in TPD types and TPD components:
+Typrod proportions some built-in registrations:
 
 #### TPD types
 
-As normally:
-* `'string'` (aliases: `'s'` and `'str'`).
-* `'password'` (`'p'`/`'pw'`). Outputs hiding chars too.
-* `'number'` (`'n'`/`'num'`).
-* `'boolean'` (`'b'`/`'bool'`).
-* `'date'` (`'d'`).
-* `'time'` (`'t'`).
-* `'datetime'` (`'dt'`).
-
-With special working, to render `<select>`s:
-* `'option'` (`'o'`/`'opt'`): single selection.
-* `'options'` (`'oo'`/`'opts'`): multiple.
-
-You only must to transfer a list to `options` property of corresponding `tpd-data`'s item.
+Name | Alias(es) | Details
+---- | --------- | -------
+`'string'` | `'s'` and `'str'` | For single-line texts.
+`'password'` | `'p'` and `'pw'` | Ones whose value is obscured. Outputs hiding chars too.
+`'number'` | `'n'` and `'num'` | As normally.
+`'boolean'` | `'b'` and `'bool'` | Idem.
+`'date'` | `'d'` | Idem.
+`'time'` | `'t'` | Idem.
+`'datetime'` | `'dt'` | Idem.
+`'option'` | `'o'` and `'opt'` | Single `<select>`. You only must to transfer a string of scope's array (formed by objects with pairs `id`-`label`) to `tpd-data` in `options` key.
+`'options'` | `'oo'` and `'opts'` | The same but multiple.
 
 #### TPD components
 
-For forms, you have namesake `'form'`. It prints simple `<div>`s with `<label>` and input, and a submit button. You have to add the `ng-submit` directive by yourself.
+##### Forms
 
-For tables:
-* `'table'`: shows a labeled head and record rows.
+You have namesake `'form'`. It prints simple `<div>`s with `<label>` and input, and a submit button. You have to add the `ng-submit` directive by yourself.
+
+##### Tables
+
+* `'table'`: shows a labeled head and record rows. Place attribute `data-expression` as we make on `tpd-values` but with an array.
 * `'thead,tfoot'`: labels `<th>`s.
 * `'tbody > tr'`: outputs `<td>`s.

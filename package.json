@@ -1,6 +1,6 @@
 {
   "name": "typrod",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "AngularJS library to synthetize info handlings based on values conversions and input/output displays.",
   "main": "index.js",
   "scripts": {

@@ -1,15 +1,16 @@
 ( function() {
-var registers = {
-	types: {
-		original: {},
-		stored: {}
-	},
-	components: {},
-	aliases: {
-		listed: {},
-		grouped: {}
-	}
-};
+var _DatetoJSON = Date.prototype.toJSON,
+	registers = {
+		types: {
+			original: {},
+			stored: {}
+		},
+		components: {},
+		aliases: {
+			listed: {},
+			grouped: {}
+		}
+	};
 
 angular
 	.module( 'tpd', [ 'pascalprecht.translate' ] )
@@ -126,7 +127,8 @@ function $tpdProvider() {
 }
 
 function config( $tpdProvider, $translateProvider ) {
-	var html = '<tpd-output />';
+	var html = '<tpd-output />',
+		SEP = 'T';
 	$tpdProvider
 		.type( [ 'string', 's', 'str' ], {
 			input: '<input type="text">'
@@ -152,36 +154,41 @@ function config( $tpdProvider, $translateProvider ) {
 			output: '{{$property.value?\'✓\':\'✗\'}}'
 		} )
 		.type( [ 'date', 'd' ], {
-			fromJson: function( v ) {
-				return v && new Date( v );
-			},
+			fromJson: getFromJsonFn(),
+			toJson: getToJsonFn( 0 ),
 			input: '<input type="date">',
 			output: '{{$property.value | date}}' // "mediumDate"
 		} )
-		.type( [ 'time', 't' ], [ 'date', function( opts ) {
-			opts.input = '<input type="time">';
-			opts.output = '{{$property.value | date:\'mediumTime\'}}';
-			return opts;
-		} ] )
+		.type( [ 'time', 't' ], {
+			fromJson: getFromJsonFn( true ),
+			toJson: getToJsonFn( 1 ),
+			input: '<input type="time">',
+			output: '{{$property.value | date:\'mediumTime\'}}'
+		} )
 		.type( [ 'datetime', 'dt' ], [ 'date', function( opts ) {
+			delete opts.toJson;
 			opts.input = '<input type="datetime-local">';
 			opts.output = '{{$property.value | date:\'medium\'}}';
 			return opts;
 		} ] )
 		.type( [ 'option', 'o', 'opt' ], {
-			input: '<select ng-options="item.id as item.label for item in {{$property.options}}"><option></option></select>',
+			input: '<select ng-options="item.id as item.label for item in {{$property.options}}"></select>',
 			output: function( scope ) {
 				return '{{$property.value | tpdOption:' + scope.$property.options + '}}';
 			}
 		} )
 		.type( [ 'options', 'oo', 'opts' ], [ 'option', function( opts ) {
-			opts.input = opts.input.replace( '><option></option>', ' multiple>' );
+			opts.input = opts.input.replace( '><', ' multiple><' );
 			opts.output = function( scope ) {
 				return '<ul><li ng-repeat="str in $property.value | tpdOptions:' + scope.$property.options + '">{{str}}</li></ul>';
 			};
 			return opts;
 		} ] )
-		.component( 'form', '<div tpd-property><label tpd-label></label><tpd-input /></div><button type="submit" translate="submit"></button>', {
+		.component( 'form', function( elem ) {
+			var name = elem.prop( 'dataset' ).name,
+				attr = ( name ? name + '.' : '' ) + '{{$property.name}}';
+			return '<div tpd-property><label ng-attr-for="' + attr + '" tpd-label></label><tpd-input ng-attr-id="' + attr + '" /></div><button type="submit" translate="submit"></button>';
+		}, {
 			boolean: '<div><label><tpd-input></tpd-input> <span tpd-label></span></label></div>'
 		} )
 		.component( 'table', function( elem ) {
@@ -191,7 +198,7 @@ function config( $tpdProvider, $translateProvider ) {
 			return '<thead ' + attr + '></thead>' +
 				'<tbody><tr ng-repeat="' + str + ' in ' + elem.prop( 'dataset' ).expression + '" ' + attr + ' tpd-values="' + str + '"></tr></tbody>';
 		} )
-		.component( 'thead,tfoot', '<tr><th tpd-property tpd-label></th></tr>' )
+		.component( 'thead,tfoot', '<tr><th scope="col" tpd-property tpd-label></th></tr>' )
 		.component( 'tbody > tr', '<td tpd-property>' + html + '</td>', {
 			number: '<td style="text-align: right;">' + html + '</td>'
 		} );
@@ -199,6 +206,31 @@ function config( $tpdProvider, $translateProvider ) {
 	var LANG_CODE = 'en';
 	$translateProvider.translations( LANG_CODE, { submit: 'Submit' } );
 	$translateProvider.preferredLanguage( LANG_CODE );
+
+	function getFromJsonFn( concatDate ) {
+		return function( v ) {
+			return v && new Date(
+				( concatDate ? getDateStrPortion( new Date, 0 ) + SEP : '') +
+				v +
+				( concatDate ? 'Z' : '' )
+			);
+		};
+	}
+
+	function getToJsonFn( i ) {
+		return function( v ) {
+			if ( v ) {
+				var str = getDateStrPortion( v, i );
+				if ( i == 1 )
+					str = str.substr( 0, str.length - 1 ); // Removes "Z"
+				return str;
+			}
+		};
+	}
+
+	function getDateStrPortion( date, i ) {
+		return _DatetoJSON.call( date ).split( SEP )[ i ];
+	}
 }
 
 function tpdDataCompile() {
