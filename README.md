@@ -30,7 +30,7 @@ Imagine AngularJS runs, you layout with [Bootstrap 4](https://getbootstrap.com/d
 
 Having said that, notice that these steps are repeated continuously for each info. Do you want to build another table? The same again.
 
-Well, so, using Typrod, all of these involving processes can be only-one-time done or excessively reduced. [Look the altered demo](https://jsfiddle.net/x0omwchp) and pay attention to the differences between two systems (extra utilities remains). In this occasion, the procedure is like this:
+Well, so, using Typrod, all of these involving processes can be only-one-time done or excessively reduced. Look [the altered demo](https://jsfiddle.net/x0omwchp) and pay attention to the differences between two systems (extra utilities remains). In this occasion, the procedure is like this:
 1. Firstly, some simple settings are defined by a [provider](https://docs.angularjs.org/guide/providers), transmitting:
    1. For each TPD type (datetimes, booleans, options... whatever!):
       * A conversion function.
@@ -80,12 +80,12 @@ And linked to TPD data (explained later) like e.g.:
 
 ```js
 [
-	//...
+	// ...
 	{
 		type: 'e',
 		// ...
 	},
-	//...
+	// ...
 ]
 ```
 
@@ -294,7 +294,7 @@ angular.module( 'myApp', [ require( 'typrod' ) ] );
 ### CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/typrod@1.0.6/typrod.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typrod@1.0.7/typrod.js"></script>
 ```
 
 ```js
@@ -377,7 +377,7 @@ Key(s) | Type | Details
 
 And other custom ones are permitted for a not-generic using.
 
-Besides, accompanying this directive, in the same tag, `tpd-values` is placed, determining the TPD JSON values (manipulated by `fromJSON` and `toJson`). This pure attribute is optative but its exclusion has no much sense.
+Besides, accompanying this directive, in the same tag, `tpd-values` is placed, determining the TPD JSON values (manipulated by `fromJson` and `toJson`). This pure attribute is optative but its exclusion has no much sense.
 
 #### `tpd-property`
 
