@@ -9,7 +9,7 @@ Typrod (acronym of "type", "property" and "data"; and abbreviated as TPD) is an 
 
 ## Overview
 
-Imagine AngularJS runs, you layout with [Bootstrap 4](https://getbootstrap.com/docs/4.6) and you need to filter, list and edit a data collection. See [here](https://jsfiddle.net/91b2h63p) a improvised live demo (with one filtering `<form>` and one `<table>` to manage records) to be oriented about it. As we can view, usually the following occurs:
+Imagine AngularJS runs, you layout with [Bootstrap 4](https://getbootstrap.com/docs/4.6) and you need to filter, list and edit a data collection. See [here](https://jsfiddle.net/57hb9apr) a improvised live demo (with one filtering `<form>` and one `<table>` to manage records) to be oriented about it. As we can view, usually the following occurs:
 
 1. JSON (normally from an HTTP request) is captured.
 2. Its values (if necessary) must to be transformed one by one. In the example, for these types:
@@ -30,7 +30,7 @@ Imagine AngularJS runs, you layout with [Bootstrap 4](https://getbootstrap.com/d
 
 Having said that, notice that these steps are repeated continuously for each info. Do you want to build another table? The same again.
 
-Well, so, using Typrod, all of these involving processes can be only-one-time done or excessively reduced. Look [the altered demo](https://jsfiddle.net/x0omwchp) and pay attention to the differences between two systems (extra utilities remains). In this occasion, the procedure is like this:
+Well, so, using Typrod, all of these involving processes can be only-one-time done or excessively reduced. Look [the altered demo](https://jsfiddle.net/jqweskLt) and pay attention to the differences between two systems (extra utilities remains). In this occasion, the procedure is like this:
 1. Firstly, some simple settings are defined by a [provider](https://docs.angularjs.org/guide/providers), transmitting:
    1. For each TPD type (datetimes, booleans, options... whatever!):
       * A conversion function.
@@ -53,27 +53,27 @@ We will take the previous examples to show samples.
 ```js
 $tpdProvider
 	/*...*/
-	.type( 'options', /*...*/ )
-	.type( [ 'year', 'y' ], /*...*/ )
-	.type( 'email', /*...*/ )
-	.type( 'boolean', /*...*/ );
+	.type('options', /*...*/)
+	.type(['year', 'y'], /*...*/)
+	.type('email', /*...*/)
+	.type('boolean', /*...*/);
 ```
 
 Whatever you can think. No limits. Like simply:
 
 ```js
-$tpdProvider.type( 'email', {
+$tpdProvider.type('email', {
 	/*fromJson: undefined,
 	toJson: undefined,*/
 	input: '<input type="email" class="form-control">',
 	output: '<a ng-href="mailto:{{$property.value}}">{{$property.value}}</a>'
-} );
+});
 ```
 
 To speed up settings, every TPD type name can be referenced by one or more aliases. So, instead of write entirely `'string'`, `'number'`, `'boolean'`, `'email'` or e.g. custom `'anotherNewType'`, you can put abbreviated `'s'`, `'n'`, `'b'`, `'e'` and `'ant'`. Regarding the above, through:
 
 ```js
-$tpdProvider.type( [ 'email', 'e', 'em' ], /*...*/ );
+$tpdProvider.type(['email', 'e', 'em'], /*...*/);
 ```
 
 And linked to TPD data (explained later) like e.g.:
@@ -94,19 +94,19 @@ Also we can achieve it thanks to other ways to register:
 ##### Overwriting
 
 ```js
-$tpdProvider.type( 'boolean', function( opts ) {
+$tpdProvider.type('boolean', function (opts) {
 	// ...
 	return opts;
-} );
+});
 ```
 
 Starting from an already added TPD type (`'boolean'` is system built-in), we can define it again. Permitted to pass an object or a function (like here). And you must to indicate either its name (not alias) or the reserved `'*'` value to apply globally on all:
 
 ```js
-$tpdProvider.type( '*', function( opts ) {
+$tpdProvider.type('*', function (opts) {
 	// ...
 	return opts;
-} );
+});
 ```
 
 ##### Copying
@@ -114,10 +114,10 @@ $tpdProvider.type( '*', function( opts ) {
 Similarly to overwrite, a new TPD type can inherit definitions of another one by the copy mechanism.
 
 ```js
-$tpdProvider.type( [ 'year', 'y' ], [ 'number', function( opts ) {
+$tpdProvider.type(['year', 'y'], ['number', function (opts) {
 	// ...
 	return opts;
-} ] );
+}]);
 ```
 
 But it has a quirk: TPD components' ETC (more info after) will be exactly duplicated.
@@ -169,7 +169,7 @@ Original values arranged in JSON.
 ```js
 {
 	// ...
-	birthdate: new Date( '1963-11-28' ),
+	birthdate: new Date('1963-11-28'),
 	// ...
 	isForeign: false
 }
@@ -231,26 +231,26 @@ And let Typrod start to deploy all its mechanism.
 In our case: `<form>...</form>` and `<table>...</table>`. Determined like:
 
 ```js
-$tpdProvider.component( 'form', /*...*/, { /*...*/ } );
+$tpdProvider.component('form', /*...*/, { /*...*/ });
 ```
 
 And:
 
 ```js
-$tpdProvider.component( 'table', /*...*/ );
+$tpdProvider.component('table', /*...*/);
 ```
 
 It is possible customize any tag with any classname, attribute, parent... Here you have some varied samples:
 
 ```js
 $tpdProvider
-	.component( 'form', /*...*/ )
-	.component( 'form.form-horizontal', /*...*/ )
-	.component( 'table.table.table-striped', /*...*/ )
-	.component( 'form[ng-submit]', /*...*/ )
-	.component( 'form.form-inline[ng-submit]', /*...*/ )
-	.component( 'tbody > tr', /*...*/ )
-	.component( 'form + table', /*...*/ );
+	.component('form', /*...*/)
+	.component('form.form-horizontal', /*...*/)
+	.component('table.table.table-striped', /*...*/)
+	.component('form[ng-submit]', /*...*/)
+	.component('form.form-inline[ng-submit]', /*...*/)
+	.component('tbody > tr', /*...*/)
+	.component('form + table', /*...*/);
 ```
 
 ##### TPD content
@@ -288,7 +288,7 @@ npm install typrod
 Then add TPD as a dependency for your app:
 
 ```js
-angular.module( 'myApp', [ require( 'typrod' ) ] );
+angular.module('myApp', [require('typrod')]);
 ```
 
 ### CDN
@@ -298,7 +298,7 @@ angular.module( 'myApp', [ require( 'typrod' ) ] );
 ```
 
 ```js
-angular.module( 'myApp', [ 'tpd' ] );
+angular.module('myApp', ['tpd']);
 ```
 
 ## Usage
