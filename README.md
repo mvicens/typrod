@@ -285,15 +285,24 @@ The advantages in using Typrod are:
 npm install typrod
 ```
 
-Then add TPD as a dependency for your app:
+Then import JQuery and AngularJS (important to do this way!) and add TPD as a dependency for your app:
 
 ```js
+const $ = require('jquery');
+window.jQuery = $; // To set it as alias of "angular.element"
+require('angular');
+
 angular.module('myApp', [require('typrod')]);
 ```
 
 ### CDN
 
 ```html
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6/dist/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/angular@1.8/angular.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/angular-translate@2.19/dist/angular-translate.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/specificity@0.4.1/dist/specificity.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17/lodash.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/typrod@1.0.7/typrod.js"></script>
 ```
 
