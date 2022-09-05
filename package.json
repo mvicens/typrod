@@ -11,12 +11,11 @@
     "url": "git+https://github.com/mvicens/typrod.git"
   },
   "keywords": [
-    "angularjs",
     "type",
     "property",
     "data"
   ],
-  "author": "Miquel Alejandro Vicens Dalmau <mvicens@proadata.com>",
+  "author": "Miquel Alejandro Vicens Dalmau",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mvicens/typrod/issues"
