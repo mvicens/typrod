@@ -303,7 +303,7 @@ angular.module('myApp', [require('typrod')]);
 <script src="https://cdn.jsdelivr.net/npm/angular-translate@2.19/dist/angular-translate.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/specificity@0.4.1/dist/specificity.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17/lodash.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/typrod@1.0.7/typrod.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/typrod@1.0.8/typrod.js"></script>
 ```
 
 ```js
