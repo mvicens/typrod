@@ -198,7 +198,7 @@
 				return '<thead ' + attr + '></thead>' +
 					'<tbody><tr ng-repeat="' + str + ' in ' + elem.prop('dataset').expression + '" ' + attr + ' tpd-values="' + str + '"></tr></tbody>';
 			})
-			.component('thead,tfoot', '<tr><th scope="col" tpd-property tpd-label></th></tr>')
+			.component('thead, tfoot', '<tr><th scope="col" tpd-property tpd-label></th></tr>')
 			.component('tbody > tr', '<td tpd-property>' + html + '</td>', {
 				number: '<td style="text-align: right;">' + html + '</td>'
 			});
@@ -222,7 +222,7 @@
 				if (v) {
 					var str = getDateStrPortion(v, i);
 					if (i == 1)
-						str = str.substr(0, str.length - 1); // Removes "Z"
+						str = str.slice(0, -1); // Removes "Z"
 					return str;
 				}
 			};
@@ -335,13 +335,7 @@
 	}
 
 	function tpdInput($injector, $compile) {
-		return {
-			restrict: 'E',
-			link: link,
-			priority: 601 // To avoid previous execution of directive "ngIf"
-		};
-
-		function link(scope, element, attrs) {
+		return getDirectiveDefinitionObj(function link(scope, element, attrs) {
 			var input = getType(scope.$property).input;
 
 			var parsedInput = $.parseHTML(input);
@@ -368,22 +362,16 @@
 				'ng-attr-max': '{{' + propStr + '.max}}'
 			});
 			element.replaceWith($compile(input)(scope));
-		}
+		});
 	}
 
 	function tpdOutput($compile) {
-		return {
-			restrict: 'E',
-			link: link,
-			priority: 601 // Idem
-		};
-
-		function link(scope, element, attrs) {
+		return getDirectiveDefinitionObj(function link(scope, element, attrs) {
 			var output = getType(scope.$property).output;
 			if (angular.isFunction(output))
 				output = output(scope);
 			element.replaceWith($compile($('<span>' + output + '</span>').attr(getAttrs(attrs)))(scope));
-		}
+		});
 	}
 
 	function tpdPassword() {
@@ -441,6 +429,14 @@
 			}
 		});
 		return opts;
+	}
+
+	function getDirectiveDefinitionObj(linkFn) {
+		return {
+			restrict: 'E',
+			link: linkFn,
+			priority: 601 // To avoid previous execution of directive "ngIf"
+		};
 	}
 
 	function getAttrs(attrs) {

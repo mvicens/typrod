@@ -427,5 +427,5 @@ You have namesake `'form'`. It rawly prints `<div>`s with `<label>` and input, a
 #### Tables
 
 * `'table'`: shows a labeled head and record rows. Place attribute `data-expression` as we make on `tpd-values` but with an array.
-* `'thead,tfoot'`: labels `<th>`s.
+* `'thead, tfoot'`: labels `<th>`s.
 * `'tbody > tr'`: outputs `<td>`s.
