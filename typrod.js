@@ -127,11 +127,15 @@
 	}
 
 	function config($tpdProvider, $translateProvider) {
-		var html = '<tpd-output />',
+		var colorInputHtml = '<input type="color">',
+			outputHtml = '<tpd-output />',
 			SEP = 'T';
 		$tpdProvider
 			.type(['string', 's', 'str'], {
 				input: '<input type="text">'
+			})
+			.type('search', {
+				input: '<input type="search">'
 			})
 			.type(['password', 'p', 'pw'], {
 				fromJson: function (v) {
@@ -146,6 +150,11 @@
 				input: '<input type="number">',
 				output: '{{$property.value | number}}'
 			})
+			.type(['range', 'r'], ['number', function (opts) {
+				opts.input = '<input type="range">';
+				opts.output += '%';
+				return opts;
+			}])
 			.type(['boolean', 'b', 'bool'], {
 				fromJson: function (v) {
 					return !!v;
@@ -184,6 +193,20 @@
 				};
 				return opts;
 			}])
+			.type(['color', 'c'], {
+				input: colorInputHtml,
+				output: colorInputHtml.replace('>', ' ng-model="$property.value" disabled>')
+			})
+			.type(['url', 'u'], {
+				input: '<input type="url">',
+				output: '<a ng-href="{{$property.value}}" target="_blank">{{$property.value}}</a>'
+			})
+			.type(['email', 'e', 'em'], ['url', function (opts) {
+				return getOpts(opts, 'email', 'mailto');
+			}])
+			.type(['tel', 't'], ['url', function (opts) {
+				return getOpts(opts, 'tel');
+			}])
 			.component('form', function (elem) {
 				var name = elem.prop('dataset').name,
 					attr = (name ? name + '.' : '') + '{{$property.name}}';
@@ -199,8 +222,8 @@
 					'<tbody><tr ng-repeat="' + str + ' in ' + elem.prop('dataset').expression + '" ' + attr + ' tpd-values="' + str + '"></tr></tbody>';
 			})
 			.component('thead, tfoot', '<tr><th scope="col" tpd-property tpd-label></th></tr>')
-			.component('tbody > tr', '<td tpd-property>' + html + '</td>', {
-				number: '<td style="text-align: right;">' + html + '</td>'
+			.component('tbody > tr', '<td tpd-property>' + outputHtml + '</td>', {
+				number: '<td style="text-align: right;">' + outputHtml + '</td>'
 			});
 
 		var LANG_CODE = 'en';
@@ -226,6 +249,12 @@
 					return str;
 				}
 			};
+		}
+
+		function getOpts(opts, type, protocol) {
+			opts.input = '<input type="' + type + '">';
+			opts.output = opts.output.replace(' target="_blank">', '>').replace('"', '"' + (protocol || type) + ':');
+			return opts;
 		}
 
 		function getDateStrPortion(date, i) {

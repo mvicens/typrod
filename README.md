@@ -409,14 +409,20 @@ Typrod proportions some built-in registrations:
 Name | Alias(es) | Details
 ---- | --------- | -------
 `'string'` | `'s'` and `'str'` | For single-line texts.
+`'search'` | | Similar to text.
 `'password'` | `'p'` and `'pw'` | Ones whose value is obscured. Outputs hiding chars too.
 `'number'` | `'n'` and `'num'` | As normally.
+`'range'` | `'r'` | Idem.
 `'boolean'` | `'b'` and `'bool'` | Idem.
 `'date'` | `'d'` | Idem.
 `'time'` | `'t'` | Idem.
 `'datetime'` | `'dt'` | Idem.
 `'option'` | `'o'` and `'opt'` | Single `<select>`. You only must to transfer a string of scope's array (formed by objects with pairs `id`-`label`) to `tpd-data` in `options` key.
 `'options'` | `'oo'` and `'opts'` | The same but multiple.
+`'color'` | `'c'` | Handle hexadecimal color.
+`'url'` | `'u'` | URL.
+`'email'` | `'e'` and `'em'` | E-mail address.
+`'tel'` | `'t'` | Telephone number.
 
 ### TPD components
 
