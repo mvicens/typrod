@@ -120,7 +120,7 @@ $tpdProvider.type(['year', 'y'], ['number', function (opts) {
 }]);
 ```
 
-But it has a quirk: TPD components' ETC (more info after) will be exactly duplicated.
+But it has a quirk: TPD components' ETCs (more info after) will be exactly duplicated.
 
 #### TPD property
 
@@ -202,7 +202,7 @@ Transformed (if is needed) from aforesaid, and gave back too (cyclic process).
 
 The repeated tags, corresponding each to a TPD property, that contains an appropriate HTML content.
 
-###### Exceptional
+###### ETC
 
 It may happen that, for a concrete TPD component, we find a particular TPD type which is not structured than regularly. Take a look:
 
@@ -279,6 +279,8 @@ The advantages in using Typrod are:
 
 ## Install
 
+By NPM or with CDN embeds:
+
 ### NPM
 
 ```sh
@@ -343,12 +345,12 @@ Registers a TPD type.
 <tr><td>Array</td><td>Fact./serv. in <a href="https://docs.angularjs.org/guide/di#inline-array-annotation">IAA</a>.</td></tr>
 <tr><td rowspan="2">Object</td><td colspan="2"><a href="https://api.jquery.com/Types/#jQuery">JQuery element</a>.</td></tr>
 <tr><td colspan="2">DOM elem.</td></tr>
-<tr><td>Function</td><td colspan="2"><ul><li>Argument: directive's scope.</li><li>Return: elem. (obj. or str.).</li></ul></td></tr>
+<tr><td>Function</td><td colspan="2"><ul><li>Argument: directive's scope.</li><li>Return: elem. (str. or obj.).</li></ul></td></tr>
 <tr><td rowspan="2"><code>output</code></td><td>String</td><td colspan="2">Any string (plain texts, tags, interpolations...).</td><td rowspan="2"><code>'{{$property.value}}'</code></td></tr>
 <tr><td>Function</td><td colspan="2"><ul><li>Argument: the scope.</li><li>Return: the string.</li></ul></td></tr>
 </table>
 
-#### `component(selector, content, [ec])`
+#### `component(selector, content[, ec])`
 
 Registers a TPD component.
 
@@ -408,18 +410,18 @@ Typrod proportions some built-in registrations:
 
 Name | Alias(es) | Details
 ---- | --------- | -------
-`'string'` | `'s'` and `'str'` | For single-line texts.
-`'search'` | | Similar to text.
-`'password'` | `'p'` and `'pw'` | Ones whose value is obscured. Outputs hiding chars too.
-`'number'` | `'n'` and `'num'` | As normally.
-`'range'` | `'r'` | Idem.
-`'boolean'` | `'b'` and `'bool'` | Idem.
-`'date'` | `'d'` | Idem.
-`'time'` | `'t'` | Idem.
-`'datetime'` | `'dt'` | Idem.
+`'string'` | `'s'` and `'str'` | For single-line text.
+`'search'` | | Text too but within `<input type="search">`.
+`'password'` | `'p'` and `'pw'` | Outputs hiding chars too.
+`'number'` | `'n'` and `'num'`
+`'range'` | `'r'` | Percentage.
+`'boolean'` | `'b'` and `'bool'`
+`'date'` | `'d'`
+`'time'` | `'t'`
+`'datetime'` | `'dt'`
 `'option'` | `'o'` and `'opt'` | Single `<select>`. You only must to transfer a string of scope's array (formed by objects with pairs `id`-`label`) to `tpd-data` in `options` key.
 `'options'` | `'oo'` and `'opts'` | The same but multiple.
-`'color'` | `'c'` | Handle hexadecimal color.
+`'color'` | `'c'` | Hexadecimal color.
 `'url'` | `'u'` | URL.
 `'email'` | `'e'` and `'em'` | E-mail address.
 `'tel'` | `'t'` | Telephone number.
