@@ -19,6 +19,7 @@
 		.directive('tpdData', tpdDataCompile)
 		.directive('tpdData', tpdDataLink) // To get scope of "ngRepeat"
 		.directive('tpdProperty', tpdProperty)
+		.directive('tpdPropertyStart', tpdPropertyStart)
 		.directive('tpdLabel', tpdLabel)
 		.directive('tpdInput', tpdInput)
 		.directive('tpdOutput', tpdOutput)
@@ -214,6 +215,7 @@
 			}, {
 				boolean: '<div><label><tpd-input></tpd-input> <span tpd-label></span></label></div>'
 			})
+			.component('dl', '<dt tpd-property-start tpd-label></dt><dd tpd-property-end>' + outputHtml + '</dd>')
 			.component('table', function (elem) {
 				var attr = 'tpd-data',
 					str = 'values';
@@ -278,11 +280,18 @@
 			if (angular.isFunction(content))
 				content = content(element);
 
+			var attrContent = '$property in $$data';
 			element.html(
 				$('<div>')
 					.html(content)
 					.find('[tpd-property]')
-					.attr('ng-repeat', '$property in $$data')
+					.attr('ng-repeat', attrContent)
+					.end()
+					.find('[tpd-property-start]')
+					.attr('ng-repeat-start', attrContent)
+					.end()
+					.find('[tpd-property-end]')
+					.attr('ng-repeat-end', '')
 					.end()
 					.html()
 			);
@@ -335,21 +344,18 @@
 	}
 
 	function tpdProperty($compile) {
-		return {
-			restrict: 'A',
-			link: link
-		};
+		return getPropDirectiveDefinitionObj($compile);
+	}
 
-		function link(scope, element) {
-			var ec = scope.$$ec;
-			if (ec) {
-				ec = ec[scope.$property.type];
-				if (angular.isFunction(ec))
-					ec = ec(element.closest('[tpd-data]'));
-				if (ec)
-					element.replaceWith($compile(ec)(scope));
-			}
-		}
+	function tpdPropertyStart($compile) {
+		return getPropDirectiveDefinitionObj($compile, function (element) {
+			element
+				.nextUntil('[tpd-property-end]')
+				.next()
+				.remove()
+				.end()
+				.remove();
+		});
 	}
 
 	function tpdLabel() {
@@ -364,7 +370,7 @@
 	}
 
 	function tpdInput($injector, $compile) {
-		return getDirectiveDefinitionObj(function link(scope, element, attrs) {
+		return getInputDirectiveDefinitionObj(function link(scope, element, attrs) {
 			var input = getType(scope.$property).input;
 
 			var parsedInput = $.parseHTML(input);
@@ -395,7 +401,7 @@
 	}
 
 	function tpdOutput($compile) {
-		return getDirectiveDefinitionObj(function link(scope, element, attrs) {
+		return getInputDirectiveDefinitionObj(function link(scope, element, attrs) {
 			var output = getType(scope.$property).output;
 			if (angular.isFunction(output))
 				output = output(scope);
@@ -460,7 +466,27 @@
 		return opts;
 	}
 
-	function getDirectiveDefinitionObj(linkFn) {
+	function getPropDirectiveDefinitionObj($compile, callback) {
+		return {
+			restrict: 'A',
+			link: link
+		};
+
+		function link(scope, element) {
+			var ec = scope.$$ec;
+			if (ec) {
+				ec = ec[scope.$property.type];
+				if (angular.isFunction(ec))
+					ec = ec(element.closest('[tpd-data]'));
+				if (ec) {
+					(callback || angular.noop)(element);
+					element.replaceWith($compile(ec)(scope));
+				}
+			}
+		}
+	}
+
+	function getInputDirectiveDefinitionObj(linkFn) {
 		return {
 			restrict: 'E',
 			link: linkFn,

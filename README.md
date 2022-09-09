@@ -394,6 +394,8 @@ Besides, accompanying this directive, in the same tag, `tpd-values` is placed, d
 
 Ubicated as attribute solely on TPD containers, Typrod turns these into a repeatedly rendered element by `ng-repeat` that generates `$property` as local scope variable derived from each `tpd-data`'s item (adjusting `name` from possible alias to name and saving TPD formatted value in `value` property).
 
+If a serie of elements must to be repeated (instead of just nesting one), substitute this directive with `tpd-property-start` and `tpd-property-end` as [`ng-repeat-start` and `ng-repeat-end` do](https://docs.angularjs.org/api/ng/directive/ngRepeat#special-repeat-start-and-end-points).
+
 #### `tpd-label`
 
 Labels the attributed element.
@@ -431,6 +433,10 @@ Name | Alias(es) | Details
 #### Forms
 
 You have namesake `'form'`. It rawly prints `<div>`s with `<label>` and input, and a submit button. You have to add the `ng-submit` directive by yourself and `data-name` attribute as namespace of labelable elements.
+
+#### Description lists
+
+`<dl>`s exposes labels in `<dt>`s and outputs in `<dd>`s.
 
 #### Tables
 
