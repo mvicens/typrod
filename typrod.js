@@ -285,13 +285,13 @@
 				$('<div>')
 					.html(content)
 					.find('[tpd-property]')
-					.attr('ng-repeat', attrContent)
+						.attr('ng-repeat', attrContent)
 					.end()
 					.find('[tpd-property-start]')
-					.attr('ng-repeat-start', attrContent)
+						.attr('ng-repeat-start', attrContent)
 					.end()
 					.find('[tpd-property-end]')
-					.attr('ng-repeat-end', '')
+						.attr('ng-repeat-end', '')
 					.end()
 					.html()
 			);
@@ -352,7 +352,7 @@
 			element
 				.nextUntil('[tpd-property-end]')
 				.next()
-				.remove()
+					.remove()
 				.end()
 				.remove();
 		});
