@@ -3,9 +3,9 @@
 Typrod (acronym of "type", "property" and "data"; and abbreviated as TPD) is an [AngularJS](https://angularjs.org) library to synthetize info handlings based on values conversions and input/output displays.
 
 :warning: Warnings:
-* Here are some words that may create confusion since also are elemental terms of JavaScript, AngularJS, CSS or even SQL. Because of this, for avoid ambiguity, our own concepts will be explicitly designated (e.g. "TPD data").
-* We understand that it is a complex system, so we recommend that you read all the documentation before getting started.
-* We will show the functioning in the next demos with [Bootstrap](https://getbootstrap.com) as testing framework, but understand that you can really use any.
+- Here are some words that may create confusion since also are elemental terms of JavaScript, AngularJS, CSS or even SQL. Because of this, for avoid ambiguity, our own concepts will be explicitly designated (e.g. "TPD data").
+- We understand that it is a complex system, so we recommend that you read all the documentation before getting started.
+- We will show the functioning in the next demos with [Bootstrap](https://getbootstrap.com) as testing framework, but understand that you can really use any.
 
 ## Overview
 
@@ -13,18 +13,18 @@ Imagine AngularJS runs, you layout with [Bootstrap 4](https://getbootstrap.com/d
 
 1. JSON (normally from an HTTP request) is captured.
 2. Its values (if necessary) must to be transformed one by one. In the example, for these types:
-   * Datetimes: from string format to `Date` object.
-   * Maybe (hypothetical presumption) booleans are rarely passed from an old system with numbers (`0`/`1`). Then, it becomes originals (`true`/`false`).
-   * And perhaps a list of options is served (another assumption) as string with IDs joined by commas. It turns into array.
+   - Datetimes: from string format to `Date` object.
+   - Maybe (hypothetical presumption) booleans are rarely passed from an old system with numbers (`0`/`1`). Then, it becomes originals (`true`/`false`).
+   - And perhaps a list of options is served (another assumption) as string with IDs joined by commas. It turns into array.
 3. The result are displayed inserting manually:
-   * Inputs (among others):
-     * Dates: with `<input type="date">`.
-     * Booleans: checkboxes.
-     * Options: `<select>`s.
-   * Outputs (the corresponding ones):
-     * Dates: typically through [`date`](https://docs.angularjs.org/api/ng/filter/date) filter.
-     * Booleans: answering ("Yes"/"No").
-     * Options: selected items.
+   - Inputs (among others):
+     - Dates: with `<input type="date">`.
+     - Booleans: checkboxes.
+     - Options: `<select>`s.
+   - Outputs (the corresponding ones):
+     - Dates: typically through [`date`](https://docs.angularjs.org/api/ng/filter/date) filter.
+     - Booleans: answering ("Yes"/"No").
+     - Options: selected items.
 4. To represent these data, facing the user, captions appear situated in `<label>`s and `<th>`s.
 5. Once ready, when user interacts, every edition requires the reverse conversion of values to save the change.
 
@@ -33,10 +33,10 @@ Having said that, notice that these steps are repeated continuously for each inf
 Well, so, using Typrod, all of these involving processes can be only-one-time done or excessively reduced. Look [the altered demo](https://jsfiddle.net/jqweskLt) and pay attention to the differences between two systems (extra utilities remains). In this occasion, the procedure is like this:
 1. Firstly, some simple settings are defined by a [provider](https://docs.angularjs.org/guide/providers), transmitting:
    1. For each TPD type (datetimes, booleans, options... whatever!):
-      * A conversion function.
-      * An HTML template of input.
-      * Output's.
-      * To come back to JSON, another converting.
+      - A conversion function.
+      - An HTML template of input.
+      - Output's.
+      - To come back to JSON, another converting.
    2. About TPD components (in our case, table and form), indicating mainly templates.
 2. At last, in the HTML coding, empty tags are printed with some attribute [directives](https://docs.angularjs.org/guide/directive) that contains:
    1. The captured values.
@@ -260,22 +260,22 @@ Full internal HTML included in TPD components. Concatenation of TPD container an
 ### Advantages
 
 The advantages in using Typrod are:
-* Code extremely simplified. On the principle of "Write less, do more".
-* Clear distinction between representation (HTML structure, attributes, class names, etc.) and logical (what kind of TPD type is it, param name, label, requirement, order, etc.). And in consequence:
-  * Centralization. Full logics are dumped into [controllers](https://docs.angularjs.org/guide/controller), not partially in its views.
-  * Abstraction of core data, assuming that TPD properties can share homologous behaviours.
-* More maintainable and reliable source code.
-  * Integrated reutilization of mechanisms.
-  * Uniformity and consistency: homogenized templates and conversions.
-  * Possible human mistakes avoided. For example, on bad-written inputs, missing conversions of e.g. datetimes, etc.
-  * Easy and fast to migrate frameworks.
-* Unlimited customization. Not adaptive to any particular CSS dependencies.
-* Well-known system, not new or weird:
-  * Specifications of TPD data are similar to databases', like in SQL table creations (column name, datatype, mandatory...).
-  * Use of a worldwide standard data-interchange format such as JSON.
-  * TPD components are descripted by CSS syntax.
-* Flexibility, adaptability and variety on methods arguments and options values.
-* Clean code.
+- Code extremely simplified. On the principle of "Write less, do more".
+- Clear distinction between representation (HTML structure, attributes, class names, etc.) and logical (what kind of TPD type is it, param name, label, requirement, order, etc.). And in consequence:
+  - Centralization. Full logics are dumped into [controllers](https://docs.angularjs.org/guide/controller), not partially in its views.
+  - Abstraction of core data, assuming that TPD properties can share homologous behaviours.
+- More maintainable and reliable source code.
+  - Integrated reutilization of mechanisms.
+  - Uniformity and consistency: homogenized templates and conversions.
+  - Possible human mistakes avoided. For example, on bad-written inputs, missing conversions of e.g. datetimes, etc.
+  - Easy and fast to migrate frameworks.
+- Unlimited customization. Not adaptive to any particular CSS dependencies.
+- Well-known system, not new or weird:
+  - Specifications of TPD data are similar to databases', like in SQL table creations (column name, datatype, mandatory...).
+  - Use of a worldwide standard data-interchange format such as JSON.
+  - TPD components are descripted by CSS syntax.
+- Flexibility, adaptability and variety on methods arguments and options values.
+- Clean code.
 
 ## Install
 
@@ -440,6 +440,6 @@ You have namesake `'form'`. It rawly prints `<div>`s with `<label>` and input, a
 
 #### Tables
 
-* `'table'`: shows a labeled head and record rows. Place attribute `data-expression` as we make on `tpd-values` but with an array.
-* `'thead, tfoot'`: labels `<th>`s.
-* `'tbody > tr'`: outputs `<td>`s.
+- `'table'`: shows a labeled head and record rows. Place attribute `data-expression` as we make on `tpd-values` but with an array.
+- `'thead, tfoot'`: labels `<th>`s.
+- `'tbody > tr'`: outputs `<td>`s.
