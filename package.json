@@ -4,6 +4,7 @@
   "description": "AngularJS library to synthetize info handlings based on values conversions and input/output displays.",
   "main": "index.js",
   "scripts": {
+    "serve": "webpack serve",
     "build": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -30,10 +31,18 @@
     "specificity": "^0.4.1"
   },
   "devDependencies": {
+    "bootstrap": "^4.6.0",
+    "chance": "^1.1.8",
+    "css-loader": "^6.7.1",
     "gulp": "^4.0.2",
     "gulp-inject-string": "^1.1.2",
     "gulp-ng-annotate": "^2.1.0",
     "gulp-rename": "^2.0.0",
-    "gulp-uglify": "^3.0.2"
+    "gulp-uglify": "^3.0.2",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
   }
 }
