@@ -1,5 +1,5 @@
 /*!
- * Typrod v1.2.0 (https://github.com/mvicens/typrod#readme)
+ * Typrod v1.2.1 (https://github.com/mvicens/typrod#readme)
  */
 
 (function () {
