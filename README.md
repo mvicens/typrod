@@ -259,9 +259,9 @@ Full internal HTML included in TPD components. Concatenation of TPD container an
 
 ### Advantages
 
-The advantages in using Typrod are:
+Why to use Typrod?:
 - Code extremely simplified. On the principle of "Write less, do more".
-- Clear distinction between representation (HTML structure, attributes, class names, etc.) and logical (what kind of TPD type is it, param name, label, requirement, order, etc.). And in consequence:
+- Clear distinction between representation (HTML structure, class names, etc.) and logical (what kind of data is it, param name, label, requirement, order, etc.). And in consequence:
   - Centralization. Full logics are dumped into [controllers](https://docs.angularjs.org/guide/controller), not partially in its views.
   - Abstraction of core data, assuming that TPD properties can share homologous behaviours.
 - More maintainable and reliable source code.
@@ -274,8 +274,7 @@ The advantages in using Typrod are:
   - Specifications of TPD data are similar to databases', like in SQL table creations (column name, datatype, mandatory...).
   - Use of a worldwide standard data-interchange format such as JSON.
   - TPD components are descripted by CSS syntax.
-- Flexibility, adaptability and variety on methods arguments and options values.
-- Clean code.
+- Flexibility, adaptability and variety on function arguments and option values.
 
 ## Install
 
