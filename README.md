@@ -299,12 +299,12 @@ angular.module('myApp', [require('typrod')]);
 ### CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/angular@1/angular.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/angular-translate@2/dist/angular-translate.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/specificity@0/dist/specificity.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lodash@4/lodash.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/typrod@1/dist/typrod.js"></script>
+<script src="https://unpkg.com/jquery@^3.6.0"></script>
+<script src="https://unpkg.com/angular@^1.8.2/angular.js"></script>
+<script src="https://unpkg.com/angular-translate@^2.19.0"></script>
+<script src="https://unpkg.com/specificity@^0.4.1"></script>
+<script src="https://unpkg.com/lodash@^4.17.21"></script>
+<script src="https://unpkg.com/typrod/dist/typrod.js"></script>
 ```
 
 ```js
