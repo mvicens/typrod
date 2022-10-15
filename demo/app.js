@@ -20,7 +20,9 @@ const chance = new Chance();
 		$tpdProvider
 			.type('*', function (opts) {
 				var input = $(opts.input);
-				if (input.prop('type') != 'checkbox')
+				if (input.prop('type') == 'checkbox')
+					input.addClass('form-check-input');
+				else
 					input.addClass('form-control');
 				opts.input = input;
 				return opts;
@@ -56,12 +58,12 @@ const chance = new Chance();
 			.component('form', function (elem) {
 				var name = elem.prop('dataset').name,
 					attr = (name ? name + '.' : '') + '{{$property.name}}';
-				return '<div class="form-group" tpd-property><label ng-attr-for="' + attr + '" tpd-label></label><tpd-input ng-attr-id="' + attr + '" /></div><button type="submit" class="btn btn-primary" translate="filter"></button>';
+				return '<div class="mb-3" tpd-property><label class="form-label" ng-attr-for="' + attr + '" tpd-label></label><tpd-input ng-attr-id="' + attr + '" /></div><button type="submit" class="btn btn-primary" translate="filter"></button>';
 			}, {
-				boolean: '<label class="form-group form-check"><tpd-input class="form-check-input"></tpd-input> <span class="form-check-label" tpd-label></span></label>'
+				boolean: '<label class="form-check mb-3"><tpd-input class="form-check-input"></tpd-input> <span class="form-check-label" tpd-label></span></label>'
 			})
 			.component('tbody > tr', '<td tpd-property>' + html + '</td><td><button type="button" class="btn" ng-class="\'btn-\'+(values.$$isEditing?\'primary\':\'secondary\')" ng-click="vm.toggleEdit(values)" translate="{{values.$$isEditing?\'save\':\'edit\'}}"></button></td>', {
-				number: '<td class="text-right">' + html + '</td>'
+				number: '<td class="text-end">' + html + '</td>'
 			});
 	}
 
