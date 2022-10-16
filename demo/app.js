@@ -2,8 +2,8 @@ const $ = require('jquery');
 window.jQuery = $; // To set it as alias of "angular.element"
 require('angular');
 
-const Chance = require('chance');
-const chance = new Chance();
+const Chance = require('chance'),
+	chance = new Chance();
 
 (function () {
 	angular
@@ -40,10 +40,6 @@ const chance = new Chance();
 				delete opts.output;
 				return opts;
 			}])
-			.type('email', {
-				input: '<input type="email" class="form-control">',
-				output: '<a ng-href="mailto:{{$property.value}}">{{$property.value}}</a>'
-			})
 			.type('boolean', function (opts) {
 				opts.toJson = function (v) {
 					return +v;
@@ -55,13 +51,13 @@ const chance = new Chance();
 		// 1.2. TPD components
 		var html = '<tpd-input ng-if="values.$$isEditing"></tpd-input><tpd-output ng-if="!values.$$isEditing" />';
 		$tpdProvider
-			.component('form', function (elem) {
-				var name = elem.prop('dataset').name,
-					attr = (name ? name + '.' : '') + '{{$property.name}}';
-				return '<div class="mb-3" tpd-property><label class="form-label" ng-attr-for="' + attr + '" tpd-label></label><tpd-input ng-attr-id="' + attr + '" /></div><button type="submit" class="btn btn-primary" translate="filter"></button>';
+			.component('form', function () {
+				var attr = '{{$property.name}}';
+				return '<div class="row mb-3" tpd-property><label class="col-sm-2 col-form-label" ng-attr-for="' + attr + '" tpd-label></label><div class="col-sm-10"><tpd-input ng-attr-id="' + attr + '" /></div></div><button type="submit" class="btn btn-primary" translate="filter"></button>';
 			}, {
 				boolean: '<label class="form-check mb-3"><tpd-input class="form-check-input"></tpd-input> <span class="form-check-label" tpd-label></span></label>'
 			})
+			.component('thead, tfoot', '<tr><th scope="col" tpd-property tpd-label></th><th></th></tr>')
 			.component('tbody > tr', '<td tpd-property>' + html + '</td><td><button type="button" class="btn" ng-class="\'btn-\'+(values.$$isEditing?\'primary\':\'secondary\')" ng-click="vm.toggleEdit(values)" translate="{{values.$$isEditing?\'save\':\'edit\'}}"></button></td>', {
 				number: '<td class="text-end">' + html + '</td>'
 			});

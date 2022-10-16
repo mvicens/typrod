@@ -7,8 +7,9 @@
 	<title>Demo</title>
 </head>
 <body ng-app="app" ng-controller="AppController as vm" class="container-fluid">
+	<h1 class="h3">Demo</h1>
 	<!-- 2. Empty tags with some attributes -->
 	<form ng-submit="vm.doFilter()" class="mb-5" tpd-data="vm.filter.data" tpd-values="vm.filter.values"></form>
-	<table class="table" tpd-data="vm.list.data" data-expression="vm.list.values"></table>
+	<table class="table table-bordered table-hover" tpd-data="vm.list.data" data-expression="vm.list.values"></table>
 </body>
 </html>
