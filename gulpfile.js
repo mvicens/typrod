@@ -1,6 +1,6 @@
 const { src, dest } = require('gulp'),
 	injStr = require('gulp-inject-string'),
-	nl = '\n',
+	nl = '\r\n',
 	pckg = require(require('path').resolve('package.json')),
 	distPath = 'dist/',
 	ngAnnotate = require('gulp-ng-annotate'),
