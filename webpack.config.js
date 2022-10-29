@@ -13,5 +13,8 @@ module.exports = {
 			}
 		],
 	},
-	plugins: [new HtmlWebpackPlugin({ template: folder + 'index.html' })]
+	plugins: [new HtmlWebpackPlugin({ template: folder + 'index.html' })],
+	devServer: {
+		open: true
+	}
 };
