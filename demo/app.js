@@ -193,16 +193,18 @@ const Chance = require('chance'),
 
 		var LIST = [],
 			n = 1;
-		for (var i = 0; i < 10; i++)
+		for (var i = 0; i < 10; i++) {
+			var code = GENDERS_LIST[+chance.bool()];
 			LIST.push({
 				id: n++,
-				name: chance.name(),
-				gender: GENDERS_LIST[+chance.bool()],
+				name: chance.name({ gender: code == 'm' ? 'male' : 'female' }),
+				gender: code,
 				birthdate: getStrDate(chance.date({ year: chance.year({ min: MIN_YEAR, max: LAST_YEAR }) })),
 				weight: chance.floating({ min: MIN_WEIGHT, max: MAX_WEIGHT, fixed: 2 }),
 				email: chance.email(),
 				isForeign: +chance.bool()
 			});
+		}
 
 		return {
 			get: get,
@@ -255,13 +257,11 @@ const Chance = require('chance'),
 		}
 
 		function post(url, params) {
-			if (url == 'item') {
-				var id = params.id;
+			if (url == 'item')
 				angular.forEach(LIST, function (item, i, list) {
 					if (item.id == params.id)
 						list[i] = params;
 				});
-			}
 		}
 	}
 
