@@ -128,8 +128,8 @@
 	}
 
 	function config($tpdProvider, $translateProvider) {
-		var colorInputHtml = '<input type="color">',
-			outputHtml = '<tpd-output />',
+		var COLOR_INPUT_HTML = '<input type="color">',
+			OUTPUT_HTML = '<tpd-output />',
 			SEP = 'T';
 		$tpdProvider
 			.type(['string', 's', 'str'], {
@@ -195,8 +195,8 @@
 				return opts;
 			}])
 			.type(['color', 'c'], {
-				input: colorInputHtml,
-				output: colorInputHtml.replace('>', ' ng-model="$property.value" disabled>')
+				input: COLOR_INPUT_HTML,
+				output: COLOR_INPUT_HTML.replace('>', ' ng-model="$property.value" disabled>')
 			})
 			.type(['url', 'u'], {
 				input: '<input type="url">',
@@ -209,23 +209,23 @@
 				return getOpts(opts, 'tel');
 			}])
 			.component('form', function (elem) {
-				var name = elem.prop('dataset').name,
-					attr = (name ? name + '.' : '') + '{{$property.name}}';
-				return '<div tpd-property><label ng-attr-for="' + attr + '" tpd-label></label><tpd-input ng-attr-id="' + attr + '" /></div><button type="submit" translate="submit"></button>';
+				var NAME = elem.prop('dataset').name,
+					ATTR = (NAME ? NAME + '.' : '') + '{{$property.name}}';
+				return '<div tpd-property><label ng-attr-for="' + ATTR + '" tpd-label></label><tpd-input ng-attr-id="' + ATTR + '" /></div><button type="submit" translate="submit"></button>';
 			}, {
 				boolean: '<div><label><tpd-input></tpd-input> <span tpd-label></span></label></div>'
 			})
-			.component('dl', '<dt tpd-property-start tpd-label></dt><dd tpd-property-end>' + outputHtml + '</dd>')
+			.component('dl', '<dt tpd-property-start tpd-label></dt><dd tpd-property-end>' + OUTPUT_HTML + '</dd>')
 			.component('table', function (elem) {
 				var attr = 'tpd-data',
-					str = 'values';
-				attr = attr + '="' + elem.attr(attr) + '"';
+					STR = 'values';
+				attr += '="' + elem.attr(attr) + '"';
 				return '<thead ' + attr + '></thead>' +
-					'<tbody><tr ng-repeat="' + str + ' in ' + elem.prop('dataset').expression + '" ' + attr + ' tpd-values="' + str + '"></tr></tbody>';
+					'<tbody><tr ng-repeat="' + STR + ' in ' + elem.prop('dataset').expression + '" ' + attr + ' tpd-values="' + STR + '"></tr></tbody>';
 			})
 			.component('thead, tfoot', '<tr><th scope="col" tpd-property tpd-label></th></tr>')
-			.component('tbody > tr', '<td tpd-property>' + outputHtml + '</td>', {
-				number: '<td style="text-align: right;">' + outputHtml + '</td>'
+			.component('tbody > tr', '<td tpd-property>' + OUTPUT_HTML + '</td>', {
+				number: '<td style="text-align: right;">' + OUTPUT_HTML + '</td>'
 			});
 
 		var LANG_CODE = 'en';
@@ -280,15 +280,15 @@
 			if (angular.isFunction(content))
 				content = content(element);
 
-			var attrContent = '$property in $$data';
+			var ATTR_CONTENT = '$property in $$data';
 			element.html(
 				$('<div>')
 					.html(content)
 					.find('[tpd-property]')
-						.attr('ng-repeat', attrContent)
+					.attr('ng-repeat', ATTR_CONTENT)
 					.end()
 					.find('[tpd-property-start]')
-						.attr('ng-repeat-start', attrContent)
+					.attr('ng-repeat-start', ATTR_CONTENT)
 					.end()
 					.find('[tpd-property-end]')
 						.attr('ng-repeat-end', '')
@@ -315,16 +315,16 @@
 			angular.forEach(data, function (property) {
 				property.type = registers.aliases.listed[property.type] || property.type || 'string';
 				if (values) {
-					var name = property.name;
+					var NAME = property.name;
 					scope.$watch(function () {
-						return values[name];
+						return values[NAME];
 					}, function (value) {
 						property.value = getFn(property, 'fromJson')(value);
 					});
 					scope.$watch(function () {
 						return property.value;
 					}, function (value) {
-						values[name] = getFn(property, 'toJson')(value);
+						values[NAME] = getFn(property, 'toJson')(value);
 					});
 				}
 			});
