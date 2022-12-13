@@ -93,8 +93,6 @@
 
 			var origOpts = angular.copy(opts);
 
-			var strType = getType('string', true);
-			defOpts.input = strType && strType.input;
 			opts = opts || {};
 			angular.forEach(defOpts, function (defOpt, prop) {
 				opts[prop] = opts[prop] || defOpt;
@@ -113,6 +111,9 @@
 
 				regs.grouped[name] = aliases;
 			}
+
+			if (name == 'string')
+				defOpts.input = (origOpts || {}).input;
 
 			return this;
 		}
