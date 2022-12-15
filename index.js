@@ -8,5 +8,5 @@ require('lodash');
 window.jQuery = window.$ = $;
 window.SPECIFICITY = SPECIFICITY;
 
-require('./typrod');
+require('./src/');
 module.exports = 'tpd';
