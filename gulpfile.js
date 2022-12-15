@@ -1,23 +1,23 @@
 const { src, dest } = require('gulp'),
-	ngFilesort = require('gulp-angular-filesort'),
-	concat = require('gulp-concat'),
-	pckg = require(require('path').resolve('package.json')),
+	$ = require('gulp-load-plugins')(),
+	pckg = require('./package.json'),
+	name = pckg.name,
 	nl = '\r\n',
 	sep = nl + nl,
-	injStr = require('gulp-inject-string'),
-	distPath = 'dist/',
-	ngAnnotate = require('gulp-ng-annotate'),
-	uglify = require('gulp-uglify'),
-	rename = require('gulp-rename');
+	_ = require('lodash'),
+	path = 'dist/';
 
-exports.default = () => {
-	return src(['*', 'index'].map((filename, index) => `${index ? '!' : ''}./src/**/${filename}.js`))
-		.pipe(ngFilesort())
-		.pipe(concat(pckg.name + '.js', { newLine: sep }))
-		.pipe(injStr.prepend('/*!' + nl + ` * Typrod v${pckg.version} (${pckg.homepage})` + nl + ' */' + sep))
-		.pipe(dest(distPath))
-		.pipe(ngAnnotate())
-		.pipe(uglify({ output: { comments: /^!/ } }))
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(dest(distPath));
-};
+function build() {
+	return src(['*', 'index'].map((filename, i) => `${i ? '!' : ''}src/**/${filename}.js`))
+		.pipe($.angularFilesort())
+		.pipe($.concat(name + '.js', { newLine: sep }))
+		.pipe($.injectString.prepend('/*!' + nl + ` * ${_.startCase(name)} v${pckg.version} (${pckg.homepage})` + nl + ' */' + sep))
+		.pipe(dest(path))
+		.pipe($.ngAnnotate())
+		.pipe($.uglify({ output: { comments: /^!/ } }))
+		.pipe($.rename({ suffix: '.min' }))
+		.pipe(dest(path));
+}
+
+exports.build = build;
+exports.default = build;
