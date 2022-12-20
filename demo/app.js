@@ -7,7 +7,7 @@ const Chance = require('chance'),
 
 angular
 	.module('app', [require('../index'), 'pascalprecht.translate'])
-	.config(config) // 1. Settings
+	.config(config)
 	.filter('answer', answer)
 	.controller('AppController', AppController)
 	.config(translateConfig) // Translations
@@ -15,7 +15,6 @@ angular
 	.factory('getStrDate', getStrDate);
 
 function config($tpdProvider) {
-	// 1.1. TPD types
 	$tpdProvider
 		.type('*', function (opts) {
 			var input = $(opts.input);
@@ -47,7 +46,6 @@ function config($tpdProvider) {
 			return opts;
 		});
 
-	// 1.2. TPD components
 	var html = '<tpd-input ng-if="values.$$isEditing"></tpd-input><tpd-output ng-if="!values.$$isEditing" />';
 	$tpdProvider
 		.component('form', function () {
@@ -70,8 +68,8 @@ function answer(translateFilter) {
 
 function AppController(fakeHttp) {
 	var vm = this;
-	vm.filter = { // 2. Attribute contents
-		data: [ // 2.2. TPD data
+	vm.filter = {
+		data: [
 			{
 				name: 'name',
 				label: 'name'
@@ -105,14 +103,14 @@ function AppController(fakeHttp) {
 				label: 'foreign?'
 			}
 		],
-		values: {} // 2.1. Captured values
+		values: {}
 	};
 	vm.genders = [];
 	vm.limits = {};
 	vm.doFilter = doFilter;
-	vm.list = { // 2. Attribute contents
-		data: [], // 2.2. TPD data
-		values: {} // 2.1. Captured values
+	vm.list = {
+		data: [],
+		values: {}
 	};
 	vm.toggleEdit = toggleEdit;
 
