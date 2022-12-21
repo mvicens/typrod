@@ -1,2 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import './app';
+
+import './vendor';
+import './app/';
