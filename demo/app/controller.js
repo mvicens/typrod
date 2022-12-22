@@ -66,8 +66,8 @@ function AppController(fakeHttp) {
 		fd[1].type = 'o';
 		fd[2] = {
 			type: 'date',
-			name: 'birthdate',
-			label: 'birthdate'
+			name: 'birthday',
+			label: 'birthday'
 		};
 		angular.forEach(['name', 'label'], function (prop) {
 			fd[3][prop] = 'weight';

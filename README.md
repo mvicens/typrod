@@ -54,7 +54,7 @@ We will take the previous examples to show samples.
 
 ```js
 $tpdProvider
-	/*...*/
+	// ...
 	.type('options', /*...*/)
 	.type(['year', 'y'], /*...*/)
 	.type('email', /*...*/)

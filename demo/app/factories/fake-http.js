@@ -5,26 +5,26 @@ angular
 	.module('app')
 	.factory('fakeHttp', fakeHttp); // Simulates HTTP request
 
-function fakeHttp(getStrDate, filterFilter) {
-	var GENDERS = { m: 'Male', f: 'Female' },
-		GENDERS_LIST = [],
+function fakeHttp(filterFilter) {
+	var genders = { m: 'Male', f: 'Female' },
+		gendersList = [],
 		LAST_YEAR = (new Date()).getFullYear() - 1,
 		MIN_YEAR = LAST_YEAR - 80,
 		MIN_WEIGHT = 10,
 		MAX_WEIGHT = 100;
-	angular.forEach(GENDERS, function (label, code) {
-		GENDERS_LIST.push(code);
+	angular.forEach(genders, function (label, code) {
+		gendersList.push(code);
 	});
 
-	var LIST = [],
+	var list = [],
 		n = 1;
 	for (var i = 0; i < 10; i++) {
-		var code = GENDERS_LIST[+chance.bool()];
-		LIST.push({
+		var CODE = gendersList[+chance.bool()];
+		list.push({
 			id: n++,
-			name: chance.name({ gender: code == 'm' ? 'male' : 'female' }),
-			gender: code,
-			birthdate: getStrDate(chance.date({ year: chance.year({ min: MIN_YEAR, max: LAST_YEAR }) })),
+			name: chance.name({ gender: CODE == 'm' ? 'male' : 'female' }),
+			gender: CODE,
+			birthday: chance.birthday({ year: chance.year({ min: MIN_YEAR, max: LAST_YEAR }) }).toISOString().split('T')[0],
 			weight: chance.floating({ min: MIN_WEIGHT, max: MAX_WEIGHT, fixed: 2 }),
 			email: chance.email(),
 			isForeign: +chance.bool()
@@ -41,21 +41,21 @@ function fakeHttp(getStrDate, filterFilter) {
 			case 'filter':
 				return {
 					name: '',
-					gender: GENDERS_LIST.join(),
+					gender: gendersList.join(),
 					year: null,
 					maxWeight: MAX_WEIGHT,
 					email: '',
 					isForeign: 0
 				};
 			case 'genders':
-				return GENDERS;
+				return genders;
 			case 'limits':
 				return {
 					year: { min: MIN_YEAR, max: LAST_YEAR },
 					weight: { min: MIN_WEIGHT, max: MAX_WEIGHT }
 				};
 			case 'list':
-				return filterFilter(filterFilter(angular.copy(LIST), {
+				return filterFilter(filterFilter(angular.copy(list), {
 					name: params.name,
 					email: params.email
 				}), function (item) {
@@ -67,13 +67,11 @@ function fakeHttp(getStrDate, filterFilter) {
 					if (!isMatched)
 						return false;
 
-					var py = params.year;
-					if (py && (new Date(item.birthdate)).getFullYear() != py)
+					var PY = params.year;
+					if (PY && (new Date(item.birthday)).getFullYear() != PY)
 						return false;
 
-					var iw = item.weight,
-						pmw = params.maxWeight;
-					if (iw > pmw)
+					if (item.weight > params.maxWeight)
 						return false;
 
 					return item.isForeign == params.isForeign;
@@ -83,7 +81,7 @@ function fakeHttp(getStrDate, filterFilter) {
 
 	function post(url, params) {
 		if (url == 'item')
-			angular.forEach(LIST, function (item, i, list) {
+			angular.forEach(list, function (item, i) {
 				if (item.id == params.id)
 					list[i] = params;
 			});

@@ -1,9 +1,8 @@
 angular
 	.module('app')
-	.config(config)
-	.config(translateConfig); // Translations
+	.config(config);
 
-function config($tpdProvider) {
+function config($tpdProvider, $translateProvider) {
 	$tpdProvider
 		.type('*', function (opts) {
 			var input = $(opts.input);
@@ -35,21 +34,20 @@ function config($tpdProvider) {
 			return opts;
 		});
 
-	var html = '<tpd-input ng-if="values.$$isEditing"></tpd-input><tpd-output ng-if="!values.$$isEditing" />';
+	var HTML = '<tpd-input ng-if="values.$$isEditing"></tpd-input><tpd-output ng-if="!values.$$isEditing" />';
 	$tpdProvider
 		.component('form', function () {
-			var attr = '{{$property.name}}';
-			return '<div class="row mb-3" tpd-property><label class="col-sm-2 col-form-label" ng-attr-for="' + attr + '" tpd-label></label><div class="col-sm-10"><tpd-input ng-attr-id="' + attr + '" /></div></div><button type="submit" class="btn btn-primary" translate="filter"></button>';
+			var ATTR = '{{$property.name}}';
+			return '<div class="row mb-3" tpd-property><label class="col-sm-2 col-form-label" ng-attr-for="' + ATTR + '" tpd-label></label><div class="col-sm-10"><tpd-input ng-attr-id="' + ATTR + '" /></div></div><button type="submit" class="btn btn-primary" translate="filter"></button>';
 		}, {
 			boolean: '<label class="form-check mb-3"><tpd-input class="form-check-input"></tpd-input> <span class="form-check-label" tpd-label></span></label>'
 		})
 		.component('thead, tfoot', '<tr><th scope="col" tpd-property tpd-label></th><th></th></tr>')
-		.component('tbody > tr', '<td tpd-property>' + html + '</td><td><button type="button" class="btn" ng-class="\'btn-\'+(values.$$isEditing?\'primary\':\'secondary\')" ng-click="vm.toggleEdit(values)" translate="{{values.$$isEditing?\'save\':\'edit\'}}"></button></td>', {
-			number: '<td class="text-end">' + html + '</td>'
+		.component('tbody > tr', '<td tpd-property>' + HTML + '</td><td><button type="button" class="btn" ng-class="\'btn-\'+(values.$$isEditing?\'primary\':\'secondary\')" ng-click="vm.toggleEdit(values)" translate="{{values.$$isEditing?\'save\':\'edit\'}}"></button></td>', {
+			number: '<td class="text-end">' + HTML + '</td>'
 		});
-}
 
-function translateConfig($translateProvider) {
+	// Translations
 	var LANG_CODE = 'en';
 	$translateProvider
 		.translations(LANG_CODE, {
@@ -60,7 +58,7 @@ function translateConfig($translateProvider) {
 			email: 'E-mail',
 			'foreign?': 'Foreign?',
 			filter: 'Filter',
-			birthdate: 'Birthdate',
+			birthday: 'Birthday',
 			weight: 'Weight (kg)',
 			yes: 'Yes',
 			no: 'No',
