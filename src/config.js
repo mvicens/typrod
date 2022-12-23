@@ -82,7 +82,7 @@ function config($tpdProvider, $translateProvider) {
 		.type(['email', 'e', 'em'], ['url', function (opts) {
 			return getOpts(opts, 'email', 'mailto');
 		}])
-		.type(['tel', 't'], ['url', function (opts) {
+		.type('tel', ['url', function (opts) {
 			return getOpts(opts, 'tel');
 		}])
 		.component('form', function (elem) {

@@ -427,7 +427,7 @@ Name | Alias(es) | Details
 `'color'` | `'c'` | Hexadecimal color.
 `'url'` | `'u'` | URL.
 `'email'` | `'e'` and `'em'` | E-mail address.
-`'tel'` | `'t'` | Telephone number.
+`'tel'` | | Telephone number.
 
 ### TPD components
 
