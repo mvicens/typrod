@@ -5,14 +5,14 @@ const { src, dest } = require('gulp'),
 	nl = '\r\n',
 	sep = nl + nl,
 	injStr = $.injectString,
-	_ = require('lodash'),
+	startCase = require('lodash/startCase'),
 	path = 'dist/';
 
 function build() {
 	return src(['*', 'index'].map((filename, i) => `${i ? '!' : ''}src/**/${filename}.js`))
 		.pipe($.angularFilesort())
 		.pipe($.concat(name + '.js', { newLine: sep }))
-		.pipe(injStr.prepend('/*!' + nl + ` * ${_.startCase(name)} v${pckg.version} (${pckg.homepage})` + nl + ' */' + sep + '(function () {' + nl))
+		.pipe(injStr.prepend('/*!' + nl + ` * ${startCase(name)} v${pckg.version} (${pckg.homepage})` + nl + ' */' + sep + '(function () {' + nl))
 		.pipe(injStr.append(nl + '})();'))
 		.pipe(dest(path))
 		.pipe($.ngAnnotate())

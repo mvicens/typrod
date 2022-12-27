@@ -263,14 +263,14 @@ Full internal HTML included in TPD components. Concatenation of TPD container an
 
 Why to use Typrod?:
 - Code extremely simplified. On the principle of "Write less, do more".
-- Clear distinction between representation (HTML structure, class names, etc.) and logical (what kind of data is it, param name, label, requirement, order, etc.). And in consequence:
-  - Centralization. Full logics are dumped into [controllers](https://docs.angularjs.org/guide/controller), not partially in its views.
+- Clear distinction between representation (HTML structure, class names, styles, etc.) and logical (what kind of data is it, param name, labelling, requirement, etc.). And in consequence:
+  - Centralization. Full logics are dumped into [controllers](https://docs.angularjs.org/guide/controller), not also partially in its views.
   - Abstraction of core data, assuming that TPD properties can share homologous behaviours.
 - More maintainable and reliable source code.
   - Integrated reutilization of mechanisms.
-  - Uniformity and consistency: homogenized templates and conversions.
-  - Possible human mistakes avoided. For example, on bad-written inputs, missing conversions of e.g. datetimes, etc.
-  - Easy and fast to migrate frameworks.
+  - Uniformity, homogeneity and consistency.
+  - Possible human mistakes avoided on bad-writing, forgetting...
+  - Easy and fast to migrate CSS frameworks.
 - Unlimited customization. Not adaptive to any particular CSS dependencies.
 - Well-known system, not new or weird:
   - Specifications of TPD data are similar to databases', like in SQL table creations (column name, datatype, mandatory...).
@@ -395,7 +395,7 @@ Besides, accompanying this directive, in the same tag, `tpd-values` is placed, d
 
 Ubicated as attribute solely on TPD containers, Typrod turns these into a repeatedly rendered element by `ng-repeat` that generates `$property` as local scope variable derived from each `tpd-data`'s item (adjusting `name` from possible alias to name and saving TPD formatted value in `value` property).
 
-If a serie of elements must to be repeated (instead of just nesting one), substitute this directive with `tpd-property-start` and `tpd-property-end` as [`ng-repeat-start` and `ng-repeat-end` do](https://docs.angularjs.org/api/ng/directive/ngRepeat#special-repeat-start-and-end-points).
+If a serie of adjacent elements must to be repeated (instead of just one), substitute this directive with `tpd-property-start` and `tpd-property-end` as [`ng-repeat-start` and `ng-repeat-end` do](https://docs.angularjs.org/api/ng/directive/ngRepeat#special-repeat-start-and-end-points).
 
 #### `tpd-label`
 
