@@ -389,6 +389,8 @@ Key(s) | Type | Details
 
 And other custom ones are permitted for a not-generic using.
 
+Also it is possible to shorthand it putting an array, instead of the object, following this order: `name`, `label`, `required`, `type` and the rest (in an object). So `['isForeign', 'foreign?', false, 'b', { customKey1: 'one', customKey2: 'two' }]` equals to `{ type: 'b', name: 'isForeign', label: 'foreign?', required: false, customKey1: 'one', customKey2: 'two' }`.
+
 Besides, accompanying this directive, in the same tag, `tpd-values` is placed, determining the TPD JSON values (manipulated by `fromJson` and `toJson`). This pure attribute is optative but its exclusion has no much sense.
 
 #### `tpd-property`

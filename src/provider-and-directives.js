@@ -170,7 +170,16 @@ function tpdDataLink($injector) {
 
 		var data = angular.copy(scope.$eval(attrs[this.name])),
 			values = scope.$eval(attrs.tpdValues);
-		angular.forEach(data, function (property) {
+		angular.forEach(data, function (property, i) {
+			if (angular.isArray(property)) {
+				var keys = ['name', 'label', 'required', 'type'],
+					obj = {};
+				angular.forEach(keys, function (key, j) {
+					obj[key] = property[j];
+				});
+				data[i] = property = angular.merge(obj, property[keys.length]);
+			}
+
 			property.type = registers.aliases.listed[property.type] || property.type || 'string';
 			if (values) {
 				var NAME = property.name;
