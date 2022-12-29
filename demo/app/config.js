@@ -34,12 +34,10 @@ function config($tpdProvider, $translateProvider) {
 			return opts;
 		});
 
-	var HTML = '<tpd-input ng-if="values.$$isEditing"></tpd-input><tpd-output ng-if="!values.$$isEditing" />';
+	var ATTR = '{{$property.name}}',
+		HTML = '<tpd-input ng-if="values.$$isEditing"></tpd-input><tpd-output ng-if="!values.$$isEditing" />';
 	$tpdProvider
-		.component('form', function () {
-			var ATTR = '{{$property.name}}';
-			return '<div class="row mb-3" tpd-property><label class="col-sm-2 col-form-label" ng-attr-for="' + ATTR + '" tpd-label></label><div class="col-sm-10"><tpd-input ng-attr-id="' + ATTR + '" /></div></div><button type="submit" class="btn btn-primary" translate="filter"></button>';
-		}, {
+		.component('form', '<div class="row mb-3" tpd-property><label class="col-sm-2 col-form-label" ng-attr-for="' + ATTR + '" tpd-label></label><div class="col-sm-10"><tpd-input ng-attr-id="' + ATTR + '" /></div></div><button type="submit" class="btn btn-primary" translate="filter"></button>', {
 			boolean: '<label class="form-check mb-3"><tpd-input class="form-check-input"></tpd-input> <span class="form-check-label" tpd-label></span></label>'
 		})
 		.component('thead, tfoot', '<tr><th scope="col" tpd-property tpd-label></th><th></th></tr>')
