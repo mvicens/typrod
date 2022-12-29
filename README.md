@@ -303,7 +303,6 @@ angular.module('myApp', [require('typrod')]);
 ```html
 <script src="https://unpkg.com/jquery@3.6.1"></script>
 <script src="https://unpkg.com/angular@1.8.3/angular.js"></script>
-<script src="https://unpkg.com/angular-translate@2.19.0"></script>
 <script src="https://unpkg.com/specificity@0.4.1"></script>
 <script src="https://unpkg.com/lodash@4.17.21"></script>
 <script src="https://unpkg.com/typrod/dist/typrod.js"></script>
@@ -383,7 +382,7 @@ Key(s) | Type | Details
 ------ | ---- | -------
 `type` (optional) | String | Name or alias of registered TPD type. Defaults to `'string'`.
 `name` | String | Name of param (where TPD value is stored).
-`label` | String | Translation ID of [Angular Translate](https://angular-translate.github.io).
+`label` | String | Caption text (HTML markup available) of tag with `tpd-label`.
 `required` (optional) | Boolean | Input mandatority.
 `min`/`max` (optional) | Any | Minimum/maximum of TPD value.
 

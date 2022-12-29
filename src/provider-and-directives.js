@@ -156,7 +156,7 @@ function tpdDataCompile() {
 	}
 }
 
-function tpdDataLink($injector) {
+function tpdDataLink($sce, $injector) {
 	return {
 		restrict: 'A',
 		scope: true,
@@ -181,6 +181,7 @@ function tpdDataLink($injector) {
 			}
 
 			property.type = registers.aliases.listed[property.type] || property.type || 'string';
+			property.label = $sce.trustAsHtml(property.label);
 			if (values) {
 				var NAME = property.name;
 				scope.$watch(function () {
@@ -232,7 +233,7 @@ function tpdLabel() {
 	};
 
 	function template() {
-		return '<span translate="{{$property.label}}"></span>';
+		return '<span ng-bind-html="$property.label"></span>';
 	}
 }
 

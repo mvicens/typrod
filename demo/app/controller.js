@@ -6,23 +6,23 @@ function AppController(fakeHttp) {
 	var vm = this;
 	vm.filter = {
 		data: [
-			['name', 'name'],
+			['name', 'Name'],
 			{
 				type: 'oo',
 				name: 'gender',
-				label: 'gender',
+				label: 'Gender',
 				options: 'vm.genders',
 				required: true
 			},
-			['year', 'year', false, 'y'],
+			['year', 'Year', false, 'y'],
 			{
 				type: 'n',
 				name: 'maxWeight',
-				label: 'maxWeight',
+				label: 'Max. weight (kg)',
 				required: true
 			},
-			['email', 'email', false, 'email'],
-			['isForeign', 'foreign?', false, 'b']
+			['email', 'E-mail', false, 'email'],
+			['isForeign', 'Foreign?', false, 'b']
 		],
 		values: {}
 	};
@@ -49,9 +49,9 @@ function AppController(fakeHttp) {
 
 		var fd = angular.copy(vm.filter.data);
 		fd[1].type = 'o';
-		fd[2] = ['birthday', 'birthday', false, 'date'];
+		fd[2] = ['birthday', 'Birthday', false, 'date'];
 		angular.forEach(['name', 'label'], function (prop) {
-			fd[3][prop] = 'weight';
+			fd[3][prop] = 'Weight (kg)';
 		});
 		angular.forEach(fd, function (property) {
 			delete property.required;

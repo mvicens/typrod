@@ -1,1 +1,1 @@
-angular.module('app', [require('../../index'), 'pascalprecht.translate']);
+angular.module('app', [require('../../index')]);

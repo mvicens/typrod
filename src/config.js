@@ -4,7 +4,7 @@ angular
 	.module('tpd')
 	.config(config);
 
-function config($tpdProvider, $translateProvider) {
+function config($tpdProvider) {
 	var COLOR_INPUT_HTML = '<input type="color">',
 		OUTPUT_HTML = '<tpd-output />',
 		SEP = 'T';
@@ -88,7 +88,7 @@ function config($tpdProvider, $translateProvider) {
 		.component('form', function (elem) {
 			var NAME = elem.prop('dataset').name,
 				ATTR = (NAME ? NAME + '.' : '') + '{{$property.name}}';
-			return '<div tpd-property><label ng-attr-for="' + ATTR + '" tpd-label></label><tpd-input ng-attr-id="' + ATTR + '" /></div><button type="submit" translate="submit"></button>';
+			return '<div tpd-property><label ng-attr-for="' + ATTR + '" tpd-label></label><tpd-input ng-attr-id="' + ATTR + '" /></div><button type="submit">Submit</button>';
 		}, {
 			boolean: '<div><label><tpd-input></tpd-input> <span tpd-label></span></label></div>'
 		})
@@ -104,10 +104,6 @@ function config($tpdProvider, $translateProvider) {
 		.component('tbody > tr', '<td tpd-property>' + OUTPUT_HTML + '</td>', {
 			number: '<td style="text-align: right;">' + OUTPUT_HTML + '</td>'
 		});
-
-	var LANG_CODE = 'en';
-	$translateProvider.translations(LANG_CODE, { submit: 'Submit' });
-	$translateProvider.preferredLanguage(LANG_CODE);
 
 	function getFromJsonFn(concatDate) {
 		return function (v) {

@@ -2,8 +2,8 @@ angular
 	.module('app')
 	.filter('answer', answer);
 
-function answer(translateFilter) {
+function answer() {
 	return function (bool) {
-		return translateFilter(bool ? 'yes' : 'no');
+		return bool ? 'Yes' : 'No';
 	};
 }

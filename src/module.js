@@ -1,1 +1,1 @@
-angular.module('tpd', ['pascalprecht.translate']);
+angular.module('tpd', []);

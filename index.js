@@ -1,6 +1,5 @@
 const $ = require('jquery');
 require('angular');
-require('angular-translate');
 const SPECIFICITY = require('specificity');
 require('lodash');
 
