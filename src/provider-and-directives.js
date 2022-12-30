@@ -156,7 +156,7 @@ function tpdDataCompile() {
 	}
 }
 
-function tpdDataLink($sce, $injector) {
+function tpdDataLink($sce) {
 	return {
 		restrict: 'A',
 		scope: true,
@@ -187,27 +187,18 @@ function tpdDataLink($sce, $injector) {
 				scope.$watch(function () {
 					return values[NAME];
 				}, function (value) {
-					property.value = getFn(property, 'fromJson')(value);
+					property.value = getType(property).fromJson(value);
 				});
 				scope.$watch(function () {
 					return property.value;
 				}, function (value) {
-					values[NAME] = getFn(property, 'toJson')(value);
+					values[NAME] = getType(property).toJson(value);
 				});
 			}
 		});
 		scope.$$data = data;
 
 		scope.$$ec = component[1];
-
-		function getFn(property, opt) {
-			var opt = getType(property)[opt];
-			if (angular.isString(opt))
-				opt = $injector.get(opt);
-			if (angular.isArray(opt))
-				opt = $injector.invoke(opt);
-			return opt;
-		}
 	}
 }
 
@@ -237,15 +228,10 @@ function tpdLabel() {
 	}
 }
 
-function tpdInput($injector, $compile) {
+function tpdInput($compile) {
 	return getInputDirectiveDefinitionObj(function link(scope, element, attrs) {
 		var input = getType(scope.$property).input;
 
-		var parsedInput = $.parseHTML(input);
-		if (parsedInput.length == 1 && !parsedInput[0].tagName)
-			input = $injector.get(input);
-		if (angular.isArray(input))
-			input = $injector.invoke(input);
 		if (angular.isFunction(input))
 			input = input(scope);
 		if (angular.isElement(input)) {

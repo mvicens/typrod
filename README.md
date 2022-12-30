@@ -336,16 +336,13 @@ Registers a TPD type.
 ##### Options
 
 <table>
-<tr><th>Key(s)</th><th>Type</th><th colspan="3">Details</th><th>Default</th></tr>
-<tr><td rowspan="3"><code>fromJson</code>/<code>toJson</code></td><td>Function</td><td rowspan="3">TPD value conversion from/to JSON.</td><td colspan="2"><ul><li>Argument: TPD value to convert.</li><li>Return: converted one.</li></ul></td><td rowspan="3"><code>angular.identity</code> / caller of own <code>toJSON</code> method (if exists)</td></tr>
-<tr><td>String</td><td>Name of <a href="https://docs.angularjs.org/guide/services">factory/service</a>.</td><td rowspan="2">A fn. like before is extracted.</td></tr>
-<tr><td>Array</td><td>Fact./serv. in <a href="https://docs.angularjs.org/guide/di#inline-array-annotation">inline array annotation</a>.</td></tr>
-<tr><td rowspan="6"><code>input</code></td><td rowspan="2">String</td><td rowspan="8">HTML template.</td><td colspan="2">Tagged <a href="https://api.jquery.com/Types/#htmlString">HTML string</a>. If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="6">Current definition of <code>'string'</code> TPD type</td></tr>
-<tr><td>Name of <a href="https://docs.angularjs.org/guide/services">fact./serv.</a></td><td rowspan="2">Fn. extraction.</td></tr>
-<tr><td>Array</td><td>Fact./serv. in <a href="https://docs.angularjs.org/guide/di#inline-array-annotation">IAA</a>.</td></tr>
-<tr><td rowspan="2">Object</td><td colspan="2"><a href="https://api.jquery.com/Types/#jQuery">JQuery element</a>.</td></tr>
+<tr><th>Key(s)</th><th>Type</th><th colspan="2">Details</th><th>Default</th></tr>
+<tr><td><code>fromJson</code></td><td rowspan="2">Function</td><td>TPD value conversion from JSON.</td><td rowspan="2"><ul><li>Argument: TPD value to convert.</li><li>Return: converted one.</li></ul></td><td><code>angular.identity</code></td></tr>
+<tr><td><code>toJson</code></td><td>The same to JSON.</td><td>Caller of own <code>toJSON</code> method (if exists)</td></tr>
+<tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="4">HTML template.</td><td>Tagged <a href="https://api.jquery.com/Types/#htmlString">HTML string</a>. If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <code>'string'</code> TPD type</td></tr>
+<tr><td rowspan="2">Object</td><td><a href="https://api.jquery.com/Types/#jQuery">JQuery element</a>.</td></tr>
 <tr><td colspan="2">DOM elem.</td></tr>
-<tr><td>Function</td><td colspan="2"><ul><li>Argument: directive's scope.</li><li>Return: elem. (str. or obj.).</li></ul></td></tr>
+<tr><td>Function</td><td><ul><li>Argument: directive's scope.</li><li>Return: elem. (str. or obj.).</li></ul></td></tr>
 <tr><td rowspan="2"><code>output</code></td><td>String</td><td colspan="2">Any string (plain texts, tags, interpolations...).</td><td rowspan="2"><code>'{{$property.value}}'</code></td></tr>
 <tr><td>Function</td><td colspan="2"><ul><li>Argument: the scope.</li><li>Return: the string.</li></ul></td></tr>
 </table>
