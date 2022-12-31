@@ -134,9 +134,7 @@ function tpdDataCompile() {
 		if (!component)
 			return;
 
-		var content = component[0];
-		if (angular.isFunction(content))
-			content = content(element);
+		var content = getStr(component[0], element);
 
 		var ATTR_CONTENT = '$property in $$data';
 		element.html(
@@ -231,14 +229,7 @@ function tpdLabel() {
 function tpdInput($compile) {
 	return getInputDirectiveDefinitionObj(function link(scope, element, attrs) {
 		var input = getType(scope.$property).input;
-
-		if (angular.isFunction(input))
-			input = input(scope);
-		if (angular.isElement(input)) {
-			if (!(input instanceof jQuery))
-				input = $(input);
-			input = input.appendTo('<div>').parent().html();
-		}
+		input = getStr(input, scope, true);
 
 		input = $(input);
 		var targetElem = input.find('[tpd-target]'),
@@ -294,6 +285,25 @@ function getComponent(selection) {
 	return opts;
 }
 
+function getStr(v, arg, hasElem) {
+	if (angular.isString(v))
+		return v;
+	if (angular.isFunction(v))
+		return v(arg);
+	if (hasElem && angular.isElement(v)) {
+		if (!(v instanceof jQuery))
+			v = $(v);
+		return v.appendTo('<div>').parent().html();
+	}
+	if (angular.isArray(v)) { // Joining array
+		var str = '';
+		angular.forEach(v, function (v2, i) {
+			str += getStr(v2, arg, hasElem);
+		});
+		return str;
+	}
+}
+
 function getPropDirectiveDefinitionObj($compile, callback) {
 	return {
 		restrict: 'A',
@@ -303,9 +313,7 @@ function getPropDirectiveDefinitionObj($compile, callback) {
 	function link(scope, element) {
 		var ec = scope.$$ec;
 		if (ec) {
-			ec = ec[scope.$property.type];
-			if (angular.isFunction(ec))
-				ec = ec(element.closest('[tpd-data]'));
+			ec = getStr(ec[scope.$property.type], element.closest('[tpd-data]'));
 			if (ec) {
 				(callback || angular.noop)(element);
 				element.replaceWith($compile(ec)(scope));

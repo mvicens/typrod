@@ -339,10 +339,11 @@ Registers a TPD type.
 <tr><th>Key(s)</th><th>Type</th><th colspan="2">Details</th><th>Default</th></tr>
 <tr><td><code>fromJson</code></td><td rowspan="2">Function</td><td>TPD value conversion from JSON.</td><td rowspan="2"><ul><li>Argument: TPD value to convert.</li><li>Return: converted one.</li></ul></td><td><code>angular.identity</code></td></tr>
 <tr><td><code>toJson</code></td><td>The same to JSON.</td><td>Caller of own <code>toJSON</code> method (if exists)</td></tr>
-<tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="4">HTML template.</td><td>Tagged <a href="https://api.jquery.com/Types/#htmlString">HTML string</a>. If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <code>'string'</code> TPD type</td></tr>
+<tr><td rowspan="5"><code>input</code></td><td>String</td><td rowspan="5">HTML template.</td><td>Tagged <a href="https://api.jquery.com/Types/#htmlString">HTML string</a>. If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="5">Current definition of <code>'string'</code> TPD type</td></tr>
 <tr><td rowspan="2">Object</td><td><a href="https://api.jquery.com/Types/#jQuery">JQuery element</a>.</td></tr>
 <tr><td colspan="2">DOM elem.</td></tr>
 <tr><td>Function</td><td><ul><li>Argument: directive's scope.</li><li>Return: elem. (str. or obj.).</li></ul></td></tr>
+<tr><td>Array</td><td>Joining array.[^1]</td></tr>
 <tr><td rowspan="2"><code>output</code></td><td>String</td><td colspan="2">Any string (plain texts, tags, interpolations...).</td><td rowspan="2"><code>'{{$property.value}}'</code></td></tr>
 <tr><td>Function</td><td colspan="2"><ul><li>Argument: the scope.</li><li>Return: the string.</li></ul></td></tr>
 </table>
@@ -354,8 +355,9 @@ Registers a TPD component.
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
-<tr><td rowspan="2"><code>content</code></td><td>String</td><td>TPD content.</td></tr>
+<tr><td rowspan="3"><code>content</code></td><td>String</td><td>TPD content.</td></tr>
 <tr><td>Function</td><td><ul><li>Argument: selector's JQuery element.</li><li>Return: the string.</li></ul></td></tr>
+<tr><td>Array</td><td>Joining array.[^1]</td></tr>
 <tr><td><code>ec</code> (optional)</td><td>Object</td><td>Exceptional TPD containers. With keys as TPD type names while each value are composed by its TPD container with the same types than <code>content</code> (2nd param).</td></tr>
 </table>
 
@@ -442,3 +444,5 @@ You have namesake `'form'`. It rawly prints `<div>`s with `<label>` and input, a
 - `'table'`: shows a labeled head and record rows. Place attribute `data-expression` as we make on `tpd-values` but with an array.
 - `'thead, tfoot'`: labels `<th>`s.
 - `'tbody > tr'`: outputs `<td>`s.
+
+[^1]: One that collects the mentioned types (string, function... or even, allowing unlimited nesting, another array!) and will be joined.

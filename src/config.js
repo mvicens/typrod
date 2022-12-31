@@ -7,6 +7,7 @@ angular
 function config($tpdProvider) {
 	var COLOR_INPUT_HTML = '<input type="color">',
 		OUTPUT_HTML = '<tpd-output />',
+		STR_VAR = 'values',
 		SEP = 'T';
 	$tpdProvider
 		.type(['string', 's', 'str'], {
@@ -85,24 +86,30 @@ function config($tpdProvider) {
 		.type('tel', ['url', function (opts) {
 			return getOpts(opts, 'tel');
 		}])
-		.component('form', function (elem) {
-			var NAME = elem.prop('dataset').name,
-				ATTR = (NAME ? NAME + '.' : '') + '{{$property.name}}';
-			return '<div tpd-property><label ng-attr-for="' + ATTR + '" tpd-label></label><tpd-input ng-attr-id="' + ATTR + '" /></div><button type="submit">Submit</button>';
-		}, {
-			boolean: '<div><label><tpd-input></tpd-input> <span tpd-label></span></label></div>'
+		.component('form', [
+			'<div tpd-property>',
+			'<label ng-attr-for="', getInputId, '" tpd-label></label>',
+			'<tpd-input ng-attr-id="', getInputId, '" />',
+			'</div>',
+			'<button type="submit">Submit</button>'
+		], {
+			boolean: [
+				'<div>',
+				'<label>', '<tpd-input></tpd-input>', ' ', '<span tpd-label></span>', '</label>',
+				'</div>'
+			]
 		})
-		.component('dl', '<dt tpd-property-start tpd-label></dt><dd tpd-property-end>' + OUTPUT_HTML + '</dd>')
-		.component('table', function (elem) {
-			var attr = 'tpd-data',
-				STR = 'values';
-			attr += '="' + elem.attr(attr) + '"';
-			return '<thead ' + attr + '></thead>' +
-				'<tbody><tr ng-repeat="' + STR + ' in ' + elem.prop('dataset').expression + '" ' + attr + ' tpd-values="' + STR + '"></tr></tbody>';
-		})
-		.component('thead, tfoot', '<tr><th scope="col" tpd-property tpd-label></th></tr>')
-		.component('tbody > tr', '<td tpd-property>' + OUTPUT_HTML + '</td>', {
-			number: '<td style="text-align: right;">' + OUTPUT_HTML + '</td>'
+		.component('dl', [
+			'<dt tpd-property-start tpd-label></dt>',
+			'<dd tpd-property-end>', OUTPUT_HTML, '</dd>'
+		])
+		.component('table', [
+			'<thead ', getAttr, '></thead>',
+			'<tbody>', '<tr ng-repeat="', STR_VAR, ' in ', function (elem) { return elem.prop('dataset').expression; }, '" ', getAttr, ' tpd-values="', STR_VAR, '"></tr>', '</tbody>'
+		])
+		.component('thead, tfoot', ['<tr>', '<th scope="col" tpd-property tpd-label></th>', '</tr>'])
+		.component('tbody > tr', ['<td tpd-property>', OUTPUT_HTML, '</td>'], {
+			number: ['<td style="text-align: right;">', OUTPUT_HTML, '</td>']
 		});
 
 	function getFromJsonFn(concatDate) {
@@ -130,6 +137,16 @@ function config($tpdProvider) {
 		opts.input = '<input type="' + type + '">';
 		opts.output = opts.output.replace(' target="_blank">', '>').replace('"', '"' + (protocol || type) + ':');
 		return opts;
+	}
+
+	function getInputId(elem) {
+		var NAME = elem.prop('dataset').name;
+		return (NAME ? NAME + '.' : '') + '{{$property.name}}';
+	}
+
+	function getAttr(elem) {
+		var attr = 'tpd-data';
+		return attr + '="' + elem.attr(attr) + '"';
 	}
 
 	function getDateStrPortion(date, i) {
