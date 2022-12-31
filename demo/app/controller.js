@@ -18,7 +18,7 @@ function AppController(fakeHttp) {
 			{
 				type: 'n',
 				name: 'maxWeight',
-				label: 'Max. weight (kg)',
+				label: '<abbr title="Maximum">Max.</abbr> weight (kg)',
 				required: true
 			},
 			['email', 'E-mail', false, 'email'],
@@ -47,12 +47,12 @@ function AppController(fakeHttp) {
 		});
 		vm.limits = fakeHttp.get('limits');
 
-		var fd = angular.copy(vm.filter.data);
+		var fd = angular.copy(vm.filter.data),
+			fd3 = fd[3];
 		fd[1].type = 'o';
 		fd[2] = ['birthday', 'Birthday', false, 'date'];
-		angular.forEach(['name', 'label'], function (prop) {
-			fd[3][prop] = 'Weight (kg)';
-		});
+		fd3.name = 'weight';
+		fd3.label = 'Weight (kg)';
 		angular.forEach(fd, function (property) {
 			delete property.required;
 		});
