@@ -23,11 +23,11 @@ function config($tpdProvider) {
 				return String(v);
 			},
 			input: '<input type="password">',
-			output: '{{$property.value | tpdPassword}}'
+			output: '{{$tpdProp.value | tpdPassword}}'
 		})
 		.type(['number', 'n', 'num'], {
 			input: '<input type="number">',
-			output: '{{$property.value | number}}'
+			output: '{{$tpdProp.value | number}}'
 		})
 		.type(['range', 'r'], ['number', function (opts) {
 			opts.input = '<input type="range">';
@@ -39,46 +39,46 @@ function config($tpdProvider) {
 				return !!v;
 			},
 			input: '<input type="checkbox">',
-			output: '{{$property.value?\'✓\':\'✗\'}}'
+			output: '{{$tpdProp.value?\'✓\':\'✗\'}}'
 		})
 		.type(['date', 'd'], {
 			fromJson: getFromJsonFn(),
 			toJson: getToJsonFn(0),
 			input: '<input type="date">',
-			output: '{{$property.value | date}}' // "mediumDate"
+			output: '{{$tpdProp.value | date}}' // "mediumDate"
 		})
 		.type(['time', 't'], {
 			fromJson: getFromJsonFn(true),
 			toJson: getToJsonFn(1),
 			input: '<input type="time">',
-			output: '{{$property.value | date:\'mediumTime\'}}'
+			output: '{{$tpdProp.value | date:\'mediumTime\'}}'
 		})
 		.type(['datetime', 'dt'], ['date', function (opts) {
 			delete opts.toJson;
 			opts.input = '<input type="datetime-local">';
-			opts.output = '{{$property.value | date:\'medium\'}}';
+			opts.output = '{{$tpdProp.value | date:\'medium\'}}';
 			return opts;
 		}])
 		.type(['option', 'o', 'opt'], {
-			input: '<select ng-options="item.id as item.label for item in {{$property.options}}"></select>',
+			input: '<select ng-options="item.id as item.label for item in {{$tpdProp.options}}"></select>',
 			output: function (scope) {
-				return '{{$property.value | tpdOption:' + scope.$property.options + '}}';
+				return '{{$tpdProp.value | tpdOption:' + scope.$tpdProp.options + '}}';
 			}
 		})
 		.type(['options', 'oo', 'opts'], ['option', function (opts) {
 			opts.input = opts.input.replace('><', ' multiple><');
 			opts.output = function (scope) {
-				return '<ul><li ng-repeat="str in $property.value | tpdOptions:' + scope.$property.options + '">{{str}}</li></ul>';
+				return '<ul><li ng-repeat="str in $tpdProp.value | tpdOptions:' + scope.$tpdProp.options + '">{{str}}</li></ul>';
 			};
 			return opts;
 		}])
 		.type(['color', 'c'], {
 			input: COLOR_INPUT_HTML,
-			output: COLOR_INPUT_HTML.replace('>', ' ng-model="$property.value" disabled>')
+			output: COLOR_INPUT_HTML.replace('>', ' ng-model="$tpdProp.value" disabled>')
 		})
 		.type(['url', 'u'], {
 			input: '<input type="url">',
-			output: '<a ng-href="{{$property.value}}" target="_blank">{{$property.value}}</a>'
+			output: '<a ng-href="{{$tpdProp.value}}" target="_blank">{{$tpdProp.value}}</a>'
 		})
 		.type(['email', 'e', 'em'], ['url', function (opts) {
 			return getOpts(opts, 'email', 'mailto');
@@ -87,7 +87,7 @@ function config($tpdProvider) {
 			return getOpts(opts, 'tel');
 		}])
 		.component('form', [
-			'<div tpd-property>',
+			'<div tpd-prop>',
 			'<label ng-attr-for="', getInputId, '" tpd-label></label>',
 			'<tpd-input ng-attr-id="', getInputId, '" />',
 			'</div>',
@@ -100,15 +100,15 @@ function config($tpdProvider) {
 			]
 		})
 		.component('dl', [
-			'<dt tpd-property-start tpd-label></dt>',
-			'<dd tpd-property-end>', OUTPUT_HTML, '</dd>'
+			'<dt tpd-prop-start tpd-label></dt>',
+			'<dd tpd-prop-end>', OUTPUT_HTML, '</dd>'
 		])
 		.component('table', [
 			'<thead ', getAttr, '></thead>',
 			'<tbody>', '<tr ng-repeat="', STR_VAR, ' in ', function (elem) { return elem.prop('dataset').expression; }, '" ', getAttr, ' tpd-values="', STR_VAR, '"></tr>', '</tbody>'
 		])
-		.component('thead, tfoot', ['<tr>', '<th scope="col" tpd-property tpd-label></th>', '</tr>'])
-		.component('tbody > tr', ['<td tpd-property>', OUTPUT_HTML, '</td>'], {
+		.component('thead, tfoot', ['<tr>', '<th scope="col" tpd-prop tpd-label></th>', '</tr>'])
+		.component('tbody > tr', ['<td tpd-prop>', OUTPUT_HTML, '</td>'], {
 			number: ['<td style="text-align: right;">', OUTPUT_HTML, '</td>']
 		});
 
@@ -141,7 +141,7 @@ function config($tpdProvider) {
 
 	function getInputId(elem) {
 		var NAME = elem.prop('dataset').name;
-		return (NAME ? NAME + '.' : '') + '{{$property.name}}';
+		return (NAME ? NAME + '.' : '') + '{{$tpdProp.name}}';
 	}
 
 	function getAttr(elem) {

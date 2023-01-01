@@ -68,7 +68,7 @@ $tpdProvider.type('email', {
 	/*fromJson: undefined,
 	toJson: undefined,*/
 	input: '<input type="email" class="form-control">',
-	output: '<a ng-href="mailto:{{$property.value}}">{{$property.value}}</a>'
+	output: '<a ng-href="mailto:{{$tpdProp.value}}">{{$tpdProp.value}}</a>'
 });
 ```
 
@@ -344,7 +344,7 @@ Registers a TPD type.
 <tr><td colspan="2">DOM elem.</td></tr>
 <tr><td>Function</td><td><ul><li>Argument: directive's scope.</li><li>Return: elem. (str. or obj.).</li></ul></td></tr>
 <tr><td>Array</td><td>Joining array.[^1]</td></tr>
-<tr><td rowspan="2"><code>output</code></td><td>String</td><td colspan="2">Any string (plain texts, tags, interpolations...).</td><td rowspan="2"><code>'{{$property.value}}'</code></td></tr>
+<tr><td rowspan="2"><code>output</code></td><td>String</td><td colspan="2">Any string (plain texts, tags, interpolations...).</td><td rowspan="2"><code>'{{$tpdProp.value}}'</code></td></tr>
 <tr><td>Function</td><td colspan="2"><ul><li>Argument: the scope.</li><li>Return: the string.</li></ul></td></tr>
 </table>
 
@@ -391,11 +391,11 @@ Also it is possible to shorthand it putting an array, instead of the object, fol
 
 Besides, accompanying this directive, in the same tag, `tpd-values` is placed, determining the TPD JSON values (manipulated by `fromJson` and `toJson`). This pure attribute is optative but its exclusion has no much sense.
 
-#### `tpd-property`
+#### `tpd-prop`
 
-Ubicated as attribute solely on TPD containers, Typrod turns these into a repeatedly rendered element by `ng-repeat` that generates `$property` as local scope variable derived from each `tpd-data`'s item (adjusting `name` from possible alias to name and saving TPD formatted value in `value` property).
+Ubicated as attribute solely on TPD containers, Typrod turns these into a repeatedly rendered element by `ng-repeat` that generates `$tpdProp` as local scope variable derived from each `tpd-data`'s item (adjusting `name` from possible alias to name and saving TPD formatted value in `value` property).
 
-If a serie of adjacent elements must to be repeated (instead of just one), substitute this directive with `tpd-property-start` and `tpd-property-end` as [`ng-repeat-start` and `ng-repeat-end` do](https://docs.angularjs.org/api/ng/directive/ngRepeat#special-repeat-start-and-end-points).
+If a serie of adjacent elements must to be repeated (instead of just one), substitute this directive with `tpd-prop-start` and `tpd-prop-end` as [`ng-repeat-start` and `ng-repeat-end` do](https://docs.angularjs.org/api/ng/directive/ngRepeat#special-repeat-start-and-end-points).
 
 #### `tpd-label`
 

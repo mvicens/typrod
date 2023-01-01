@@ -15,8 +15,8 @@ angular
 	.provider('$tpd', $tpdProvider)
 	.directive('tpdData', tpdDataCompile)
 	.directive('tpdData', tpdDataLink) // To get scope of "ngRepeat"
-	.directive('tpdProperty', tpdProperty)
-	.directive('tpdPropertyStart', tpdPropertyStart)
+	.directive('tpdProp', tpdProp)
+	.directive('tpdPropStart', tpdPropStart)
 	.directive('tpdLabel', tpdLabel)
 	.directive('tpdInput', tpdInput)
 	.directive('tpdOutput', tpdOutput);
@@ -30,7 +30,7 @@ function $tpdProvider() {
 			return v;
 		},
 		input: undefined,
-		output: '{{$property.value}}'
+		output: '{{$tpdProp.value}}'
 	};
 	this.$get = $get;
 	this.type = setType;
@@ -136,17 +136,17 @@ function tpdDataCompile() {
 
 		var content = getStr(component[0], element);
 
-		var ATTR_CONTENT = '$property in $$data';
+		var ATTR_CONTENT = '$tpdProp in $$tpdData';
 		element.html(
 			$('<div>')
 				.html(content)
-				.find('[tpd-property]')
+				.find('[tpd-prop]')
 					.attr('ng-repeat', ATTR_CONTENT)
 				.end()
-				.find('[tpd-property-start]')
+				.find('[tpd-prop-start]')
 					.attr('ng-repeat-start', ATTR_CONTENT)
 				.end()
-				.find('[tpd-property-end]')
+				.find('[tpd-prop-end]')
 					.attr('ng-repeat-end', '')
 				.end()
 				.html()
@@ -194,20 +194,20 @@ function tpdDataLink($sce) {
 				});
 			}
 		});
-		scope.$$data = data;
+		scope.$$tpdData = data;
 
-		scope.$$ec = component[1];
+		scope.$$tpdEc = component[1];
 	}
 }
 
-function tpdProperty($compile) {
+function tpdProp($compile) {
 	return getPropDirectiveDefinitionObj($compile);
 }
 
-function tpdPropertyStart($compile) {
+function tpdPropStart($compile) {
 	return getPropDirectiveDefinitionObj($compile, function (element) {
 		element
-			.nextUntil('[tpd-property-end]')
+			.nextUntil('[tpd-prop-end]')
 			.next()
 				.remove()
 			.end()
@@ -222,18 +222,18 @@ function tpdLabel() {
 	};
 
 	function template() {
-		return '<span ng-bind-html="$property.label"></span>';
+		return '<span ng-bind-html="$tpdProp.label"></span>';
 	}
 }
 
 function tpdInput($compile) {
 	return getInputDirectiveDefinitionObj(function link(scope, element, attrs) {
-		var input = getType(scope.$property).input;
+		var input = getType(scope.$tpdProp).input;
 		input = getStr(input, scope, true);
 
 		input = $(input);
 		var targetElem = input.find('[tpd-target]'),
-			propStr = '$property';
+			propStr = '$tpdProp';
 		input.attr(getAttrs(attrs));
 		(targetElem.length ? targetElem : input).attr({
 			'ng-model': propStr + '.value',
@@ -247,7 +247,7 @@ function tpdInput($compile) {
 
 function tpdOutput($compile) {
 	return getInputDirectiveDefinitionObj(function link(scope, element, attrs) {
-		var output = getType(scope.$property).output;
+		var output = getType(scope.$tpdProp).output;
 		if (angular.isFunction(output))
 			output = output(scope);
 		element.replaceWith($compile($('<span>' + output + '</span>').attr(getAttrs(attrs)))(scope));
@@ -311,9 +311,9 @@ function getPropDirectiveDefinitionObj($compile, callback) {
 	};
 
 	function link(scope, element) {
-		var ec = scope.$$ec;
+		var ec = scope.$$tpdEc;
 		if (ec) {
-			ec = getStr(ec[scope.$property.type], element.closest('[tpd-data]'));
+			ec = getStr(ec[scope.$tpdProp.type], element.closest('[tpd-data]'));
 			if (ec) {
 				(callback || angular.noop)(element);
 				element.replaceWith($compile(ec)(scope));
