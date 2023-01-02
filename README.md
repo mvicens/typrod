@@ -343,7 +343,7 @@ Registers a TPD type.
 <tr><td rowspan="2">Object</td><td><a href="https://api.jquery.com/Types/#jQuery">JQuery element</a>.</td></tr>
 <tr><td colspan="2">DOM elem.</td></tr>
 <tr><td>Function</td><td><ul><li>Argument: directive's scope.</li><li>Return: elem. (str. or obj.).</li></ul></td></tr>
-<tr><td>Array</td><td>Joining array.[^1]</td></tr>
+<tr><td>Array</td><td>Collection of the mentioned types (string, function... or even, allowing unlimited nesting, another array!) that will be joined.</td></tr>
 <tr><td rowspan="2"><code>output</code></td><td>String</td><td colspan="2">Any string (plain texts, tags, interpolations...).</td><td rowspan="2"><code>'{{$tpdProp.value}}'</code></td></tr>
 <tr><td>Function</td><td colspan="2"><ul><li>Argument: the scope.</li><li>Return: the string.</li></ul></td></tr>
 </table>
@@ -357,7 +357,7 @@ Registers a TPD component.
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
 <tr><td rowspan="3"><code>content</code></td><td>String</td><td>TPD content.</td></tr>
 <tr><td>Function</td><td><ul><li>Argument: selector's JQuery element.</li><li>Return: the string.</li></ul></td></tr>
-<tr><td>Array</td><td>Joining array.[^1]</td></tr>
+<tr><td>Array</td><td>Joining array, like option <code>input</code>.</td></tr>
 <tr><td><code>ec</code> (optional)</td><td>Object</td><td>Exceptional TPD containers. With keys as TPD type names while each value are composed by its TPD container with the same types than <code>content</code> (2nd param).</td></tr>
 </table>
 
@@ -444,5 +444,3 @@ You have namesake `'form'`. It rawly prints `<div>`s with `<label>` and input, a
 - `'table'`: shows a labeled head and record rows. Place attribute `data-expression` as we make on `tpd-values` but with an array.
 - `'thead, tfoot'`: labels `<th>`s.
 - `'tbody > tr'`: outputs `<td>`s.
-
-[^1]: One that collects the mentioned types (string, function... or even, allowing unlimited nesting, another array!) and will be joined.
