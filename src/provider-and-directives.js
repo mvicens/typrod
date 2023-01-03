@@ -3,11 +3,7 @@ var registers = {
 		original: {},
 		stored: {}
 	},
-	components: {},
-	aliases: {
-		listed: {},
-		grouped: {}
-	}
+	components: {}
 };
 
 angular
@@ -40,13 +36,8 @@ function $tpdProvider() {
 		return function () {
 			var regs = {};
 			angular.forEach(registers, function (reg, prop) {
-				switch (prop) {
-					case 'types':
-						reg = reg.original;
-						break;
-					case 'aliases':
-						reg = reg.grouped;
-				}
+				if (prop == 'types')
+					reg = reg.original;
 				regs[prop] = angular.copy(reg);
 			});
 			return regs;
@@ -62,12 +53,6 @@ function $tpdProvider() {
 				setType(name, opts);
 			});
 			return this;
-		}
-
-		var aliases = [];
-		if (angular.isArray(name)) {
-			aliases = name;
-			name = aliases.shift();
 		}
 
 		var copiedType = name;
@@ -94,17 +79,6 @@ function $tpdProvider() {
 
 		original[name] = origOpts;
 		types.stored[name] = opts;
-
-		if (aliases.length) {
-			var regs = registers.aliases;
-
-			var listed = regs.listed;
-			angular.forEach(aliases, function (alias) {
-				listed[alias] = name;
-			});
-
-			regs.grouped[name] = aliases;
-		}
 
 		if (name == 'string')
 			defOpts.input = (origOpts || {}).input;
@@ -178,7 +152,7 @@ function tpdDataLink($sce) {
 				data[i] = property = angular.merge(obj, property[keys.length]);
 			}
 
-			property.type = registers.aliases.listed[property.type] || property.type || 'string';
+			property.type = property.type || 'string';
 			property.label = $sce.trustAsHtml(property.label);
 			if (values) {
 				var NAME = property.name;

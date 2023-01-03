@@ -10,13 +10,13 @@ function config($tpdProvider) {
 		STR_VAR = 'values',
 		SEP = 'T';
 	$tpdProvider
-		.type(['string', 's', 'str'], {
+		.type('string', {
 			input: '<input type="text">'
 		})
 		.type('search', {
 			input: '<input type="search">'
 		})
-		.type(['password', 'p', 'pw'], {
+		.type('password', {
 			fromJson: function (v) {
 				if (v == null)
 					return v;
@@ -25,62 +25,62 @@ function config($tpdProvider) {
 			input: '<input type="password">',
 			output: '{{$tpdProp.value | tpdPassword}}'
 		})
-		.type(['number', 'n', 'num'], {
+		.type('number', {
 			input: '<input type="number">',
 			output: '{{$tpdProp.value | number}}'
 		})
-		.type(['range', 'r'], ['number', function (opts) {
+		.type('range', ['number', function (opts) {
 			opts.input = '<input type="range">';
 			opts.output += '%';
 			return opts;
 		}])
-		.type(['boolean', 'b', 'bool'], {
+		.type('boolean', {
 			fromJson: function (v) {
 				return !!v;
 			},
 			input: '<input type="checkbox">',
 			output: '{{$tpdProp.value?\'✓\':\'✗\'}}'
 		})
-		.type(['date', 'd'], {
+		.type('date', {
 			fromJson: getFromJsonFn(),
 			toJson: getToJsonFn(0),
 			input: '<input type="date">',
 			output: '{{$tpdProp.value | date}}' // "mediumDate"
 		})
-		.type(['time', 't'], {
+		.type('time', {
 			fromJson: getFromJsonFn(true),
 			toJson: getToJsonFn(1),
 			input: '<input type="time">',
 			output: '{{$tpdProp.value | date:\'mediumTime\'}}'
 		})
-		.type(['datetime', 'dt'], ['date', function (opts) {
+		.type('datetime', ['date', function (opts) {
 			delete opts.toJson;
 			opts.input = '<input type="datetime-local">';
 			opts.output = '{{$tpdProp.value | date:\'medium\'}}';
 			return opts;
 		}])
-		.type(['option', 'o', 'opt'], {
+		.type('option', {
 			input: '<select ng-options="item.id as item.label for item in {{$tpdProp.options}}"></select>',
 			output: function (scope) {
 				return '{{$tpdProp.value | tpdOption:' + scope.$tpdProp.options + '}}';
 			}
 		})
-		.type(['options', 'oo', 'opts'], ['option', function (opts) {
+		.type('options', ['option', function (opts) {
 			opts.input = opts.input.replace('><', ' multiple><');
 			opts.output = function (scope) {
 				return '<ul><li ng-repeat="str in $tpdProp.value | tpdOptions:' + scope.$tpdProp.options + '">{{str}}</li></ul>';
 			};
 			return opts;
 		}])
-		.type(['color', 'c'], {
+		.type('color', {
 			input: COLOR_INPUT_HTML,
 			output: COLOR_INPUT_HTML.replace('>', ' ng-model="$tpdProp.value" disabled>')
 		})
-		.type(['url', 'u'], {
+		.type('url', {
 			input: '<input type="url">',
 			output: '<a ng-href="{{$tpdProp.value}}" target="_blank">{{$tpdProp.value}}</a>'
 		})
-		.type(['email', 'e', 'em'], ['url', function (opts) {
+		.type('email', ['url', function (opts) {
 			return getOpts(opts, 'email', 'mailto');
 		}])
 		.type('tel', ['url', function (opts) {

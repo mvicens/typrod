@@ -8,21 +8,21 @@ function AppController(fakeHttp) {
 		data: [
 			['name', 'Name'],
 			{
-				type: 'oo',
+				type: 'options',
 				name: 'gender',
 				label: 'Gender',
 				options: 'vm.genders',
 				required: true
 			},
-			['year', 'Year', false, 'y'],
+			['year', 'Year', false, 'year'],
 			{
-				type: 'n',
+				type: 'number',
 				name: 'maxWeight',
 				label: '<abbr title="Maximum">Max.</abbr> weight (kg)',
 				required: true
 			},
 			['email', 'E-mail', false, 'email'],
-			['isForeign', 'Foreign?', false, 'b']
+			['isForeign', 'Foreign?', false, 'boolean']
 		],
 		values: {}
 	};
@@ -49,7 +49,7 @@ function AppController(fakeHttp) {
 
 		var fd = angular.copy(vm.filter.data),
 			fd3 = fd[3];
-		fd[1].type = 'o';
+		fd[1].type = 'option';
 		fd[2] = ['birthday', 'Birthday', false, 'date'];
 		fd3.name = 'weight';
 		fd3.label = 'Weight (kg)';

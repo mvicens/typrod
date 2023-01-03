@@ -22,7 +22,7 @@ function config($tpdProvider) {
 			};
 			return opts;
 		})
-		.type(['year', 'y'], ['number', function (opts) {
+		.type('year', ['number', function (opts) {
 			delete opts.output;
 			return opts;
 		}])

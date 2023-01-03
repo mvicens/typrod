@@ -56,7 +56,7 @@ We will take the previous examples to show samples.
 $tpdProvider
 	// ...
 	.type('options', /*...*/)
-	.type(['year', 'y'], /*...*/)
+	.type('year', /*...*/)
 	.type('email', /*...*/)
 	.type('boolean', /*...*/);
 ```
@@ -72,25 +72,6 @@ $tpdProvider.type('email', {
 });
 ```
 
-To speed up settings, every TPD type name can be referenced by one or more aliases. So, instead of write entirely `'string'`, `'number'`, `'boolean'`, `'email'` or e.g. custom `'anotherNewType'`, you can put abbreviated `'s'`, `'n'`, `'b'`, `'e'` and `'ant'`. Regarding the above, through:
-
-```js
-$tpdProvider.type(['email', 'e', 'em'], /*...*/);
-```
-
-And linked to TPD data (explained later) like e.g.:
-
-```js
-[
-	// ...
-	{
-		type: 'e',
-		// ...
-	},
-	// ...
-]
-```
-
 Also we can achieve it thanks to other ways to register:
 
 ##### Overwriting
@@ -102,7 +83,7 @@ $tpdProvider.type('boolean', function (opts) {
 });
 ```
 
-Starting from an already added TPD type (`'boolean'` is system built-in), we can define it again. Permitted to pass an object or a function (like here). And you must to indicate either its name (not alias) or the reserved `'*'` value to apply globally on all:
+Starting from an already added TPD type (`'boolean'` is system built-in), we can define it again. Permitted to pass an object or a function (like here). There is the reserved `'*'` value to apply globally on all:
 
 ```js
 $tpdProvider.type('*', function (opts) {
@@ -116,7 +97,7 @@ $tpdProvider.type('*', function (opts) {
 Similarly to overwrite, a new TPD type can inherit definitions of another one by the copy mechanism.
 
 ```js
-$tpdProvider.type(['year', 'y'], ['number', function (opts) {
+$tpdProvider.type('year', ['number', function (opts) {
 	// ...
 	return opts;
 }]);
@@ -130,7 +111,7 @@ But it has a quirk: TPD components' ETCs (more info after) will be exactly dupli
 [
 	// ...
 	{
-		type: 'n',
+		type: 'number',
 		name: 'maxWeight',
 		label: 'maxWeight',
 		required: true
@@ -326,8 +307,7 @@ Registers a TPD type.
 
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
-<tr><td rowspan="2"><code>name</code></td><td>String</td><td>Name.</td></tr>
-<tr><td>Array</td><td>Name followed by its alias(es).</td></tr>
+<tr><td><code>name</code></td><td>String</td><td>Name.</td></tr>
 <tr><td rowspan="3"><code>opts</code></td><td>Object</td><td>Options (see the next section).</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original options.</li><li>Return: new ones (obj.).</li></ul></td></tr>
 <tr><td>Array</td><td>Name of copied TPD type and options (obj. or fn., like above).</td></tr>
@@ -367,7 +347,7 @@ When Typrod activates, collects the coincidences and priors the TPD component of
 
 ### Service
 
-`$tpd()` proportinates a read-only object of original setters (without defaults) of registers. Regarding the TPD components, its function arguments are disposed in arrays. And the TPD type aliases appears too, grouped by names.
+`$tpd()` proportinates a read-only object of original setters (without defaults) of registers. Regarding the TPD components, its function arguments are disposed in arrays.
 
 ### Directives
 
@@ -379,7 +359,7 @@ Put this attribute over the TPD component tag you want to locate the concerning 
 
 Key(s) | Type | Details
 ------ | ---- | -------
-`type` (optional) | String | Name or alias of registered TPD type. Defaults to `'string'`.
+`type` (optional) | String | Name of registered TPD type. Defaults to `'string'`.
 `name` | String | Name of param (where TPD value is stored).
 `label` | String | Caption text (HTML markup available) of tag with `tpd-label`.
 `required` (optional) | Boolean | Input mandatority.
@@ -387,13 +367,13 @@ Key(s) | Type | Details
 
 And other custom ones are permitted for a not-generic using.
 
-Also it is possible to shorthand it putting an array, instead of the object, following this order: `name`, `label`, `required`, `type` and the rest (in an object). So `['isForeign', 'foreign?', false, 'b', { customKey1: 'one', customKey2: 'two' }]` equals to `{ type: 'b', name: 'isForeign', label: 'foreign?', required: false, customKey1: 'one', customKey2: 'two' }`.
+Also it is possible to shorthand it putting an array, instead of the object, following this order: `name`, `label`, `required`, `type` and the rest (in an object). So `['isForeign', 'foreign?', false, 'boolean', { customKey1: 'one', customKey2: 'two' }]` equals to `{ type: 'boolean', name: 'isForeign', label: 'foreign?', required: false, customKey1: 'one', customKey2: 'two' }`.
 
 Besides, accompanying this directive, in the same tag, `tpd-values` is placed, determining the TPD JSON values (manipulated by `fromJson` and `toJson`). This pure attribute is optative but its exclusion has no much sense.
 
 #### `tpd-prop`
 
-Ubicated as attribute solely on TPD containers, Typrod turns these into a repeatedly rendered element by `ng-repeat` that generates `$tpdProp` as local scope variable derived from each `tpd-data`'s item (adjusting `name` from possible alias to name and saving TPD formatted value in `value` property).
+Ubicated as attribute solely on TPD containers, Typrod turns these into a repeatedly rendered element by `ng-repeat` that generates `$tpdProp` as local scope variable derived from each `tpd-data`'s item (saving TPD formatted value in `value` property).
 
 If a serie of adjacent elements must to be repeated (instead of just one), substitute this directive with `tpd-prop-start` and `tpd-prop-end` as [`ng-repeat-start` and `ng-repeat-end` do](https://docs.angularjs.org/api/ng/directive/ngRepeat#special-repeat-start-and-end-points).
 
@@ -411,23 +391,23 @@ Typrod proportions some built-in registrations:
 
 ### TPD types
 
-Name | Alias(es) | Details
----- | --------- | -------
-`'string'` | `'s'` and `'str'` | For single-line text.
-`'search'` | | Text too but within `<input type="search">`.
-`'password'` | `'p'` and `'pw'` | Outputs hiding chars too.
-`'number'` | `'n'` and `'num'`
-`'range'` | `'r'` | Percentage.
-`'boolean'` | `'b'` and `'bool'`
-`'date'` | `'d'`
-`'time'` | `'t'`
-`'datetime'` | `'dt'`
-`'option'` | `'o'` and `'opt'` | Single `<select>`. You only must to transfer a string of scope's array (formed by objects with pairs `id`-`label`) to `tpd-data` in `options` key.
-`'options'` | `'oo'` and `'opts'` | The same but multiple.
-`'color'` | `'c'` | Hexadecimal color.
-`'url'` | `'u'` | URL.
-`'email'` | `'e'` and `'em'` | E-mail address.
-`'tel'` | | Telephone number.
+Name | Details
+---- | -------
+`'string'` | For single-line text.
+`'search'` | Text too but within `<input type="search">`.
+`'password'` | Outputs hiding chars too.
+`'number'`
+`'range'` | Percentage.
+`'boolean'`
+`'date'`
+`'time'`
+`'datetime'`
+`'option'` | Single `<select>`. You only must to transfer a string of scope's array (formed by objects with pairs `id`-`label`) to `tpd-data` in `options` key.
+`'options'` | The same but multiple.
+`'color'` | Hexadecimal color.
+`'url'` | URL.
+`'email'` | E-mail address.
+`'tel'` | Telephone number.
 
 ### TPD components
 
