@@ -87,10 +87,18 @@ function $tpdProvider() {
 	}
 
 	function setComponent(selector, content, ec) {
+		var components = registers.components,
+			overwritten = angular.copy(components[selector]);
+
+		if (angular.isFunction(content))
+			content = content(overwritten[0]);
+		if (angular.isFunction(ec))
+			ec = ec(overwritten[1]);
+
 		var opts = [content];
 		if (ec) // Exceptional containers
 			opts.push(ec);
-		registers.components[selector] = opts;
+		components[selector] = opts;
 
 		return this;
 	}

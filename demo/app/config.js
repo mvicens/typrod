@@ -34,22 +34,65 @@ function config($tpdProvider) {
 			return opts;
 		});
 
-	var ATTR = '{{$tpdProp.name}}',
-		HTML = '<tpd-input ng-if="values.$$isEditing"></tpd-input><tpd-output ng-if="!values.$$isEditing" />';
+	var HTML = '<tpd-input ng-if="values.$$isEditing"></tpd-input><tpd-output ng-if="!values.$$isEditing" />';
 	$tpdProvider
-		.component('form', [
-			'<div class="row mb-3" tpd-prop>',
-			'<label class="col-sm-2 col-form-label" ng-attr-for="', ATTR, '" tpd-label></label>',
-			'<div class="col-sm-10">',
-			'<tpd-input ng-attr-id="', ATTR, '" />',
-			'</div>',
-			'</div>',
-			'<button type="submit" class="btn btn-primary">Filter</button>'
-		], {
-			boolean: ['<label class="form-check mb-3">', '<tpd-input class="form-check-input"></tpd-input>', ' ', '<span class="form-check-label" tpd-label></span>', '</label>']
+		.component('form', function (content) {
+			return overwrite(content, {
+				0: ['<div', '<div class="row mb-3"'],
+				1: ['<label', '<label class="col-sm-2 col-form-label"'],
+				8: ['<button type="submit">Submit', '<button type="submit" class="btn btn-primary">Filter']
+			}, {
+				4: '<div class="col-sm-10">',
+				7: '</div>'
+			});
+		}, function (ec) {
+			return {
+				boolean: overwrite(ec.boolean, {
+					1: ['<label', '<label class="form-check mb-3"'],
+					2: ['<tpd-input', '<tpd-input class="form-check-input"'],
+					4: ['<span', '<span class="form-check-label"']
+				}, [0, 6])
+			};
 		})
-		.component('thead, tfoot', ['<tr>', '<th scope="col" tpd-prop tpd-label></th>', '<th></th>', '</tr>'])
-		.component('tbody > tr', ['<td tpd-prop>', HTML, '</td>', '<td>', '<button type="button" class="btn" ng-class="\'btn-\'+(values.$$isEditing?\'primary\':\'secondary\')" ng-click="vm.toggleEdit(values)">{{values.$$isEditing?\'Save\':\'Edit\'}}</button>', '</td>'], {
-			number: ['<td class="text-end">', HTML, '</td>']
+		.component('thead, tfoot', function (content) {
+			return overwrite(content, undefined, { 2: '<th></th>' });
+		})
+		.component('tbody > tr', function (content) {
+			return overwrite(content, { 1: HTML }, {
+				3: '<td>',
+				4: '<button type="button" class="btn" ng-class="\'btn-\'+(values.$$isEditing?\'primary\':\'secondary\')" ng-click="vm.toggleEdit(values)">{{values.$$isEditing?\'Save\':\'Edit\'}}</button>',
+				5: '</td>'
+			});
+		}, function (ec) {
+			return {
+				number: overwrite(ec.number, {
+					0: ['style="text-align: right;"', 'class="text-end"'],
+					1: HTML
+				})
+			};
 		});
+
+	function overwrite(array, replacements, addingsOrRemovings) {
+		angular.forEach(replacements, function (str, i) {
+			if (angular.isArray(str))
+				str = array[i].replace(str[0], str[1]);
+			array[i] = str;
+		});
+
+		var n = 0;
+		if (angular.isArray(addingsOrRemovings))
+			angular.forEach(addingsOrRemovings, function (i) {
+				i -= n;
+				array = array.slice(0, i).concat(array.slice(i + 1));
+				n++;
+			});
+		else
+			angular.forEach(addingsOrRemovings, function (str, i) {
+				i -= -n;
+				array = array.slice(0, i).concat(str, array.slice(i));
+				n++;
+			});
+
+		return array;
+	}
 }

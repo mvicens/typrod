@@ -336,12 +336,11 @@ Registers a TPD component.
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
 <tr><td rowspan="3"><code>content</code></td><td>String</td><td>TPD content.</td></tr>
-<tr><td>Function</td><td><ul><li>Argument: selector's JQuery element.</li><li>Return: the string.</li></ul></td></tr>
-<tr><td>Array</td><td>Joining array, like option <code>input</code>.</td></tr>
-<tr><td><code>ec</code> (optional)</td><td>Object</td><td>Exceptional TPD containers. With keys as TPD type names while each value are composed by its TPD container with the same types than <code>content</code> (2nd param).</td></tr>
+<tr><td>Array</td><td>Joining array, like option <code>input</code>, but with an extra type: function.<ul><li>Argument: selector's JQuery element.</li><li>Return: the string.</li></ul></td></tr>
+<tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (str. and array).</li></ul></td></tr>
+<tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td>Exceptional TPD containers. With keys as TPD type names while each value are composed by its TPD container as string or joining array.</td></tr>
+<tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (obj.).</li></ul></td></tr>
 </table>
-
-Overwriting (but basic one) is also allowed.
 
 When Typrod activates, collects the coincidences and priors the TPD component of most [CSS specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) and oldest.
 
