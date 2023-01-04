@@ -88,10 +88,10 @@ function config($tpdProvider) {
 		}])
 		.component('form', [
 			'<div tpd-prop>',
-			'<label ng-attr-for="', getInputId, '" tpd-label></label>',
-			'<tpd-input ng-attr-id="', getInputId, '" />',
+			'<label ng-attr-for="', getLabelableId, '" ng-if="$tpdProp.label" tpd-label></label>',
+			'<tpd-input ng-attr-id="', getLabelableId, '" />',
 			'</div>',
-			'<button type="submit">Submit</button>'
+			'<button>', 'Submit', '</button>'
 		], {
 			boolean: [
 				'<div>',
@@ -104,8 +104,8 @@ function config($tpdProvider) {
 			'<dd tpd-prop-end>', OUTPUT_HTML, '</dd>'
 		])
 		.component('table', [
-			'<thead ', getAttr, '></thead>',
-			'<tbody>', '<tr ng-repeat="', STR_VAR, ' in ', function (elem) { return elem.prop('dataset').expression; }, '" ', getAttr, ' tpd-values="', STR_VAR, '"></tr>', '</tbody>'
+			'<thead ', getTpdDataAttr, '></thead>',
+			'<tbody>', '<tr ng-repeat="' + STR_VAR + ' in ', getTpdValuesArray, '" ', getTpdDataAttr, ' tpd-values="' + STR_VAR + '"></tr>', '</tbody>'
 		])
 		.component('thead, tfoot', ['<tr>', '<th scope="col" tpd-prop tpd-label></th>', '</tr>'])
 		.component('tbody > tr', ['<td tpd-prop>', OUTPUT_HTML, '</td>'], {
@@ -139,14 +139,18 @@ function config($tpdProvider) {
 		return opts;
 	}
 
-	function getInputId(elem) {
+	function getLabelableId(elem) {
 		var NAME = elem.prop('dataset').name;
-		return (NAME ? NAME + '.' : '') + '{{$tpdProp.name}}';
+		return (NAME ? NAME + '-' : '') + '{{$tpdProp.name}}';
 	}
 
-	function getAttr(elem) {
+	function getTpdDataAttr(elem) {
 		var attr = 'tpd-data';
 		return attr + '="' + elem.attr(attr) + '"';
+	}
+
+	function getTpdValuesArray(elem) {
+		return elem.prop('dataset').tpdValues;
 	}
 
 	function getDateStrPortion(date, i) {

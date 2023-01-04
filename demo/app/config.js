@@ -40,7 +40,9 @@ function config($tpdProvider) {
 			return overwrite(content, {
 				0: ['<div', '<div class="row mb-3"'],
 				1: ['<label', '<label class="col-sm-2 col-form-label"'],
-				8: ['<button type="submit">Submit', '<button type="submit" class="btn btn-primary">Filter']
+				3: [' ng-if="$tpdProp.label"', ''],
+				8: ['<button', '<button class="btn btn-primary"'],
+				9: 'Filter'
 			}, {
 				4: '<div class="col-sm-10">',
 				7: '</div>'
