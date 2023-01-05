@@ -116,7 +116,8 @@ function tpdDataCompile() {
 		if (!component)
 			return;
 
-		var content = getStr(component[0], element);
+		var content = component[0];
+		content = getStr(content, element);
 
 		var ATTR_CONTENT = '$tpdProp in $$tpdData';
 		element.html(

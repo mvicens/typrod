@@ -7,8 +7,7 @@ angular
 function config($tpdProvider) {
 	var COLOR_INPUT_HTML = '<input type="color">',
 		OUTPUT_HTML = '<tpd-output />',
-		STR_VAR = 'values',
-		SEP = 'T';
+		TPD_VALUES_VAR = '$tpdValues';
 	$tpdProvider
 		.type('string', {
 			input: '<input type="text">'
@@ -105,7 +104,7 @@ function config($tpdProvider) {
 		])
 		.component('table', [
 			'<thead ', getTpdDataAttr, '></thead>',
-			'<tbody>', '<tr ng-repeat="' + STR_VAR + ' in ', getTpdValuesArray, '" ', getTpdDataAttr, ' tpd-values="' + STR_VAR + '"></tr>', '</tbody>'
+			'<tbody>', '<tr ng-repeat="' + TPD_VALUES_VAR + ' in ', getTpdValuesArray, '" ', getTpdDataAttr, ' tpd-values="' + TPD_VALUES_VAR + '"></tr>', '</tbody>'
 		])
 		.component('thead, tfoot', ['<tr>', '<th scope="col" tpd-prop tpd-label></th>', '</tr>'])
 		.component('tbody > tr', ['<td tpd-prop>', OUTPUT_HTML, '</td>'], {
@@ -113,9 +112,9 @@ function config($tpdProvider) {
 		});
 
 	function getFromJsonFn(concatDate) {
-		return function (v) {
+		return function getDatetime(v) {
 			return v && new Date(
-				(concatDate ? getDateStrPortion(new Date, 0) + SEP : '') +
+				(concatDate ? getDateStrPortion(new Date, 0) + 'T' : '') +
 				v +
 				(concatDate ? 'Z' : '')
 			);
@@ -123,7 +122,7 @@ function config($tpdProvider) {
 	}
 
 	function getToJsonFn(i) {
-		return function (v) {
+		return function getString(v) {
 			if (v) {
 				var str = getDateStrPortion(v, i);
 				if (i == 1)
@@ -145,8 +144,8 @@ function config($tpdProvider) {
 	}
 
 	function getTpdDataAttr(elem) {
-		var attr = 'tpd-data';
-		return attr + '="' + elem.attr(attr) + '"';
+		var ATTR = 'tpd-data';
+		return ATTR + '="' + elem.attr(ATTR) + '"';
 	}
 
 	function getTpdValuesArray(elem) {
@@ -154,6 +153,6 @@ function config($tpdProvider) {
 	}
 
 	function getDateStrPortion(date, i) {
-		return _DatetoJSON.call(date).split(SEP)[i];
+		return _DatetoJSON.call(date).split('T')[i];
 	}
 }
