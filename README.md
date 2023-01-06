@@ -200,7 +200,7 @@ So, you can define this too. We know it as exceptional TPD container (ETC).
 
 #### TPD data
 
-Grouping of TPD properties. Paste the following attribute to components:
+Grouping of TPD properties. Paste the following attribute to TPD components:
 
 ```html
 <form tpd-data="..."></form>
@@ -295,13 +295,13 @@ angular.module('myApp', ['tpd']);
 
 ## Usage
 
-TPD sets by a provider and gets by a service.
+Typrod sets by a provider and gets by a service.
 
 ### Provider
 
 It is named `$tpdProvider`, whose methods (that all return it, allowing chaining) are:
 
-#### `type(name, opts)`
+#### `.type( name, opts )`
 
 Registers a TPD type.
 
@@ -328,7 +328,7 @@ Registers a TPD type.
 <tr><td>Function</td><td colspan="2"><ul><li>Argument: the scope.</li><li>Return: the string.</li></ul></td></tr>
 </table>
 
-#### `component(selector, content[, ec])`
+#### `.component( selector, content [, ec ] )`
 
 Registers a TPD component.
 
