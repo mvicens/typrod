@@ -29,8 +29,10 @@ function $tpdProvider() {
 		output: '{{$tpdProp.value}}'
 	};
 	this.$get = $get;
-	this.type = setType;
-	this.component = setComponent;
+	this.type = type;
+	this.removeType = removeType;
+	this.component = component;
+	this.removeComponent = removeComponent;
 
 	function $get() {
 		return function () {
@@ -44,6 +46,18 @@ function $tpdProvider() {
 		};
 	}
 
+	function type(name, opts) {
+		if (opts) {
+			setType(name, opts);
+			return this;
+		}
+		if (opts === null) {
+			removeType(name);
+			return this;
+		}
+		return getType(name);
+	}
+
 	function setType(name, opts) {
 		var types = registers.types,
 			original = types.original;
@@ -52,7 +66,7 @@ function $tpdProvider() {
 			angular.forEach(_.keys(original), function (name) {
 				setType(name, opts);
 			});
-			return this;
+			return;
 		}
 
 		var copiedType = name;
@@ -68,7 +82,7 @@ function $tpdProvider() {
 			});
 		}
 		if (angular.isFunction(opts))
-			opts = opts(angular.copy(getType(copiedType, true)));
+			opts = opts(angular.copy(original[copiedType]));
 
 		var origOpts = angular.copy(opts);
 
@@ -82,8 +96,38 @@ function $tpdProvider() {
 
 		if (name == 'string')
 			defOpts.input = (origOpts || {}).input;
+	}
 
+	function getType(name) {
+		return registers.types.stored[name];
+	}
+
+	function removeType(name) {
+		if (name != 'string') {
+			var types = registers.types;
+			angular.forEach(['original', 'stored'], function (prop) {
+				delete types[prop][name];
+			});
+
+			angular.forEach(registers.components, function (opts) {
+				var ec = opts[1];
+				if (ec)
+					delete ec[name];
+			});
+		}
 		return this;
+	}
+
+	function component(selector, content, ec) {
+		if (content) {
+			setComponent(selector, content, ec);
+			return this;
+		}
+		if (content === null) {
+			removeComponent(selector);
+			return this;
+		}
+		return getComponent(selector);
 	}
 
 	function setComponent(selector, content, ec) {
@@ -99,7 +143,14 @@ function $tpdProvider() {
 		if (ec) // Exceptional containers
 			opts.push(ec);
 		components[selector] = opts;
+	}
 
+	function getComponent(selector) {
+		return registers.components[selector];
+	}
+
+	function removeComponent(selector) {
+		delete registers.components[selector];
 		return this;
 	}
 }
@@ -112,7 +163,7 @@ function tpdDataCompile() {
 	};
 
 	function compile(element) {
-		var component = getComponent(element);
+		var component = getComponentByElem(element);
 		if (!component)
 			return;
 
@@ -145,7 +196,7 @@ function tpdDataLink($sce) {
 	};
 
 	function link(scope, element, attrs) {
-		var component = getComponent(element);
+		var component = getComponentByElem(element);
 		if (!component)
 			return;
 
@@ -168,12 +219,12 @@ function tpdDataLink($sce) {
 				scope.$watch(function () {
 					return values[NAME];
 				}, function (value) {
-					property.value = getType(property).fromJson(value);
+					property.value = getTypeByProp(property).fromJson(value);
 				});
 				scope.$watch(function () {
 					return property.value;
 				}, function (value) {
-					values[NAME] = getType(property).toJson(value);
+					values[NAME] = getTypeByProp(property).toJson(value);
 				});
 			}
 		});
@@ -211,7 +262,7 @@ function tpdLabel() {
 
 function tpdInput($compile) {
 	return getInputDirectiveDefinitionObj(function link(scope, element, attrs) {
-		var input = getType(scope.$tpdProp).input;
+		var input = getTypeByProp(scope.$tpdProp).input;
 		input = getStr(input, scope, true);
 
 		input = $(input);
@@ -230,20 +281,18 @@ function tpdInput($compile) {
 
 function tpdOutput($compile) {
 	return getInputDirectiveDefinitionObj(function link(scope, element, attrs) {
-		var output = getType(scope.$tpdProp).output;
+		var output = getTypeByProp(scope.$tpdProp).output;
 		if (angular.isFunction(output))
 			output = output(scope);
 		element.replaceWith($compile($('<span>' + output + '</span>').attr(getAttrs(attrs)))(scope));
 	});
 }
 
-function getType(name, isOriginal) {
-	if (angular.isObject(name))
-		name = name.type;
-	return registers.types[isOriginal ? 'original' : 'stored'][name];
+function getTypeByProp(prop) {
+	return registers.types.stored[prop.type];
 }
 
-function getComponent(selection) {
+function getComponentByElem(selection) {
 	var matches = [];
 
 	angular.forEach(registers.components, function (opts, selector) {

@@ -299,18 +299,19 @@ Typrod sets by a provider and gets by a service.
 
 ### Provider
 
-It is named `$tpdProvider`, whose methods (that all return it, allowing chaining) are:
+It is named `$tpdProvider`, whose methods (of which the setters and deleters return it, allowing chaining) are:
 
 #### `.type( name, opts )`
 
-Registers a TPD type.
+Sets a TPD type.
 
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>name</code></td><td>String</td><td>Name.</td></tr>
-<tr><td rowspan="3"><code>opts</code></td><td>Object</td><td>Options (see the next section).</td></tr>
+<tr><td rowspan="4"><code>opts</code></td><td>Object</td><td>Options (see the next section).</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original options.</li><li>Return: new ones (obj.).</li></ul></td></tr>
 <tr><td>Array</td><td>Name of copied TPD type and options (obj. or fn., like above).</td></tr>
+<tr><td>Null</td><td>To remove just as <code>removeType</code> does.</td></tr>
 </table>
 
 ##### Options
@@ -328,21 +329,38 @@ Registers a TPD type.
 <tr><td>Function</td><td colspan="2"><ul><li>Argument: the scope.</li><li>Return: the string.</li></ul></td></tr>
 </table>
 
+#### `.type( name )`
+
+Gets it.
+
+#### `.removeType( name )`
+
+Removes it and also in ETCs. Exceptionally, `'string'` is undeletable.
+
 #### `.component( selector, content [, ec ] )`
 
-Registers a TPD component.
+Sets a TPD component.
 
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
-<tr><td rowspan="3"><code>content</code></td><td>String</td><td>TPD content.</td></tr>
+<tr><td rowspan="4"><code>content</code></td><td>String</td><td>TPD content.</td></tr>
 <tr><td>Array</td><td>Joining array, like option <code>input</code>, but with an extra type: function.<ul><li>Argument: selector's JQuery element.</li><li>Return: the string.</li></ul></td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (str. and array).</li></ul></td></tr>
+<tr><td>Null</td><td>To remove just as <code>removeComponent</code> does.</td></tr>
 <tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td>Exceptional TPD containers. With keys as TPD type names while each value are composed by its TPD container as string or joining array.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (obj.).</li></ul></td></tr>
 </table>
 
 When Typrod activates, collects the coincidences and priors the TPD component of most [CSS specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) and oldest.
+
+#### `.component( selector )`
+
+Gets it (array with `content` and maybe `ec`).
+
+#### `.removeComponent( selector )`
+
+Removes it.
 
 ### Service
 
