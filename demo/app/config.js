@@ -34,7 +34,8 @@ function config($tpdProvider) {
 			return opts;
 		});
 
-	var HTML = '<tpd-input ng-if="values.$$isEditing"></tpd-input><tpd-output ng-if="!values.$$isEditing" />';
+	var TPD_VALUES_VAR = '$tpdValues',
+		HTML = '<tpd-input ng-if="' + TPD_VALUES_VAR + '.$$isEditing"></tpd-input><tpd-output ng-if="!' + TPD_VALUES_VAR + '.$$isEditing" />';
 	$tpdProvider
 		.component('form', function (content) {
 			return overwrite(content, {
@@ -62,7 +63,7 @@ function config($tpdProvider) {
 		.component('tbody > tr', function (content) {
 			return overwrite(content, { 1: HTML }, {
 				3: '<td>',
-				4: '<button type="button" class="btn" ng-class="\'btn-\'+(values.$$isEditing?\'primary\':\'secondary\')" ng-click="vm.toggleEdit(values)">{{values.$$isEditing?\'Save\':\'Edit\'}}</button>',
+				4: '<button type="button" class="btn" ng-class="\'btn-\'+(' + TPD_VALUES_VAR + '.$$isEditing?\'primary\':\'secondary\')" ng-click="vm.toggleEdit(' + TPD_VALUES_VAR + ')">{{' + TPD_VALUES_VAR + '.$$isEditing?\'Save\':\'Edit\'}}</button>',
 				5: '</td>'
 			});
 		}, function (ec) {
