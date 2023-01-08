@@ -28,11 +28,6 @@ function config($tpdProvider) {
 			input: '<input type="number">',
 			output: '{{$tpdProp.value | number}}'
 		})
-		.type('range', ['number', function (opts) {
-			opts.input = '<input type="range">';
-			opts.output += '%';
-			return opts;
-		}])
 		.type('boolean', {
 			fromJson: function (v) {
 				return !!v;
@@ -109,7 +104,12 @@ function config($tpdProvider) {
 		.component('thead, tfoot', ['<tr>', '<th scope="col" tpd-prop tpd-label></th>', '</tr>'])
 		.component('tbody > tr', ['<td tpd-prop>', OUTPUT_HTML, '</td>'], {
 			number: ['<td style="text-align: right;">', OUTPUT_HTML, '</td>']
-		});
+		})
+		.type('range', ['number', function (opts) {
+			opts.input = '<input type="range">';
+			opts.output += '%';
+			return opts;
+		}]);
 
 	function getFromJsonFn(concatDate) {
 		return function getDatetime(v) {
@@ -139,7 +139,7 @@ function config($tpdProvider) {
 	}
 
 	function getLabelableId(elem) {
-		var NAME = elem.prop('dataset').name;
+		var NAME = elem.data('name');
 		return (NAME ? NAME + '-' : '') + '{{$tpdProp.name}}';
 	}
 
@@ -149,7 +149,7 @@ function config($tpdProvider) {
 	}
 
 	function getTpdValuesArray(elem) {
-		return elem.prop('dataset').tpdValues;
+		return elem.data('tpdValues');
 	}
 
 	function getDateStrPortion(date, i) {
