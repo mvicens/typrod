@@ -3,7 +3,7 @@ var registers = {
 		original: {},
 		stored: {}
 	},
-	components: {}
+	components: []
 };
 
 angular
@@ -38,8 +38,17 @@ function $tpdProvider() {
 		return function () {
 			var regs = {};
 			angular.forEach(registers, function (reg, prop) {
-				if (prop == 'types')
-					reg = reg.original;
+				switch (prop) {
+					case 'types':
+						reg = reg.original;
+						break;
+					case 'components':
+						var obj = {};
+						angular.forEach(reg, function (values) {
+							obj[values[0]] = values[1];
+						});
+						reg = obj;
+				}
 				regs[prop] = angular.copy(reg);
 			});
 			return regs;
@@ -73,8 +82,8 @@ function $tpdProvider() {
 		if (angular.isArray(opts)) {
 			copiedType = opts[0];
 			opts = opts[1];
-			angular.forEach(registers.components, function (opts) {
-				var ec = opts[1];
+			angular.forEach(registers.components, function (values) {
+				var ec = values[1][1];
 				angular.forEach(ec, function (opt, typeName) {
 					if (typeName == copiedType)
 						ec[name] = opt;
@@ -109,8 +118,8 @@ function $tpdProvider() {
 				delete types[prop][name];
 			});
 
-			angular.forEach(registers.components, function (opts) {
-				var ec = opts[1];
+			angular.forEach(registers.components, function (values) {
+				var ec = values[1][1];
 				if (ec)
 					delete ec[name];
 			});
@@ -131,9 +140,7 @@ function $tpdProvider() {
 	}
 
 	function setComponent(selector, content, ec) {
-		var components = registers.components,
-			overwritten = angular.copy(components[selector]);
-
+		var overwritten = getComponent(selector);
 		if (angular.isFunction(content))
 			content = content(overwritten[0]);
 		if (angular.isFunction(ec))
@@ -142,15 +149,31 @@ function $tpdProvider() {
 		var opts = [content];
 		if (ec) // Exceptional containers
 			opts.push(ec);
-		components[selector] = opts;
+		var components = registers.components;
+		if (overwritten)
+			_.forEach(components, function (values) {
+				if (values[0] == selector) {
+					values[1] = opts;
+					return false;
+				}
+			});
+		else
+			components.push([selector, opts]);
 	}
 
 	function getComponent(selector) {
-		return registers.components[selector];
+		var component;
+		_.forEach(registers.components, function (values) {
+			if (values[0] == selector) {
+				component = values[1];
+				return false;
+			}
+		});
+		return component;
 	}
 
 	function removeComponent(selector) {
-		delete registers.components[selector];
+		_.remove(registers.components, function (values) { return values[0] == selector; });
 		return this;
 	}
 }
@@ -295,11 +318,12 @@ function getTypeByProp(prop) {
 function getComponentByElem(selection) {
 	var matches = [];
 
-	angular.forEach(registers.components, function (opts, selector) {
+	angular.forEach(registers.components, function (values) {
+		var selector = values[0];
 		if (selection.is(selector))
 			matches.push({
 				selector: selector,
-				opts: opts
+				opts: values[1]
 			});
 	});
 
