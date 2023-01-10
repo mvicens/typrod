@@ -82,7 +82,7 @@ function config($tpdProvider) {
 		}])
 		.component('form', [
 			'<div tpd-prop>',
-			'<label ng-attr-for="', getLabelableId, '" ng-if="$tpdProp.label" tpd-label></label>',
+			'<label ng-attr-for="', getLabelableId, '"', ' ng-if="$tpdProp.label"', ' tpd-label></label>',
 			'<tpd-input ng-attr-id="', getLabelableId, '" />',
 			'</div>',
 			'<button>', 'Submit', '</button>'
@@ -99,11 +99,17 @@ function config($tpdProvider) {
 		])
 		.component('table', [
 			'<thead ', getTpdDataAttr, '></thead>',
-			'<tbody>', '<tr ng-repeat="' + TPD_VALUES_VAR + ' in ', getTpdValuesArray, '" ', getTpdDataAttr, ' tpd-values="' + TPD_VALUES_VAR + '"></tr>', '</tbody>'
+			'<tbody>',
+			'<tr ng-repeat="' + TPD_VALUES_VAR + ' in ', getTpdValuesArray, '" ', getTpdDataAttr, ' tpd-values="' + TPD_VALUES_VAR + '"></tr>',
+			'</tbody>'
 		])
-		.component('thead, tfoot', ['<tr>', '<th scope="col" tpd-prop tpd-label></th>', '</tr>'])
+		.component('thead, tfoot', [
+			'<tr>',
+			'<th', ' scope="col"', ' tpd-prop tpd-label></th>',
+			'</tr>'
+		])
 		.component('tbody > tr', ['<td tpd-prop>', OUTPUT_HTML, '</td>'], {
-			number: ['<td style="text-align: right;">', OUTPUT_HTML, '</td>']
+			number: ['<td', ' style="text-align: right;"', '>', OUTPUT_HTML, '</td>']
 		})
 		.type('range', ['number', function (opts) {
 			opts.input = '<input type="range">';

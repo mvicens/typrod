@@ -41,24 +41,23 @@ function config($tpdProvider) {
 			return overwrite(content, {
 				0: ['<div', '<div class="row mb-3"'],
 				1: ['<label', '<label class="col-sm-2 col-form-label"'],
-				3: [' ng-if="$tpdProp.label"', ''],
-				8: ['<button', '<button class="btn btn-primary"'],
-				9: 'Filter'
+				10: ['<button', '<button class="btn btn-primary"'],
+				11: 'Filter'
 			}, {
-				4: '<div class="col-sm-10">',
-				7: '</div>'
-			});
+				6: '<div class="col-sm-10">',
+				9: '</div>'
+			}, [4]);
 		}, function (ec) {
 			return {
 				boolean: overwrite(ec.boolean, {
 					1: ['<label', '<label class="form-check mb-3"'],
 					2: ['<tpd-input', '<tpd-input class="form-check-input"'],
 					4: ['<span', '<span class="form-check-label"']
-				}, [0, 6])
+				}, undefined, [0, 6])
 			};
 		})
 		.component('thead, tfoot', function (content) {
-			return overwrite(content, undefined, { 2: '<th></th>' });
+			return overwrite(content, undefined, { 4: '<th></th>' });
 		})
 		.component('tbody > tr', function (content) {
 			return overwrite(content, { 1: HTML }, {
@@ -69,13 +68,13 @@ function config($tpdProvider) {
 		}, function (ec) {
 			return {
 				number: overwrite(ec.number, {
-					0: ['style="text-align: right;"', 'class="text-end"'],
-					1: HTML
+					1: ' class="text-end"',
+					3: HTML
 				})
 			};
 		});
 
-	function overwrite(array, replacements, addingsOrRemovings) {
+	function overwrite(array, replacements, addings, removings) {
 		angular.forEach(replacements, function (str, i) {
 			if (angular.isArray(str))
 				str = array[i].replace(str[0], str[1]);
@@ -83,18 +82,18 @@ function config($tpdProvider) {
 		});
 
 		var n = 0;
-		if (angular.isArray(addingsOrRemovings))
-			angular.forEach(addingsOrRemovings, function (i) {
-				i -= n;
-				array = array.slice(0, i).concat(array.slice(i + 1));
-				n++;
-			});
-		else
-			angular.forEach(addingsOrRemovings, function (str, i) {
-				i -= -n;
-				array = array.slice(0, i).concat(str, array.slice(i));
-				n++;
-			});
+		angular.forEach(addings, function (str, i) {
+			i -= -n;
+			array = array.slice(0, i).concat(str, array.slice(i));
+			n++;
+		});
+
+		n = 0;
+		angular.forEach(removings, function (i) {
+			i -= n;
+			array = array.slice(0, i).concat(array.slice(i + 1));
+			n++;
+		});
 
 		return array;
 	}
