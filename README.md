@@ -309,7 +309,7 @@ Sets a TPD type.
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>name</code></td><td>String</td><td>Name.</td></tr>
 <tr><td rowspan="4"><code>opts</code></td><td>Object</td><td>Options (see the next section).</td></tr>
-<tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original options.</li><li>Return: new ones (obj.).</li></ul></td></tr>
+<tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original (without defaults) options.</li><li>Return: new ones (obj.).</li></ul></td></tr>
 <tr><td>Array</td><td>Name of copied TPD type and options (obj. or fn., like above).</td></tr>
 <tr><td>Null</td><td>To remove just as <code>removeType</code> does.</td></tr>
 </table>
@@ -364,7 +364,7 @@ Removes it.
 
 ### Service
 
-`$tpd()` proportinates a read-only object of original setters (without defaults) of registers. Regarding the TPD components, its function arguments are disposed in arrays.
+`$tpd` has two methods that return the corresponding read-only stored register: `.types()` (as object) and `.components()` (array). Its direct execution (`$tpd()`) proportinates an object with both registers.
 
 ### Directives
 

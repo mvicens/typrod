@@ -35,24 +35,32 @@ function $tpdProvider() {
 	this.removeComponent = removeComponent;
 
 	function $get() {
-		return function () {
-			var regs = {};
-			angular.forEach(registers, function (reg, prop) {
-				switch (prop) {
-					case 'types':
-						reg = reg.original;
-						break;
-					case 'components':
-						var obj = {};
-						angular.forEach(reg, function (values) {
-							obj[values[0]] = values[1];
-						});
-						reg = obj;
-				}
-				regs[prop] = angular.copy(reg);
-			});
-			return regs;
+		function getRegisters() {
+			return {
+				types: getTypes(),
+				components: getComponents()
+			};
 		};
+		getRegisters.types = getTypes;
+		getRegisters.components = getComponents;
+		return getRegisters;
+
+		function getTypes() {
+			return angular.copy(registers.types.stored);
+		}
+
+		function getComponents() {
+			var list = [];
+			angular.forEach(registers.components, function (values) {
+				var opts = values[1];
+				list.push({
+					selector: values[0],
+					content: opts[0],
+					ec: opts[1]
+				});
+			});
+			return angular.copy(list);
+		}
 	}
 
 	function type(name, opts) {
