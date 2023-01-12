@@ -1,4 +1,6 @@
 require('./module');
+require('./provider');
 require('./config');
-require('./provider-and-directives');
+require('./directives/');
+require('./factories/');
 require('./filters/');
