@@ -15,8 +15,10 @@ function tpdDataCompile(tpdUtils) {
 		if (!component)
 			return;
 
+		element = $(element);
+
 		var content = component[0];
-		content = tpdUtils.getStr(content, element);
+		content = tpdUtils.getStr(content, element.get(0));
 
 		var ATTR_CONTENT = '$tpdProp in $$tpdData';
 		element.html(

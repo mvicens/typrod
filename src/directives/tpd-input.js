@@ -17,6 +17,6 @@ function tpdInput(tpdDirectiveUtils, tpdUtils, $compile) {
 			'ng-attr-min': '{{' + propStr + '.min}}',
 			'ng-attr-max': '{{' + propStr + '.max}}'
 		});
-		element.replaceWith($compile(input)(scope));
+		element.replaceWith($compile(input)(scope)); // JqLite
 	});
 }

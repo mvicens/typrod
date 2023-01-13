@@ -145,17 +145,17 @@ function config($tpdProvider) {
 	}
 
 	function getLabelableId(elem) {
-		var NAME = elem.data('name');
+		var NAME = $(elem).data('name');
 		return (NAME ? NAME + '-' : '') + '{{$tpdProp.name}}';
 	}
 
 	function getTpdDataAttr(elem) {
 		var ATTR = 'tpd-data';
-		return ATTR + '="' + elem.attr(ATTR) + '"';
+		return ATTR + '="' + $(elem).attr(ATTR) + '"';
 	}
 
 	function getTpdValuesArray(elem) {
-		return elem.data('tpdValues');
+		return $(elem).data('tpdValues');
 	}
 
 	function getDateStrPortion(date, i) {

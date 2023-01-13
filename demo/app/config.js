@@ -10,7 +10,7 @@ function config($tpdProvider) {
 				input.addClass('form-check-input');
 			else
 				input.addClass('form-control');
-			opts.input = input;
+			opts.input = input.get(0);
 			return opts;
 		})
 		.type('options', function (opts) {

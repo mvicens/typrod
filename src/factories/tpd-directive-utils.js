@@ -17,7 +17,8 @@ function tpdDirectiveUtils(tpdUtils) {
 		function link(scope, element) {
 			var ec = scope.$$tpdEc;
 			if (ec) {
-				ec = tpdUtils.getStr(ec[scope.$tpdProp.type], element.closest('[tpd-data]'));
+				element = $(element);
+				ec = tpdUtils.getStr(ec[scope.$tpdProp.type], element.closest('[tpd-data]').get(0));
 				if (ec) {
 					(callback || angular.noop)(element);
 					element.replaceWith($compile(ec)(scope));

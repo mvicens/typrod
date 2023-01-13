@@ -17,6 +17,7 @@ function tpdUtils($tpd) {
 	function getComponentByElem(selection) {
 		var matches = [];
 
+		selection = $(selection);
 		angular.forEach($tpd.components(), function (component) {
 			var selector = component.selector;
 			if (selection.is(selector))
@@ -45,11 +46,8 @@ function tpdUtils($tpd) {
 			return v;
 		if (angular.isFunction(v))
 			return v(arg);
-		if (hasElem && angular.isElement(v)) {
-			if (!(v instanceof jQuery))
-				v = $(v);
-			return v.appendTo('<div>').parent().html();
-		}
+		if (hasElem && angular.isElement(v))
+			return $(v).appendTo('<div>').parent().html();
 		if (angular.isArray(v)) { // Joining array
 			var str = '';
 			angular.forEach(v, function (v2, i) {

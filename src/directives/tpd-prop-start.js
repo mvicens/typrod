@@ -4,7 +4,7 @@ angular
 
 function tpdPropStart(tpdDirectiveUtils, $compile) {
 	return tpdDirectiveUtils.getPropDirectiveDefinitionObj($compile, function (element) {
-		element
+		$(element)
 			.nextUntil('[tpd-prop-end]')
 			.next()
 				.remove()
