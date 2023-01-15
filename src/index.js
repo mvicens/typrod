@@ -1,5 +1,5 @@
 require('./module');
-require('./provider');
+require('./providers/');
 require('./config');
 require('./directives/');
 require('./factories/');

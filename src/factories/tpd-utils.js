@@ -6,7 +6,6 @@ function tpdUtils($tpd) {
 	return {
 		getTypeByProp: getTypeByProp,
 		getComponentByElem: getComponentByElem,
-		getStr: getStr,
 		getAttrs: getAttrs
 	};
 
@@ -39,22 +38,6 @@ function tpdUtils($tpd) {
 			}
 		});
 		return opts;
-	}
-
-	function getStr(v, arg, hasElem) {
-		if (angular.isString(v))
-			return v;
-		if (angular.isFunction(v))
-			return v(arg);
-		if (hasElem && angular.isElement(v))
-			return $(v).appendTo('<div>').parent().html();
-		if (angular.isArray(v)) { // Joining array
-			var str = '';
-			angular.forEach(v, function (v2, i) {
-				str += getStr(v2, arg, hasElem);
-			});
-			return str;
-		}
 	}
 
 	function getAttrs(attrs) {

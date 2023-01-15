@@ -2,10 +2,10 @@ angular
 	.module('tpd')
 	.directive('tpdInput', tpdInput);
 
-function tpdInput(tpdDirectiveUtils, tpdUtils, $compile) {
+function tpdInput(tpdDirectiveUtils, tpdUtils, tpdGetStr, $compile) {
 	return tpdDirectiveUtils.getInputDirectiveDefinitionObj(function link(scope, element, attrs) {
 		var input = tpdUtils.getTypeByProp(scope.$tpdProp).input;
-		input = tpdUtils.getStr(input, scope, true);
+		input = tpdGetStr(input, scope, true);
 
 		input = $(input);
 		var targetElem = input.find('[tpd-target]'),

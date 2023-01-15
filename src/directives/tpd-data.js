@@ -3,7 +3,7 @@ angular
 	.directive('tpdData', tpdDataCompile)
 	.directive('tpdData', tpdDataLink); // To get scope of "ngRepeat"
 
-function tpdDataCompile(tpdUtils) {
+function tpdDataCompile(tpdUtils, tpdGetStr) {
 	return {
 		restrict: 'A',
 		compile: compile,
@@ -18,7 +18,7 @@ function tpdDataCompile(tpdUtils) {
 		element = $(element);
 
 		var content = component[0];
-		content = tpdUtils.getStr(content, element.get(0));
+		content = tpdGetStr(content, element.get(0));
 
 		var ATTR_CONTENT = '$tpdProp in $$tpdData';
 		element.html(

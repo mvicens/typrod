@@ -3,14 +3,18 @@ var registers = {
 		original: {},
 		stored: {}
 	},
-	components: []
+	components: {
+		list: [],
+		original: {},
+		stored: {}
+	},
 };
 
 angular
 	.module('tpd')
 	.provider('$tpd', $tpdProvider);
 
-function $tpdProvider() {
+function $tpdProvider(tpdGetStrProvider) {
 	var defOpts = {
 		fromJson: angular.identity,
 		toJson: function (v) {
@@ -43,11 +47,12 @@ function $tpdProvider() {
 		}
 
 		function getComponents() {
-			var list = [];
-			angular.forEach(registers.components, function (values) {
-				var opts = values[1];
+			var components = registers.components,
+				list = [];
+			angular.forEach(components.list, function (selector) {
+				var opts = components.stored[selector];
 				list.push({
-					selector: values[0],
+					selector: selector,
 					content: opts[0],
 					ec: opts[1]
 				});
@@ -83,8 +88,8 @@ function $tpdProvider() {
 		if (angular.isArray(opts)) {
 			copiedType = opts[0];
 			opts = opts[1];
-			angular.forEach(registers.components, function (values) {
-				var ec = values[1][1];
+			forEachComponentOpts(function (opts) {
+				var ec = opts[1];
 				angular.forEach(ec, function (opt, typeName) {
 					if (typeName == copiedType)
 						ec[name] = opt;
@@ -102,6 +107,8 @@ function $tpdProvider() {
 		});
 
 		original[name] = origOpts;
+
+		opts.input = tpdGetStrProvider.getStr(opts.input, undefined, true);
 		types.stored[name] = opts;
 
 		if (name == 'string')
@@ -117,12 +124,12 @@ function $tpdProvider() {
 			var types = registers.types;
 			angular.forEach(['original', 'stored'], function (prop) {
 				delete types[prop][name];
-			});
 
-			angular.forEach(registers.components, function (values) {
-				var ec = values[1][1];
-				if (ec)
-					delete ec[name];
+				forEachComponentOpts(function (opts) {
+					var ec = opts[1];
+					if (ec)
+						delete ec[name];
+				});
 			});
 		}
 		return this;
@@ -141,40 +148,57 @@ function $tpdProvider() {
 	}
 
 	function setComponent(selector, content, ec) {
-		var overwritten = getComponent(selector);
+		var overwritten = registers.components.original[selector];
 		if (angular.isFunction(content))
 			content = content(overwritten[0]);
 		if (angular.isFunction(ec))
 			ec = ec(overwritten[1]);
 
+		if (!overwritten)
+			registers.components.list.push(selector);
+
 		var opts = [content];
 		if (ec) // Exceptional containers
 			opts.push(ec);
-		var components = registers.components;
-		if (overwritten)
-			_.forEach(components, function (values) {
-				if (values[0] == selector) {
-					values[1] = opts;
-					return false;
-				}
-			});
-		else
-			components.push([selector, opts]);
+		forEachComponentsList(function (components, isStored) {
+			var savedOpts = [];
+			if (isStored) {
+				savedOpts[0] = tpdGetStrProvider.getStr(opts[0]);
+				savedOpts[1] = {};
+				angular.forEach(opts[1], function (opt, typeName) {
+					savedOpts[1][typeName] = tpdGetStrProvider.getStr(opt);
+				});
+			} else
+				savedOpts = opts;
+			components[selector] = savedOpts;
+		});
 	}
 
 	function getComponent(selector) {
-		var component;
-		_.forEach(registers.components, function (values) {
-			if (values[0] == selector) {
-				component = values[1];
-				return false;
-			}
-		});
-		return component;
+		return registers.components.stored[selector];
 	}
 
 	function removeComponent(selector) {
-		_.remove(registers.components, function (values) { return values[0] == selector; });
+		_.remove(registers.components.list, function (selector2) { return selector2 == selector; });
+		forEachComponentsList(function (components) {
+			delete components[selector];
+		});
+
 		return this;
 	}
+}
+
+function forEachComponentOpts(cb) {
+	forEachComponentsList(function (components) {
+		angular.forEach(components, function (opts) {
+			cb(opts);
+		});
+	});
+}
+
+function forEachComponentsList(cb) {
+	var components = registers.components;
+	angular.forEach([components.original, components.stored], function (components, i) {
+		cb(components, !!i);
+	});
 }

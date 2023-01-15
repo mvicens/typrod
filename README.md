@@ -359,7 +359,7 @@ Removes it.
 
 ### Service
 
-`$tpd` has two methods that return the corresponding read-only stored register: `.types()` (as object) and `.components()` (array). Its direct execution (`$tpd()`) proportinates an object with both registers.
+`$tpd` has two methods that return the corresponding read-only stored (all types transformed to unified-as-possible string except functions) register: `.types()` (as object) and `.components()` (array). Its direct execution (`$tpd()`) proportinates an object with both registers.
 
 ### Directives
 
