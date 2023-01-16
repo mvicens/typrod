@@ -12,9 +12,9 @@ var registers = {
 
 angular
 	.module('tpd')
-	.provider('$tpd', $tpdProvider);
+	.provider('tpd', tpdProvider);
 
-function $tpdProvider(tpdGetStrProvider) {
+function tpdProvider(tpdToStringProvider) {
 	var defOpts = {
 		fromJson: angular.identity,
 		toJson: function (v) {
@@ -24,10 +24,14 @@ function $tpdProvider(tpdGetStrProvider) {
 		},
 		input: undefined,
 		output: '{{$tpdProp.value}}'
-	};
+	},
+		DEF_TYPE_NAME = 'string';
+
 	this.$get = $get;
+
 	this.type = type;
 	this.removeType = removeType;
+
 	this.component = component;
 	this.removeComponent = removeComponent;
 
@@ -50,14 +54,14 @@ function $tpdProvider(tpdGetStrProvider) {
 			var components = registers.components,
 				list = [];
 			angular.forEach(components.list, function (selector) {
-				var opts = components.stored[selector];
+				var args = angular.copy(components.stored[selector]);
 				list.push({
 					selector: selector,
-					content: opts[0],
-					ec: opts[1]
+					content: args[0],
+					ec: args[1]
 				});
 			});
-			return angular.copy(list);
+			return list;
 		}
 	}
 
@@ -88,8 +92,8 @@ function $tpdProvider(tpdGetStrProvider) {
 		if (angular.isArray(opts)) {
 			copiedType = opts[0];
 			opts = opts[1];
-			forEachComponentOpts(function (opts) {
-				var ec = opts[1];
+			forEachComponentArgs(function (args) {
+				var ec = args[1];
 				angular.forEach(ec, function (opt, typeName) {
 					if (typeName == copiedType)
 						ec[name] = opt;
@@ -108,10 +112,10 @@ function $tpdProvider(tpdGetStrProvider) {
 
 		original[name] = origOpts;
 
-		opts.input = tpdGetStrProvider.getStr(opts.input, undefined, true);
+		opts.input = tpdToStringProvider.toString(opts.input, undefined, true);
 		types.stored[name] = opts;
 
-		if (name == 'string')
+		if (name == DEF_TYPE_NAME)
 			defOpts.input = (origOpts || {}).input;
 	}
 
@@ -120,18 +124,17 @@ function $tpdProvider(tpdGetStrProvider) {
 	}
 
 	function removeType(name) {
-		if (name != 'string') {
-			var types = registers.types;
-			angular.forEach(['original', 'stored'], function (prop) {
-				delete types[prop][name];
-
-				forEachComponentOpts(function (opts) {
-					var ec = opts[1];
-					if (ec)
-						delete ec[name];
-				});
+		if (name != DEF_TYPE_NAME) {
+			angular.forEach(registers.types, function (list) {
+				delete list[name];
+			});
+			forEachComponentArgs(function (args) {
+				var ec = args[1];
+				if (ec)
+					delete ec[name];
 			});
 		}
+
 		return this;
 	}
 
@@ -157,20 +160,20 @@ function $tpdProvider(tpdGetStrProvider) {
 		if (!overwritten)
 			registers.components.list.push(selector);
 
-		var opts = [content];
+		var args = [content];
 		if (ec) // Exceptional containers
-			opts.push(ec);
+			args.push(ec);
 		forEachComponentsList(function (components, isStored) {
-			var savedOpts = [];
+			var savedArgs = [];
 			if (isStored) {
-				savedOpts[0] = tpdGetStrProvider.getStr(opts[0]);
-				savedOpts[1] = {};
-				angular.forEach(opts[1], function (opt, typeName) {
-					savedOpts[1][typeName] = tpdGetStrProvider.getStr(opt);
+				savedArgs[0] = tpdToStringProvider.toString(args[0]);
+				savedArgs[1] = {};
+				angular.forEach(args[1], function (opt, typeName) {
+					savedArgs[1][typeName] = tpdToStringProvider.toString(opt);
 				});
 			} else
-				savedOpts = opts;
-			components[selector] = savedOpts;
+				savedArgs = args;
+			components[selector] = savedArgs;
 		});
 	}
 
@@ -188,10 +191,10 @@ function $tpdProvider(tpdGetStrProvider) {
 	}
 }
 
-function forEachComponentOpts(cb) {
+function forEachComponentArgs(cb) {
 	forEachComponentsList(function (components) {
-		angular.forEach(components, function (opts) {
-			cb(opts);
+		angular.forEach(components, function (args) {
+			cb(args);
 		});
 	});
 }

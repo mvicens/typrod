@@ -3,12 +3,12 @@ angular
 	.filter('tpdOptions', tpdOptions);
 
 function tpdOptions() {
-	return function (ids, opts) {
+	return function (ids, items) {
 		if (ids) {
 			var list = [];
-			angular.forEach(opts, function (opt) {
-				if (ids.indexOf(opt.id) != -1)
-					list.push(opt.label);
+			angular.forEach(items, function (item) {
+				if (ids.indexOf(item.id) != -1)
+					list.push(item.label);
 			});
 			return list;
 		}

@@ -3,8 +3,8 @@ angular
 	.filter('tpdOption', tpdOption);
 
 function tpdOption() {
-	return function (id, opts) {
-		var item = _.find(opts, ['id', id]);
+	return function (id, items) {
+		var item = _.find(items, ['id', id]);
 		return item && item.label;
 	};
 }

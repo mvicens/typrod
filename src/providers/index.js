@@ -1,2 +1,2 @@
-require('./tpd-get-str');
+require('./tpd-to-string');
 require('./tpd');

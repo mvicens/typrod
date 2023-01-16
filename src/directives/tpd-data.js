@@ -3,7 +3,7 @@ angular
 	.directive('tpdData', tpdDataCompile)
 	.directive('tpdData', tpdDataLink); // To get scope of "ngRepeat"
 
-function tpdDataCompile(tpdUtils, tpdGetStr) {
+function tpdDataCompile(tpd, tpdToString) {
 	return {
 		restrict: 'A',
 		compile: compile,
@@ -11,14 +11,14 @@ function tpdDataCompile(tpdUtils, tpdGetStr) {
 	};
 
 	function compile(element) {
-		var component = tpdUtils.getComponentByElem(element);
+		var component = getComponentByElem(tpd, element);
 		if (!component)
 			return;
 
 		element = $(element);
 
 		var content = component[0];
-		content = tpdGetStr(content, element.get(0));
+		content = tpdToString(content, element.get(0));
 
 		var ATTR_CONTENT = '$tpdProp in $$tpdData';
 		element.html(
@@ -38,7 +38,7 @@ function tpdDataCompile(tpdUtils, tpdGetStr) {
 	}
 }
 
-function tpdDataLink(tpdUtils, $sce) {
+function tpdDataLink(tpd, $sce, tpdUtils) {
 	return {
 		restrict: 'A',
 		scope: true,
@@ -46,7 +46,7 @@ function tpdDataLink(tpdUtils, $sce) {
 	};
 
 	function link(scope, element, attrs) {
-		var component = tpdUtils.getComponentByElem(element);
+		var component = getComponentByElem(tpd, element);
 		if (!component)
 			return;
 
@@ -82,4 +82,31 @@ function tpdDataLink(tpdUtils, $sce) {
 
 		scope.$$tpdEc = component[1];
 	}
+}
+
+function getComponentByElem(tpd, elem) {
+	var matches = [];
+
+	elem = $(elem);
+	angular.forEach(tpd.components(), function (component) {
+		var selector = component.selector;
+		if (elem.is(selector))
+			matches.push({
+				selector: selector,
+				args: [component.content, component.ec]
+			});
+	});
+
+	if (matches.length == 1)
+		return matches[0].args;
+
+	var selector,
+		args;
+	angular.forEach(matches, function (match) {
+		if (!selector || SPECIFICITY.compare(selector, match.selector) < 0) {
+			selector = match.selector;
+			args = match.args;
+		}
+	});
+	return args;
 }

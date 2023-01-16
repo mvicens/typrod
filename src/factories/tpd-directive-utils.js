@@ -2,7 +2,7 @@ angular
 	.module('tpd')
 	.factory('tpdDirectiveUtils', tpdDirectiveUtils);
 
-function tpdDirectiveUtils(tpdGetStr) {
+function tpdDirectiveUtils(tpdToString) {
 	return {
 		getPropDirectiveDefinitionObj: getPropDirectiveDefinitionObj,
 		getInputDirectiveDefinitionObj: getInputDirectiveDefinitionObj
@@ -18,7 +18,7 @@ function tpdDirectiveUtils(tpdGetStr) {
 			var ec = scope.$$tpdEc;
 			if (ec) {
 				element = $(element);
-				ec = tpdGetStr(ec[scope.$tpdProp.type], element.closest('[tpd-data]').get(0));
+				ec = tpdToString(ec[scope.$tpdProp.type], element.closest('[tpd-data]').get(0));
 				if (ec) {
 					(callback || angular.noop)(element);
 					element.replaceWith($compile(ec)(scope));

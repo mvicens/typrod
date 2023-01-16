@@ -2,8 +2,8 @@ angular
 	.module('app')
 	.config(config);
 
-function config($tpdProvider) {
-	$tpdProvider
+function config(tpdProvider) {
+	tpdProvider
 		.type('*', function (opts) {
 			var input = $(opts.input);
 			if (input.prop('type') == 'checkbox')
@@ -36,7 +36,7 @@ function config($tpdProvider) {
 
 	var TPD_VALUES_VAR = '$tpdValues',
 		HTML = '<tpd-input ng-if="' + TPD_VALUES_VAR + '.$$isEditing"></tpd-input><tpd-output ng-if="!' + TPD_VALUES_VAR + '.$$isEditing" />';
-	$tpdProvider
+	tpdProvider
 		.component('form', function (content) {
 			return overwrite(content, {
 				0: ['<div', '<div class="row mb-3"'],

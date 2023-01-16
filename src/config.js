@@ -4,13 +4,13 @@ angular
 	.module('tpd')
 	.config(config);
 
-function config($tpdProvider) {
+function config(tpdProvider) {
 	var COLOR_INPUT_HTML = '<input type="color">',
 		OUTPUT_HTML = '<tpd-output />',
 		TPD_VALUES_VAR = '$tpdValues';
-	$tpdProvider
+	tpdProvider
 		.type('string', {
-			input: '<input type="text">'
+			input: '<input type="text">' // Default from now
 		})
 		.type('search', {
 			input: '<input type="search">'

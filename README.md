@@ -53,7 +53,7 @@ We will take the previous examples to show samples.
 #### TPD type
 
 ```js
-$tpdProvider
+tpdProvider
 	// ...
 	.type('options', /*...*/)
 	.type('year', /*...*/)
@@ -64,7 +64,7 @@ $tpdProvider
 Whatever you can think. No limits. Like simply:
 
 ```js
-$tpdProvider.type('email', {
+tpdProvider.type('email', {
 	/*fromJson: undefined,
 	toJson: undefined,*/
 	input: '<input type="email" class="form-control">',
@@ -77,7 +77,7 @@ Also we can achieve it thanks to other ways to register:
 ##### Overwriting
 
 ```js
-$tpdProvider.type('boolean', function (opts) {
+tpdProvider.type('boolean', function (opts) {
 	// ...
 	return opts;
 });
@@ -86,7 +86,7 @@ $tpdProvider.type('boolean', function (opts) {
 Starting from an already added TPD type (`'boolean'` is system built-in), we can define it again. Permitted to pass an object or a function (like here). There is the reserved `'*'` value to apply globally on all:
 
 ```js
-$tpdProvider.type('*', function (opts) {
+tpdProvider.type('*', function (opts) {
 	// ...
 	return opts;
 });
@@ -97,7 +97,7 @@ $tpdProvider.type('*', function (opts) {
 Similarly to overwrite, a new TPD type can inherit definitions of another one by the copy mechanism.
 
 ```js
-$tpdProvider.type('year', ['number', function (opts) {
+tpdProvider.type('year', ['number', function (opts) {
 	// ...
 	return opts;
 }]);
@@ -214,19 +214,19 @@ And let Typrod start to deploy all its mechanism.
 In our case: `<form>...</form>` and `<table>...</table>`. Determined like:
 
 ```js
-$tpdProvider.component('form', /*...*/, { /*...*/ });
+tpdProvider.component('form', /*...*/, { /*...*/ });
 ```
 
 And:
 
 ```js
-$tpdProvider.component('table', /*...*/);
+tpdProvider.component('table', /*...*/);
 ```
 
 It is possible customize any tag with any classname, attribute, parent... Here you have some varied samples:
 
 ```js
-$tpdProvider
+tpdProvider
 	.component('form', /*...*/)
 	.component('form.form-horizontal', /*...*/)
 	.component('table.table.table-striped', /*...*/)
@@ -295,7 +295,7 @@ Typrod sets by a provider and gets by a service.
 
 ### Provider
 
-It is named `$tpdProvider`, whose methods (of which the setters and deleters return it, allowing chaining) are:
+It is named `tpdProvider`, whose methods (of which the setters and deleters return it, allowing chaining) are:
 
 #### `.type( name, opts )`
 
@@ -359,7 +359,7 @@ Removes it.
 
 ### Service
 
-`$tpd` has two methods that return the corresponding read-only stored (all types transformed to unified-as-possible string except functions) register: `.types()` (as object) and `.components()` (array). Its direct execution (`$tpd()`) proportinates an object with both registers.
+`tpd` has two methods that return the corresponding read-only stored (all types transformed to unified-as-possible string except functions) register: `.types()` (as object) and `.components()` (array). Its direct execution (`tpd()`) proportinates an object with both registers.
 
 ### Directives
 

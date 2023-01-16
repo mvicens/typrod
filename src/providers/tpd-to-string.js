@@ -1,20 +1,20 @@
 angular
 	.module('tpd')
-	.provider('tpdGetStr', tpdGetStrProvider);
+	.provider('tpdToString', tpdToStringProvider);
 
-function tpdGetStrProvider() {
+function tpdToStringProvider() {
 	this.$get = $get;
-	this.getStr = getStr;
+	this.toString = toString;
 
 	function $get() {
-		return getStr;
+		return toString;
 	};
 
-	function getStr(v, arg, hasElem) {
+	function toString(v, arg, hasElem) {
 		if (angular.isString(v))
 			return v;
 		if (angular.isFunction(v)) {
-			if (arg)
+			if (arg) // No functions remains
 				return v(arg);
 			return v;
 		}
@@ -23,15 +23,15 @@ function tpdGetStrProvider() {
 		if (angular.isArray(v)) { // Joining array
 			var result = [],
 				isLastStr = false;
-			angular.forEach(v, function (v2, i) {
-				v2 = getStr(v2, arg, hasElem);
+			angular.forEach(v, function (v2) {
+				v2 = toString(v2, arg, hasElem);
 				if (angular.isString(v2)) {
 					if (isLastStr)
 						result[result.length - 1] += v2;
 					else
 						result.push(v2);
 					isLastStr = true;
-				} else {
+				} else { // Fn.
 					result.push(v2);
 					isLastStr = false;
 				}
