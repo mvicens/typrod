@@ -3,7 +3,7 @@ angular
 	.directive('tpdData', tpdDataCompile)
 	.directive('tpdData', tpdDataLink); // To get scope of "ngRepeat"
 
-function tpdDataCompile(tpd, tpdToString) {
+function tpdDataCompile(tpd, tpdRegisterUtils) {
 	return {
 		restrict: 'A',
 		compile: compile,
@@ -12,13 +12,15 @@ function tpdDataCompile(tpd, tpdToString) {
 
 	function compile(element) {
 		var component = getComponentByElem(tpd, element);
-		if (!component)
+		if (!component) {
+			tpdRegisterUtils.showError('CNM');
 			return;
+		}
 
 		element = $(element);
 
 		var content = component[0];
-		content = tpdToString(content, element.get(0));
+		content = tpdRegisterUtils.toString(content, element.get(0));
 
 		var ATTR_CONTENT = '$tpdProp in $$tpdData';
 		element.html(
@@ -48,7 +50,7 @@ function tpdDataLink(tpd, $sce, tpdUtils) {
 	function link(scope, element, attrs) {
 		var component = getComponentByElem(tpd, element);
 		if (!component)
-			return;
+			return; // Error is shown before
 
 		var data = angular.copy(scope.$eval(attrs[this.name])),
 			values = scope.$eval(attrs.tpdValues);

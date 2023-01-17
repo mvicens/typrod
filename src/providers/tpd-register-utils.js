@@ -1,14 +1,33 @@
 angular
 	.module('tpd')
-	.provider('tpdToString', tpdToStringProvider);
+	.provider('tpdRegisterUtils', tpdRegisterUtilsProvider);
 
-function tpdToStringProvider() {
+function tpdRegisterUtilsProvider() {
 	this.$get = $get;
+	this.showError = showError;
 	this.toString = toString;
 
 	function $get() {
-		return toString;
-	};
+		return {
+			showError: showError,
+			toString: toString
+		};
+	}
+
+	function showError(code, v) {
+		var txts = {
+			TRN: 'Tpd type refused, due to: wrong type of name',
+			TRO: 'Tpd type refused, due to: wrong type of options',
+			TNR: 'Tpd type "' + v + '" is not registered',
+			TSU: 'Tpd type "string" is undeletable',
+			CRS: 'TPD component refused, due to: wrong type of selector',
+			CRC: 'TPD component refused, due to: wrong type of TPD content',
+			CNR: 'TPD component "' + v + '" is not registered',
+			CRE: 'TPD component refused, due to: wrong type of exceptional TPD containers',
+			CNM: 'TPD component is not matched'
+		};
+		return console.error(txts[code]);
+	}
 
 	function toString(v, arg, hasElem) {
 		if (angular.isString(v))
