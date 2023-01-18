@@ -22,41 +22,41 @@ function config(tpdProvider) {
 				return String(v);
 			},
 			input: '<input type="password">',
-			output: '{{$tpdProp.value | tpdPassword}}'
+			output: '<span>{{$tpdProp.value | tpdPassword}}</span>'
 		})
 		.type('number', {
 			input: '<input type="number">',
-			output: '{{$tpdProp.value | number}}'
+			output: '<span>{{$tpdProp.value | number}}</span>'
 		})
 		.type('boolean', {
 			fromJson: function (v) {
 				return !!v;
 			},
 			input: '<input type="checkbox">',
-			output: '{{$tpdProp.value?\'✓\':\'✗\'}}'
+			output: '<span>{{$tpdProp.value?\'✓\':\'✗\'}}</span>'
 		})
 		.type('date', {
 			fromJson: getFromJsonFn(),
 			toJson: getToJsonFn(0),
 			input: '<input type="date">',
-			output: '{{$tpdProp.value | date}}' // "mediumDate"
+			output: '<span>{{$tpdProp.value | date}}</span>' // "mediumDate"
 		})
 		.type('time', {
 			fromJson: getFromJsonFn(true),
 			toJson: getToJsonFn(1),
 			input: '<input type="time">',
-			output: '{{$tpdProp.value | date:\'mediumTime\'}}'
+			output: '<span>{{$tpdProp.value | date:\'mediumTime\'}}</span>'
 		})
 		.type('datetime', ['date', function (opts) {
 			delete opts.toJson;
 			opts.input = '<input type="datetime-local">';
-			opts.output = '{{$tpdProp.value | date:\'medium\'}}';
+			opts.output = '<span>{{$tpdProp.value | date:\'medium\'}}</span>';
 			return opts;
 		}])
 		.type('option', {
 			input: '<select ng-options="item.id as item.label for item in {{$tpdProp.options}}"></select>',
 			output: function (scope) {
-				return '{{$tpdProp.value | tpdOption:' + scope.$tpdProp.options + '}}';
+				return '<span>{{$tpdProp.value | tpdOption:' + scope.$tpdProp.options + '}}</span>';
 			}
 		})
 		.type('options', ['option', function (opts) {
@@ -113,7 +113,7 @@ function config(tpdProvider) {
 		})
 		.type('range', ['number', function (opts) {
 			opts.input = '<input type="range">';
-			opts.output += '%';
+			opts.output = opts.output.replace('</span>', '%</span>');
 			return opts;
 		}]);
 

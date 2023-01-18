@@ -316,12 +316,11 @@ Sets a TPD type.
 <tr><th>Key(s)</th><th>Type</th><th colspan="2">Details</th><th>Default</th></tr>
 <tr><td><code>fromJson</code></td><td rowspan="2">Function</td><td>TPD value conversion from JSON.</td><td rowspan="2"><ul><li>Argument: TPD value to convert.</li><li>Return: converted one.</li></ul></td><td><code>angular.identity</code></td></tr>
 <tr><td><code>toJson</code></td><td>The same to JSON.</td><td>Caller of own <code>toJSON</code> method (if exists)</td></tr>
-<tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="4">HTML template.</td><td>Tagged <a href="https://api.jquery.com/Types/#htmlString">HTML string</a>. If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <code>'string'</code> TPD type</td></tr>
+<tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="5">HTML template.</td><td>Tagged <a href="https://api.jquery.com/Types/#htmlString">HTML string</a>. If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <code>'string'</code> TPD type</td></tr>
 <tr><td>Object</td><td>DOM element</td></tr>
 <tr><td>Function</td><td><ul><li>Argument: directive's scope.</li><li>Return: elem. (str. or obj.).</li></ul></td></tr>
 <tr><td>Array</td><td>Collection of the mentioned types (string, function... or even, allowing unlimited nesting, another array!) that will be joined.</td></tr>
-<tr><td rowspan="2"><code>output</code></td><td>String</td><td colspan="2">Any string (plain texts, tags, interpolations...).</td><td rowspan="2"><code>'{{$tpdProp.value}}'</code></td></tr>
-<tr><td>Function</td><td colspan="2"><ul><li>Argument: the scope.</li><li>Return: the string.</li></ul></td></tr>
+<tr><td><code>output</code></td><td>Same as above</td><td>Use <code>$tpdProp.value</code> to manage the value.</td><td><code>'&lt;span&gt;{{$tpdProp.value}}&lt;/span&gt;'</code></td></tr>
 </table>
 
 #### `.type( name )`

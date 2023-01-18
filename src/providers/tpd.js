@@ -23,7 +23,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			return v;
 		},
 		input: undefined,
-		output: '{{$tpdProp.value}}'
+		output: '<span>{{$tpdProp.value}}</span>'
 	},
 		DEF_TYPE_NAME = 'string';
 
@@ -132,7 +132,9 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 
 		original[name] = origOpts;
 
-		opts.input = tpdRegisterUtilsProvider.toString(opts.input, undefined, true);
+		angular.forEach(['input', 'output'], function (prop) {
+			opts[prop] = tpdRegisterUtilsProvider.toString(opts[prop], undefined, true);
+		});
 		types.stored[name] = opts;
 
 		if (name == DEF_TYPE_NAME)

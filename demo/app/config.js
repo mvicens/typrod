@@ -30,7 +30,7 @@ function config(tpdProvider) {
 			opts.toJson = function (v) {
 				return +v;
 			};
-			opts.output = opts.output.split('?')[0] + ' | answer}}';
+			opts.output = opts.output.split('?')[0] + ' | answer}}</span>';
 			return opts;
 		});
 
