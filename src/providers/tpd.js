@@ -133,7 +133,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 		original[name] = origOpts;
 
 		angular.forEach(['input', 'output'], function (prop) {
-			opts[prop] = tpdRegisterUtilsProvider.toString(opts[prop], undefined, true);
+			opts[prop] = tpdRegisterUtilsProvider.toString(opts[prop]);
 		});
 		types.stored[name] = opts;
 
@@ -182,7 +182,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			tpdRegisterUtilsProvider.showError('CRS');
 			return;
 		}
-		if (!hasSomeType(['isFunction', 'isString', 'isArray'], content)) {
+		if (!hasSomeType(['isFunction', 'isString', 'isObject'], content)) { // With "isArray" too
 			tpdRegisterUtilsProvider.showError('CRC');
 			return;
 		}

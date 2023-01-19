@@ -29,7 +29,7 @@ function tpdRegisterUtilsProvider() {
 		return console.error(txts[code]);
 	}
 
-	function toString(v, arg, hasElem) {
+	function toString(v, arg) {
 		if (angular.isString(v))
 			return v;
 		if (angular.isFunction(v)) {
@@ -37,13 +37,13 @@ function tpdRegisterUtilsProvider() {
 				return v(arg);
 			return v;
 		}
-		if (hasElem && angular.isElement(v))
+		if (angular.isElement(v))
 			return $(v).appendTo('<div>').parent().html();
 		if (angular.isArray(v)) { // Joining array
 			var result = [],
 				isLastStr = false;
 			angular.forEach(v, function (v2) {
-				v2 = toString(v2, arg, hasElem);
+				v2 = toString(v2, arg);
 				if (angular.isString(v2)) {
 					if (isLastStr)
 						result[result.length - 1] += v2;

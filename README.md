@@ -338,11 +338,10 @@ Sets a TPD component.
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
-<tr><td rowspan="4"><code>content</code></td><td>String</td><td>TPD content.</td></tr>
-<tr><td>Array</td><td>Joining array, like option <code>input</code>, but with an extra type: function.<ul><li>Argument: selector's element.</li><li>Return: the string.</li></ul></td></tr>
+<tr><td rowspan="3"><code>content</code></td><td>Same as option <code>input</code>, except for the following</td><td>TPD content. Functions can be used inside joining arrays, with selector's element as argument.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (str. and array).</li></ul></td></tr>
 <tr><td>Null</td><td>To remove just as <code>removeComponent</code> does.</td></tr>
-<tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td>Exceptional TPD containers. With keys as TPD type names while each value are composed by its TPD container as string or joining array.</td></tr>
+<tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td>Exceptional TPD containers. With keys as TPD type names while each value are composed by its TPD container with types like previous <code>content</code>.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (obj.).</li></ul></td></tr>
 </table>
 
