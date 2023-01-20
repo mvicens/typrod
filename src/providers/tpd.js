@@ -187,7 +187,12 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			return;
 		}
 
-		var overwritten = registers.components.original[selector];
+		var overwritten = registers.components.original[selector],
+			isNew = !overwritten;
+
+		if (!isNew)
+			ec = ec || overwritten[1];
+
 		if (angular.isFunction(content)) {
 			if (!overwritten) {
 				tpdRegisterUtilsProvider.showError('CNR', selector);
@@ -224,7 +229,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			components[selector] = savedArgs;
 		});
 
-		if (!overwritten)
+		if (isNew)
 			registers.components.list.push(selector);
 	}
 
