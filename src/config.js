@@ -22,35 +22,35 @@ function config(tpdProvider) {
 				return String(v);
 			},
 			input: '<input type="password">',
-			output: '<span>{{$tpdProp.value | tpdPassword}}</span>'
+			output: getOutput(' | tpdPassword')
 		})
 		.type('number', {
 			input: '<input type="number">',
-			output: '<span>{{$tpdProp.value | number}}</span>'
+			output: getOutput(' | number')
 		})
 		.type('boolean', {
 			fromJson: function (v) {
 				return !!v;
 			},
 			input: '<input type="checkbox">',
-			output: '<span>{{$tpdProp.value?\'✓\':\'✗\'}}</span>'
+			output: getOutput(' ? \'✓\' : \'✗\'')
 		})
 		.type('date', {
 			fromJson: getFromJsonFn(),
 			toJson: getToJsonFn(0),
 			input: '<input type="date">',
-			output: '<span>{{$tpdProp.value | date}}</span>' // "mediumDate"
+			output: getOutput(' | date') // "mediumDate"
 		})
 		.type('time', {
 			fromJson: getFromJsonFn(true),
 			toJson: getToJsonFn(1),
 			input: '<input type="time">',
-			output: '<span>{{$tpdProp.value | date:\'mediumTime\'}}</span>'
+			output: getOutput(' | date:\'mediumTime\'')
 		})
 		.type('datetime', ['date', function (opts) {
 			delete opts.toJson;
 			opts.input = '<input type="datetime-local">';
-			opts.output = '<span>{{$tpdProp.value | date:\'medium\'}}</span>';
+			opts.output[3] = ' | date:\'medium\'';
 			return opts;
 		}])
 		.type('option', {
@@ -72,7 +72,7 @@ function config(tpdProvider) {
 		})
 		.type('url', {
 			input: '<input type="url">',
-			output: '<a ng-href="{{$tpdProp.value}}" target="_blank">{{$tpdProp.value}}</a>'
+			output: ['<a', ' ng-href="{{$tpdProp.value}}" target="_blank"', '>', '{{', '$tpdProp.value', '}}', '</a>']
 		})
 		.type('email', ['url', function (opts) {
 			return getOpts(opts, 'email', 'mailto');
@@ -113,9 +113,13 @@ function config(tpdProvider) {
 		})
 		.type('range', ['number', function (opts) {
 			opts.input = '<input type="range">';
-			opts.output = opts.output.replace('</span>', '%</span>');
+			opts.output[4] = '}}%';
 			return opts;
 		}]);
+
+	function getOutput(str) {
+		return ['<span>', '{{', '$tpdProp.value', str, '}}', '</span>'];
+	}
 
 	function getFromJsonFn(concatDate) {
 		return function getDatetime(v) {
@@ -140,7 +144,7 @@ function config(tpdProvider) {
 
 	function getOpts(opts, type, protocol) {
 		opts.input = '<input type="' + type + '">';
-		opts.output = opts.output.replace(' target="_blank">', '>').replace('"', '"' + (protocol || type) + ':');
+		opts.output[1] = opts.output[1].replace(' target="_blank"', '').replace('"', '"' + (protocol || type) + ':');
 		return opts;
 	}
 
