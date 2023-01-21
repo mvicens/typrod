@@ -34,7 +34,7 @@ function tpdRegisterUtilsProvider() {
 			return v;
 		if (angular.isFunction(v)) {
 			if (arg) // No functions remains
-				return v(arg);
+				return toString(v(arg));
 			return v;
 		}
 		if (angular.isElement(v))

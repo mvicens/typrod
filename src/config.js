@@ -56,7 +56,7 @@ function config(tpdProvider) {
 		.type('option', {
 			input: '<select ng-options="item.id as item.label for item in {{$tpdProp.options}}"></select>',
 			output: function (scope) {
-				return '<span>{{$tpdProp.value | tpdOption:' + scope.$tpdProp.options + '}}</span>';
+				return getOutput(' | tpdOption:' + scope.$tpdProp.options);
 			}
 		})
 		.type('options', ['option', function (opts) {

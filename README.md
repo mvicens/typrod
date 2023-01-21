@@ -318,7 +318,7 @@ Sets a TPD type.
 <tr><td><code>toJson</code></td><td>The same to JSON.</td><td>Caller of own <code>toJSON</code> method (if exists)</td></tr>
 <tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="5">HTML template.</td><td>Tagged <a href="https://api.jquery.com/Types/#htmlString">HTML string</a>. If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <code>'string'</code> TPD type</td></tr>
 <tr><td>Object</td><td>DOM element</td></tr>
-<tr><td>Function</td><td><ul><li>Argument: directive's scope.</li><li>Return: elem. (str. or obj.).</li></ul></td></tr>
+<tr><td>Function</td><td><ul><li>Argument: directive's scope.</li><li>Return: templ. (str., obj. or array).</li></ul></td></tr>
 <tr><td>Array</td><td>Collection of the mentioned types (string, function... or even, allowing unlimited nesting, another array!) that will be joined.</td></tr>
 <tr><td><code>output</code></td><td>Same as above</td><td>Use <code>$tpdProp.value</code> to manage the value.</td><td><code>'&lt;span&gt;{{$tpdProp.value}}&lt;/span&gt;'</code></td></tr>
 </table>
@@ -339,7 +339,7 @@ Sets a TPD component.
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
 <tr><td rowspan="3"><code>content</code></td><td>Same as option <code>input</code>, except for the following</td><td>TPD content. Functions can be used inside joining arrays, with selector's element as argument.</td></tr>
-<tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (str. and array).</li></ul></td></tr>
+<tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one.</li></ul></td></tr>
 <tr><td>Null</td><td>To remove just as <code>removeComponent</code> does.</td></tr>
 <tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td>Exceptional TPD containers. With keys as TPD type names while each value are composed by its TPD container with types like previous <code>content</code>.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (obj.).</li></ul></td></tr>
