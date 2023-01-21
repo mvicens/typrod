@@ -81,31 +81,35 @@ function config(tpdProvider) {
 			return getOpts(opts, 'tel');
 		}])
 		.component('form', [
-			'<div tpd-prop>',
-			'<label ng-attr-for="', getLabelableId, '"', ' ng-if="$tpdProp.label"', ' tpd-label></label>',
-			'<tpd-input ng-attr-id="', getLabelableId, '" />',
-			'</div>',
-			'<button>', 'Submit', '</button>'
+			[
+				'<div tpd-prop>',
+				['<label ng-attr-for="', getLabelableId, '"', ' ng-if="$tpdProp.label"', ' tpd-label></label>'],
+				['<tpd-input ng-attr-id="', getLabelableId, '" />'],
+				'</div>'
+			],
+			['<button>', 'Submit', '</button>']
 		], {
 			boolean: [
 				'<div>',
-				'<label>', '<tpd-input></tpd-input>', ' ', '<span tpd-label></span>', '</label>',
+				['<label>', '<tpd-input></tpd-input>', ' ', '<span tpd-label></span>', '</label>'],
 				'</div>'
 			]
 		})
 		.component('dl', [
 			'<dt tpd-prop-start tpd-label></dt>',
-			'<dd tpd-prop-end>', OUTPUT_HTML, '</dd>'
+			['<dd tpd-prop-end>', OUTPUT_HTML, '</dd>']
 		])
 		.component('table', [
-			'<thead ', getTpdDataAttr, '></thead>',
-			'<tbody>',
-			'<tr ng-repeat="' + TPD_VALUES_VAR + ' in ', getTpdValuesArray, '" ', getTpdDataAttr, ' tpd-values="' + TPD_VALUES_VAR + '"></tr>',
-			'</tbody>'
+			['<thead', ' ', getTpdDataAttr, '></thead>'],
+			[
+				'<tbody>',
+				['<tr ng-repeat="' + TPD_VALUES_VAR + ' in ', getTpdValuesArray, '"', ' ', getTpdDataAttr, ' tpd-values="' + TPD_VALUES_VAR + '"></tr>'],
+				'</tbody>'
+			]
 		])
 		.component('thead, tfoot', [
 			'<tr>',
-			'<th', ' scope="col"', ' tpd-prop tpd-label></th>',
+			['<th', ' scope="col"', ' tpd-prop tpd-label></th>'],
 			'</tr>'
 		])
 		.component('tbody > tr', ['<td tpd-prop>', OUTPUT_HTML, '</td>'], {

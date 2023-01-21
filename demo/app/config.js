@@ -39,25 +39,41 @@ function config(tpdProvider) {
 	tpdProvider
 		.component('form', function (content) {
 			return overwrite(content, {
-				0: ['<div', '<div class="row mb-3"'],
-				1: ['<label', '<label class="col-sm-2 col-form-label"'],
-				10: ['<button', '<button class="btn btn-primary"'],
-				11: 'Filter'
-			}, {
-				6: '<div class="col-sm-10">',
-				9: '</div>'
-			}, [4]);
+				0: function (arr) {
+					return overwrite(arr, {
+						0: function (str) { return str.replace('<div', '<div class="row mb-3"'); },
+						1: function (arr) {
+							return overwrite(arr, {
+								0: function (str) { return str.replace('<label', '<label class="col-sm-2 col-form-label"'); }
+							}, undefined, [3]);
+						},
+						2: function (arr) {
+							return ['<div class="col-sm-10">', arr, '</div>'];
+						}
+					});
+				},
+				1: function (arr) {
+					return overwrite(arr, {
+						0: function (str) { return str.replace('<button', '<button class="btn btn-primary"'); },
+						1: 'Filter'
+					});
+				}
+			});
 		}, function (ec) {
 			return {
 				boolean: overwrite(ec.boolean, {
-					1: ['<label', '<label class="form-check mb-3"'],
-					2: ['<tpd-input', '<tpd-input class="form-check-input"'],
-					4: ['<span', '<span class="form-check-label"']
-				}, undefined, [0, 6])
+					1: function (arr) {
+						return overwrite(arr, {
+							0: function (str) { return str.replace('<label', '<label class="form-check mb-3"'); },
+							1: function (str) { return str.replace('<tpd-input', '<tpd-input class="form-check-input"'); },
+							3: function (str) { return str.replace('<span', '<span class="form-check-label"'); }
+						});
+					}
+				}, undefined, [0, 2])
 			};
 		})
 		.component('thead, tfoot', function (content) {
-			return overwrite(content, undefined, { 4: '<th></th>' });
+			return overwrite(content, undefined, { 2: '<th></th>' });
 		})
 		.component('tbody > tr', function (content) {
 			return overwrite(content, { 1: HTML }, {
@@ -75,10 +91,10 @@ function config(tpdProvider) {
 		});
 
 	function overwrite(array, replacements, addings, removings) {
-		angular.forEach(replacements, function (str, i) {
-			if (angular.isArray(str))
-				str = array[i].replace(str[0], str[1]);
-			array[i] = str;
+		angular.forEach(replacements, function (v, i) {
+			if (angular.isFunction(v))
+				v = v(array[i]);
+			array[i] = v;
 		});
 
 		var n = 0;
