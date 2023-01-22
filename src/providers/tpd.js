@@ -78,7 +78,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 
 	function setType(name, opts) {
-		if (!angular.isString(name)) {
+		if (!hasSomeType(['isString', 'isArray'], name)) {
 			tpdRegisterUtilsProvider.showError('TRN');
 			return;
 		}
@@ -90,8 +90,10 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 		var types = registers.types,
 			original = types.original;
 
-		if (name == '*') {
-			angular.forEach(_.keys(original), function (name) {
+		if (name == '*')
+			name = _.keys(original);
+		if (angular.isArray(name)) {
+			angular.forEach(name, function (name) {
 				setType(name, opts);
 			});
 			return;

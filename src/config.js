@@ -35,7 +35,7 @@ function config(tpdProvider) {
 			input: '<input type="checkbox">',
 			output: getOutput(' ? \'✓\' : \'✗\'')
 		})
-		.type('date', {
+		.type(['date', 'datetime'], {
 			fromJson: getFromJsonFn(),
 			toJson: getToJsonFn(0),
 			input: '<input type="date">',
@@ -47,25 +47,25 @@ function config(tpdProvider) {
 			input: '<input type="time">',
 			output: getOutput(' | date:\'mediumTime\'')
 		})
-		.type('datetime', ['date', function (opts) {
+		.type('datetime', function (opts) {
 			delete opts.toJson;
-			opts.input = '<input type="datetime-local">';
+			opts.input = opts.input.replace('date', 'datetime-local');
 			opts.output[3] = ' | date:\'medium\'';
 			return opts;
-		}])
-		.type('option', {
+		})
+		.type(['option', 'options'], {
 			input: '<select ng-options="item.id as item.label for item in {{$tpdProp.options}}"></select>',
 			output: function (scope) {
 				return getOutput(' | tpdOption:' + scope.$tpdProp.options);
 			}
 		})
-		.type('options', ['option', function (opts) {
+		.type('options', function (opts) {
 			opts.input = opts.input.replace('><', ' multiple><');
 			opts.output = function (scope) {
 				return '<ul><li ng-repeat="str in $tpdProp.value | tpdOptions:' + scope.$tpdProp.options + '">{{str}}</li></ul>';
 			};
 			return opts;
-		}])
+		})
 		.type('color', {
 			input: COLOR_INPUT_HTML,
 			output: COLOR_INPUT_HTML.replace('>', ' ng-model="$tpdProp.value" disabled>')

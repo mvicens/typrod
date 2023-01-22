@@ -303,7 +303,8 @@ Sets a TPD type.
 
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
-<tr><td><code>name</code></td><td>String</td><td>Name.</td></tr>
+<tr><td rowspan="2"><code>name</code></td><td>String</td><td>Name.</td></tr>
+<tr><td>Array</td><td>List of names.</td></tr>
 <tr><td rowspan="4"><code>opts</code></td><td>Object</td><td>Options (see the next section).</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original (without defaults) options.</li><li>Return: new ones (obj.).</li></ul></td></tr>
 <tr><td>Array</td><td>Name of copied TPD type and options (obj. or fn., like above).</td></tr>
