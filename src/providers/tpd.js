@@ -144,7 +144,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 
 	function getType(name) {
-		return registers.types.stored[name];
+		return angular.copy(registers.types.stored[name]);
 	}
 
 	function removeType(name) {
@@ -189,7 +189,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			return;
 		}
 
-		var overwritten = registers.components.original[selector],
+		var overwritten = angular.copy(registers.components.original[selector]),
 			isNew = !overwritten;
 
 		if (!isNew)
@@ -236,7 +236,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 
 	function getComponent(selector) {
-		return registers.components.stored[selector];
+		return angular.copy(registers.components.stored[selector]);
 	}
 
 	function removeComponent(selector) {
