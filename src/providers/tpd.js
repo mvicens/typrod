@@ -94,7 +94,8 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			name = _.keys(original);
 		if (angular.isArray(name)) {
 			angular.forEach(name, function (name) {
-				setType(name, opts);
+				var origOpts = angular.copy(opts);
+				setType(name, origOpts);
 			});
 			return;
 		}
