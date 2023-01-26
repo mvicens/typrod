@@ -16,14 +16,14 @@ function tpdRegisterUtilsProvider() {
 
 	function showError(code, v) {
 		var txts = {
-			TRN: 'Tpd type refused, due to: wrong type of name',
-			TRO: 'Tpd type refused, due to: wrong type of options',
-			TNR: 'Tpd type "' + v + '" is not registered',
-			TSU: 'Tpd type "string" is undeletable',
-			CRS: 'TPD component refused, due to: wrong type of selector',
-			CRC: 'TPD component refused, due to: wrong type of TPD content',
+			TRN: 'TPD type refused, due to: wrong type of argument "name"',
+			TRO: 'TPD type "' + v + '" refused, due to: wrong type of argument "opts"',
+			TNR: 'TPD type "' + v + '" is not registered',
+			TSU: 'TPD type "' + v + '" is undeletable',
+			CRS: 'TPD component refused, due to: wrong type of argument "selector"',
+			CRC: 'TPD component "' + v + '" refused, due to: wrong type of argument "content"',
 			CNR: 'TPD component "' + v + '" is not registered',
-			CRE: 'TPD component refused, due to: wrong type of exceptional TPD containers',
+			CRE: 'TPD component "' + v + '" refused, due to: wrong type of argument "ec"',
 			CNM: 'TPD component is not matched'
 		};
 		return console.error(txts[code]);

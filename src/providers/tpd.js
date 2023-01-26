@@ -78,12 +78,12 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 
 	function setType(name, opts) {
-		if (!hasSomeType(['isString', 'isArray'], name)) {
+		if (!hasSomeType(['string', 'array'], name)) {
 			tpdRegisterUtilsProvider.showError('TRN');
 			return;
 		}
-		if (!hasSomeType(['isObject', 'isFunction'], opts)) { // Also "isArray" by "isObject"
-			tpdRegisterUtilsProvider.showError('TRO');
+		if (!hasSomeType(['object', 'function', 'array'], opts)) {
+			tpdRegisterUtilsProvider.showError('TRO', name);
 			return;
 		}
 
@@ -150,7 +150,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 
 	function removeType(name) {
 		if (name == DEF_TYPE_NAME)
-			tpdRegisterUtilsProvider.showError('TSU');
+			tpdRegisterUtilsProvider.showError('TSU', name);
 		else {
 			if (getType(name)) {
 				angular.forEach(registers.types, function (list) {
@@ -185,8 +185,8 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			tpdRegisterUtilsProvider.showError('CRS');
 			return;
 		}
-		if (!hasSomeType(['isFunction', 'isString', 'isObject'], content)) { // With "isArray" too
-			tpdRegisterUtilsProvider.showError('CRC');
+		if (!hasSomeType(['string', 'element', 'array', 'function'], content)) {
+			tpdRegisterUtilsProvider.showError('CRC', selector);
 			return;
 		}
 
@@ -214,7 +214,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 		var args = [content];
 		if (ec) { // Exceptional containers
 			if (!angular.isObject(ec) || angular.isArray(ec)) {
-				tpdRegisterUtilsProvider.showError('CRE');
+				tpdRegisterUtilsProvider.showError('CRE', selector);
 				return;
 			}
 			args.push(ec);
@@ -253,10 +253,17 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 }
 
-function hasSomeType(methods, v) {
-	var hasSome = false;
-	_.forEach(methods, function (method) {
-		if (angular[method](v)) {
+function hasSomeType(types, v) {
+	var methodByType = {
+		string: 'isString',
+		function: 'isFunction',
+		array: 'isArray',
+		element: 'isElement',
+		object: 'isPlainObject'
+	},
+		hasSome = false;
+	_.forEach(types, function (type) {
+		if (_[methodByType[type]](v)) {
 			hasSome = true;
 			return false;
 		}
