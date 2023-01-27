@@ -78,11 +78,11 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 
 	function setType(name, opts) {
-		if (!hasSomeType(['string', 'array'], name)) {
+		if (!isSomeType(['string', 'array'], name)) {
 			tpdRegisterUtilsProvider.showError('TRN');
 			return;
 		}
-		if (!hasSomeType(['object', 'function', 'array'], opts)) {
+		if (!isSomeType(['object', 'function', 'array'], opts)) {
 			tpdRegisterUtilsProvider.showError('TRO', name);
 			return;
 		}
@@ -112,9 +112,9 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			opts = opts[1];
 			forEachComponentArgs(function (args) {
 				var ec = args[1];
-				angular.forEach(ec, function (opt, typeName) {
+				angular.forEach(ec, function (container, typeName) {
 					if (typeName == copiedType)
-						ec[name] = opt;
+						ec[name] = container;
 				});
 			});
 		}
@@ -144,10 +144,6 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			defOpts.input = (origOpts || {}).input;
 	}
 
-	function getType(name) {
-		return angular.copy(registers.types.stored[name]);
-	}
-
 	function removeType(name) {
 		if (name == DEF_TYPE_NAME)
 			tpdRegisterUtilsProvider.showError('TSU', name);
@@ -168,6 +164,10 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 		return this;
 	}
 
+	function getType(name) {
+		return angular.copy(registers.types.stored[name]);
+	}
+
 	function component(selector, content, ec) {
 		if (content) {
 			setComponent(selector, content, ec);
@@ -185,7 +185,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			tpdRegisterUtilsProvider.showError('CRS');
 			return;
 		}
-		if (!hasSomeType(['string', 'element', 'array', 'function'], content)) {
+		if (!isSomeType(['string', 'element', 'array', 'function'], content)) {
 			tpdRegisterUtilsProvider.showError('CRC', selector);
 			return;
 		}
@@ -212,7 +212,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 		}
 
 		var args = [content];
-		if (ec) { // Exceptional containers
+		if (ec) {
 			if (!angular.isObject(ec) || angular.isArray(ec)) {
 				tpdRegisterUtilsProvider.showError('CRE', selector);
 				return;
@@ -224,8 +224,8 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			if (isStored) {
 				savedArgs[0] = tpdRegisterUtilsProvider.toString(args[0]);
 				savedArgs[1] = {};
-				angular.forEach(args[1], function (opt, typeName) {
-					savedArgs[1][typeName] = tpdRegisterUtilsProvider.toString(opt);
+				angular.forEach(args[1], function (container, typeName) {
+					savedArgs[1][typeName] = tpdRegisterUtilsProvider.toString(container);
 				});
 			} else
 				savedArgs = args;
@@ -234,10 +234,6 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 
 		if (isNew)
 			registers.components.list.push(selector);
-	}
-
-	function getComponent(selector) {
-		return angular.copy(registers.components.stored[selector]);
 	}
 
 	function removeComponent(selector) {
@@ -251,9 +247,13 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 
 		return this;
 	}
+
+	function getComponent(selector) {
+		return angular.copy(registers.components.stored[selector]);
+	}
 }
 
-function hasSomeType(types, v) {
+function isSomeType(types, v) {
 	var methodByType = {
 		string: 'isString',
 		function: 'isFunction',

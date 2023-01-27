@@ -50,7 +50,7 @@ function tpdRegisterUtilsProvider() {
 					else
 						result.push(v2);
 					isLastStr = true;
-				} else { // Fn.
+				} else { // Fn. or array with some
 					result.push(v2);
 					isLastStr = false;
 				}
