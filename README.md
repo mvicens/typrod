@@ -407,13 +407,14 @@ Name | Details
 `'string'` | For single-line text.
 `'search'` | Text too but within `<input type="search">`.
 `'password'` | Outputs hiding chars too.
+`'text'` | Multi-line. To define the rows number, transfer `rows` key to `tpd-data`'s item.
 `'number'`
 `'range'` | Percentage.
 `'boolean'`
 `'date'`
 `'time'`
 `'datetime'`
-`'option'` | Single `<select>`. You only must to transfer a string of scope's array (formed by objects with pairs `id`-`label`) to `tpd-data` in `options` key.
+`'option'` | Single `<select>`. You only must to transfer a string of scope's array (formed by objects with pairs `id`-`label`) to `options` key.
 `'options'` | The same but multiple.
 `'color'` | Hexadecimal color.
 `'url'` | URL.

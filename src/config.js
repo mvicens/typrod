@@ -24,6 +24,9 @@ function config(tpdProvider) {
 			input: '<input type="password">',
 			output: getOutput(' | tpdPassword')
 		})
+		.type('text', {
+			input: '<textarea ng-attr-rows="{{$tpdProp.rows}}"></textarea>'
+		})
 		.type('number', {
 			input: '<input type="number">',
 			output: getOutput(' | number')
