@@ -66,15 +66,40 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 
 	function type(name, opts) {
-		if (opts) {
-			setType(name, opts);
-			return this;
-		}
+		if (opts === undefined)
+			return getType(name);
+
 		if (opts === null) {
 			removeType(name);
 			return this;
 		}
-		return getType(name);
+
+		setType(name, opts);
+		return this;
+	}
+
+	function getType(name) {
+		return angular.copy(registers.types.stored[name]);
+	}
+
+	function removeType(name) {
+		if (name == DEF_TYPE_NAME)
+			tpdRegisterUtilsProvider.showError('TSU', name);
+		else {
+			if (getType(name)) {
+				angular.forEach(registers.types, function (list) {
+					delete list[name];
+				});
+				forEachComponentArgs(function (args) {
+					var ec = args[1];
+					if (ec)
+						delete ec[name];
+				});
+			} else
+				tpdRegisterUtilsProvider.showError('TNR', name);
+		}
+
+		return this;
 	}
 
 	function setType(name, opts) {
@@ -144,40 +169,33 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			defOpts.input = (origOpts || {}).input;
 	}
 
-	function removeType(name) {
-		if (name == DEF_TYPE_NAME)
-			tpdRegisterUtilsProvider.showError('TSU', name);
-		else {
-			if (getType(name)) {
-				angular.forEach(registers.types, function (list) {
-					delete list[name];
-				});
-				forEachComponentArgs(function (args) {
-					var ec = args[1];
-					if (ec)
-						delete ec[name];
-				});
-			} else
-				tpdRegisterUtilsProvider.showError('TNR', name);
-		}
-
-		return this;
-	}
-
-	function getType(name) {
-		return angular.copy(registers.types.stored[name]);
-	}
-
 	function component(selector, content, ec) {
-		if (content) {
-			setComponent(selector, content, ec);
-			return this;
-		}
+		if (content === undefined)
+			return getComponent(selector);
+
 		if (content === null) {
 			removeComponent(selector);
 			return this;
 		}
-		return getComponent(selector);
+
+		setComponent(selector, content, ec);
+		return this;
+	}
+
+	function getComponent(selector) {
+		return angular.copy(registers.components.stored[selector]);
+	}
+
+	function removeComponent(selector) {
+		if (getComponent(selector)) {
+			_.remove(registers.components.list, function (selector2) { return selector2 == selector; });
+			forEachComponentsList(function (components) {
+				delete components[selector];
+			});
+		} else
+			tpdRegisterUtilsProvider.showError('CNR', selector);
+
+		return this;
 	}
 
 	function setComponent(selector, content, ec) {
@@ -234,22 +252,6 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 
 		if (isNew)
 			registers.components.list.push(selector);
-	}
-
-	function removeComponent(selector) {
-		if (getComponent(selector)) {
-			_.remove(registers.components.list, function (selector2) { return selector2 == selector; });
-			forEachComponentsList(function (components) {
-				delete components[selector];
-			});
-		} else
-			tpdRegisterUtilsProvider.showError('CNR', selector);
-
-		return this;
-	}
-
-	function getComponent(selector) {
-		return angular.copy(registers.components.stored[selector]);
 	}
 }
 
