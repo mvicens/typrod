@@ -4,6 +4,6 @@ angular
 
 function tpdPassword() {
 	return function (str) {
-		return _.repeat('●', _.size(str));
+		return _.repeat('*', _.size(str));
 	};
 }

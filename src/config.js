@@ -10,31 +10,29 @@ function config(tpdProvider) {
 		TPD_VALUES_VAR = '$tpdValues';
 	tpdProvider
 		.type('string', {
+			fromJson: toString,
 			input: '<input type="text">' // Default from now
 		})
 		.type('search', {
+			fromJson: toString,
 			input: '<input type="search">'
 		})
 		.type('password', {
-			fromJson: function (v) {
-				if (v == null)
-					return v;
-				return String(v);
-			},
+			fromJson: toString,
 			input: '<input type="password">',
 			output: getOutput(' | tpdPassword')
 		})
 		.type('text', {
+			fromJson: toString,
 			input: '<textarea ng-attr-rows="{{$tpdProp.rows}}"></textarea>'
 		})
 		.type('number', {
+			fromJson: toNumber,
 			input: '<input type="number">',
 			output: getOutput(' | number')
 		})
 		.type('boolean', {
-			fromJson: function (v) {
-				return !!v;
-			},
+			fromJson: toBoolean,
 			input: '<input type="checkbox">',
 			output: getOutput(' ? \'✓\' : \'✗\'')
 		})
@@ -128,24 +126,38 @@ function config(tpdProvider) {
 		return ['<span>', '{{', '$tpdProp.value', str, '}}', '</span>'];
 	}
 
-	function getFromJsonFn(concatDate) {
-		return function getDatetime(v) {
+	function toString(v) {
+		if (v == null)
+			return v;
+		return String(v);
+	}
+
+	function toNumber(v) {
+		if (v == null)
+			return v;
+		v = Number(v);
+		if (!isNaN(v))
+			return v;
+	}
+
+	function toBoolean(v) {
+		return Boolean(v);
+	}
+
+	function getFromJsonFn(isTime) {
+		return function toDate(v) {
 			return v && new Date(
-				(concatDate ? getDateStrPortion(new Date, 0) + 'T' : '') +
+				(isTime ? getJsonDatePortion(new Date, 0) + 'T' : '') +
 				v +
-				(concatDate ? 'Z' : '')
+				(isTime ? 'Z' : '')
 			);
 		};
 	}
 
 	function getToJsonFn(i) {
-		return function getString(v) {
-			if (v) {
-				var str = getDateStrPortion(v, i);
-				if (i == 1)
-					str = str.slice(0, -1); // Removes "Z"
-				return str;
-			}
+		return function toJsonDate(v) {
+			if (v)
+				return getJsonDatePortion(v, i);
 		};
 	}
 
@@ -169,7 +181,10 @@ function config(tpdProvider) {
 		return $(elem).data('tpdValues');
 	}
 
-	function getDateStrPortion(date, i) {
-		return _DatetoJSON.call(date).split('T')[i];
+	function getJsonDatePortion(date, i) {
+		var str = _DatetoJSON.call(date).split('T')[i];
+		if (i == 1)
+			str = str.slice(0, -1); // Removes "Z"
+		return str;
 	}
 }
