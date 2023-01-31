@@ -1,7 +1,7 @@
 {
   "name": "typrod",
   "version": "1.5.0",
-  "description": "AngularJS library to synthetize info handlings based on input/output displays and value conversions.",
+  "description": "AngularJS library to automate and synthetize data handling based on templates and value conversions.",
   "main": "index.js",
   "scripts": {
     "serve": "webpack serve",

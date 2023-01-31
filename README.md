@@ -1,7 +1,7 @@
 # Typrod
 
-Typrod (acronym of "type", "property" and "data"; and abbreviated as TPD) is an [AngularJS](https://angularjs.org) library to synthetize info handlings based on:
-- input/output displays and
+Typrod (acronym of "type", "property" and "data"; and abbreviated as TPD) is an [AngularJS](https://angularjs.org) library to automate and synthetize data handling based on:
+- templates and
 - value conversions.
 
 :warning: Warnings:
