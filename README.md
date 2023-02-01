@@ -4,278 +4,25 @@ Typrod (acronym of "type", "property" and "data"; and abbreviated as TPD) is an 
 - templates and
 - value conversions.
 
-:warning: Warnings:
-- Here are some words that may create confusion since also are elemental terms of JavaScript, AngularJS, CSS or even SQL. Because of this, for avoid ambiguity, our own concepts will be explicitly designated (e.g. "TPD data").
-- We understand that it is a complex system, so we recommend that you read all the documentation before getting started.
-- We will show the functioning in the next demos with [Bootstrap](https://getbootstrap.com) as testing framework, but understand that you can really use any.
+## Get started
 
-## Overview
-
-Imagine AngularJS runs, you layout with [Bootstrap 4](https://getbootstrap.com/docs/4.6) and you need to filter, list and edit a data collection. See [here](https://jsfiddle.net/57hb9apr) a improvised live demo (with one filtering `<form>` and one `<table>` to manage records) to be oriented about it. As we can view, usually the following occurs:
-
-1. JSON (normally from an HTTP request) is captured.
-2. Its values (if necessary) must to be transformed one by one. In the example, for these types:
-   - Datetimes: from string format to `Date` object.
-   - Maybe (hypothetical presumption) booleans are rarely passed from an old system with numbers (`0`/`1`). Then, it becomes originals (`true`/`false`).
-   - And perhaps a list of options is served (another assumption) as string with IDs joined by commas. It turns into array.
-3. The result are displayed inserting manually:
-   - Inputs (among others):
-     - Dates: with `<input type="date">`.
-     - Booleans: checkboxes.
-     - Options: `<select>`s.
-   - Outputs (the corresponding ones):
-     - Dates: typically through [`date`](https://docs.angularjs.org/api/ng/filter/date) filter.
-     - Booleans: answering ("Yes"/"No").
-     - Options: selected items.
-4. To represent these data, facing the user, captions appear situated in `<label>`s and `<th>`s.
-5. Once ready, when user interacts, every edition requires the reverse conversion of values to save the change.
-
-Having said that, notice that these steps are repeated continuously for each info. Do you want to build another table? The same again.
-
-Well, so, using Typrod, all of these involving processes can be only-one-time done or excessively reduced. Look [the altered demo](https://jsfiddle.net/jqweskLt) and pay attention to the differences between two systems (extra utilities remains). In this occasion, the procedure is like this:
-1. Firstly, some simple settings are defined by a [provider](https://docs.angularjs.org/guide/providers), transmitting:
-   1. For each TPD type (datetimes, booleans, options... whatever!):
-      - A conversion function.
-      - An HTML template of input.
-      - Output's.
-      - To come back to JSON, another converting.
-   2. About TPD components (in our case, table and form), indicating mainly templates.
-2. At last, in the HTML coding, empty tags are printed with some attribute [directives](https://docs.angularjs.org/guide/directive) that contains:
-   1. The captured values.
-   2. A proper array of TPD data (group of TPD properties that indicate TPD type, label, param name, etc.).
-
-And voilà! It is already prepared and automated. For a future TPD component (with similar TPD types), you only need to do the 2nd step, no more!
-
-### Concepts
-
-We will take the previous examples to show samples.
-
-#### TPD type
-
-```js
-tpdProvider
-	// ...
-	.type('options', /*...*/)
-	.type('year', /*...*/)
-	.type('email', /*...*/)
-	.type('boolean', /*...*/);
-```
-
-Whatever you can think. No limits. Like simply:
-
-```js
-tpdProvider.type('email', {
-	/*fromJson: undefined,
-	toJson: undefined,*/
-	input: '<input type="email" class="form-control">',
-	output: '<a ng-href="mailto:{{$tpdProp.value}}">{{$tpdProp.value}}</a>'
-});
-```
-
-Also we can achieve it thanks to other ways to register:
-
-##### Overwriting
-
-```js
-tpdProvider.type('boolean', function (opts) {
-	// ...
-	return opts;
-});
-```
-
-Starting from an already added TPD type (`'boolean'` is system built-in), we can define it again. Permitted to pass an object or a function (like here). There is the reserved `'*'` value to apply globally on all:
-
-```js
-tpdProvider.type('*', function (opts) {
-	// ...
-	return opts;
-});
-```
-
-##### Copying
-
-Similarly to overwrite, a new TPD type can inherit definitions of another one by the copy mechanism.
-
-```js
-tpdProvider.type('year', ['number', function (opts) {
-	// ...
-	return opts;
-}]);
-```
-
-But it has a quirk: TPD components' ETCs (more info after) will be exactly duplicated.
-
-#### TPD property
-
-```js
-[
-	// ...
-	{
-		type: 'number',
-		name: 'maxWeight',
-		label: 'maxWeight',
-		required: true
-	},
-	// ...
-]
-```
-
-This is each of instances of a certain TPD type (and other several fits) whose a double TPD values (see below) are part of.
-
-##### TPD value
-
-```html
-<form tpd-values="..."></form>
-<table tpd-values="..."></table>
-```
-
-Handled in conversions whose two kinds are:
-
-###### JSON
-
-```js
-{
-	id: 2,
-	name: 'Noah Baker',
-	gender: 'f',
-	birthdate: '1963-11-28',
-	weight: 85.12,
-	email: 'tur@jedigfu.eg',
-	isForeign: 0
-}
-```
-
-Original values arranged in JSON.
-
-###### Formatted
-
-```js
-{
-	// ...
-	birthdate: new Date('1963-11-28'),
-	// ...
-	isForeign: false
-}
-```
-
-Transformed (if is needed) from aforesaid, and gave back too (cyclic process).
-
-##### TPD container
-
-```html
-<div class="form-group">
-	<label for="..." translate="..."></label>
-	<input type="..." class="form-control" id="..." ng-model="...">
-</div>
-...
-```
-
-```html
-<th scope="col" translate="..."></th>
-...
-```
-
-```html
-<td>
-	<input type="..." class="form-control" ng-model="..." ng-if="...">
-	<span ng-if="...">...</span>
-</td>
-...
-```
-
-The repeated tags, corresponding each to a TPD property, that contains an appropriate HTML content.
-
-###### ETC
-
-It may happen that, for a concrete TPD component, we find a particular TPD type which is not structured than regularly. Take a look:
-
-```html
-<div class="form-group form-check">
-	<input type="checkbox" class="form-check-input" id="..." ng-model="...">
-	<label class="form-check-label" for="..." translate="..."></label>
-</div>
-```
-
-So, you can define this too. We know it as exceptional TPD container (ETC).
-
-#### TPD data
-
-Grouping of TPD properties. Paste the following attribute to TPD components:
-
-```html
-<form tpd-data="..."></form>
-<table tpd-data="..."></table>
-```
-
-And let Typrod start to deploy all its mechanism.
-
-#### TPD component
-
-In our case: `<form>...</form>` and `<table>...</table>`. Determined like:
-
-```js
-tpdProvider.component('form', /*...*/, { /*...*/ });
-```
-
-And:
-
-```js
-tpdProvider.component('table', /*...*/);
-```
-
-It is possible customize any tag with any classname, attribute, parent... Here you have some varied samples:
-
-```js
-tpdProvider
-	.component('form', /*...*/)
-	.component('form.form-horizontal', /*...*/)
-	.component('table.table.table-striped', /*...*/)
-	.component('form[ng-submit]', /*...*/)
-	.component('form.form-inline[ng-submit]', /*...*/)
-	.component('tbody > tr', /*...*/)
-	.component('form + table', /*...*/);
-```
-
-##### TPD content
-
-Full internal HTML included in TPD components. Concatenation of TPD container and extra elements.
-
-### Advantages
-
-Why to use Typrod?:
-- Code extremely simplified. On the principle of "Write less, do more".
-- Clear distinction between representation (HTML structure, class names, styles, etc.) and logical (what kind of data is it, param name, labelling, requirement, etc.). And in consequence:
-  - Centralization. Full logics are dumped into [controllers](https://docs.angularjs.org/guide/controller), not also partially in its views.
-  - Abstraction of core data, assuming that TPD properties can share homologous behaviours.
-- More maintainable and reliable source code.
-  - Integrated reutilization of mechanisms.
-  - Uniformity, homogeneity and consistency.
-  - Possible human mistakes avoided on bad-writing, forgetting...
-  - Easy and fast to migrate CSS frameworks.
-- Unlimited customization. Not adaptive to any particular CSS dependencies.
-- Well-known system, not new or weird:
-  - Specifications of TPD data are similar to databases', like in SQL table creations (column name, datatype, mandatory...).
-  - Use of a worldwide standard data-interchange format such as JSON.
-  - TPD components are descripted by CSS syntax.
-- Flexibility, adaptability and variety on function arguments and option values.
-
-## Install
+### Install
 
 By NPM or with CDN embeds:
 
-### NPM
+#### NPM
 
 ```sh
 npm install typrod
 ```
 
-Then import TPD and add it as a dependency for your app:
+Then import TPD and add it as a dependency:
 
 ```js
 angular.module('myApp', [require('typrod')]);
 ```
 
-### CDN
+#### CDN
 
 ```html
 <script src="https://unpkg.com/angular@1.8.3/angular.js"></script>
@@ -289,9 +36,199 @@ angular.module('myApp', [require('typrod')]);
 angular.module('myApp', ['tpd']);
 ```
 
-## Usage
+### Usage
 
-Typrod sets by a provider and gets by a service.
+Register, in a controller, this array with such object...
+
+```js
+$scope.data = [
+	{
+		name: 'sentence',
+		type: 'string',
+		label: 'Sentence'
+	}
+];
+```
+
+... and bind it to a form in this way:
+
+```html
+<form tpd-data="data"></form>
+```
+
+An `<input>` (next to its own associated `<label>`) and a submit `<button>` are rendered within.
+
+Now add another two similar items as:
+
+```diff
+		label: 'Sentence'
+-	}
++	},
++	{
++		name: 'startDay',
++		type: 'date',
++		label: 'Start day'
++	},
++	{
++		name: 'isOk',
++		type: 'boolean',
++		label: 'It\'s okay?'
++	}
+];
+```
+
+It finally results:
+
+```html
+<form>
+	<div>
+		<label for="sentence">Sentence</label>
+		<input type="text" id="sentence">
+	</div>
+	<div>
+		<label for="startDay">Start day</label>
+		<input type="date" id="startDay">
+	</div>
+	<div><label><input type="checkbox"> It's okay?</label></div>
+	<button>Submit</button>
+</form>
+```
+
+Well, you are taking built the visual montage, nice, but you cannot manage the logic yet. To achieve it, you must to use a 2nd attribute...
+
+```diff
+-	<form tpd-data="data"></form>
++	<form tpd-data="data" tpd-values="values"></form>
+```
+
+... with an object like:
+
+```js
+{
+	sentence: 'Hello, world!',
+	startDay: '2021-09-13',
+	isOk: true
+}
+```
+
+(It is important that each property key matches the previous `name`).
+
+Change the form controls and the values object will be modified too. Also notice that unexpectedly the date value used in the view is not really a string but a instance of `Date`. There is a two-way transformation.
+
+It looks some needy to get styles, right? No problem! Load your favorite CSS framework and adjust the composed HTML [using the API](#api).
+
+## Concepts
+
+:warning: Warnings:
+- Here are some words that may create confusion since also are elemental terms of JavaScript, AngularJS, CSS or even SQL. Because of this, for avoid ambiguity, our own concepts will be explicitly designated (e.g. "TPD data").
+- We will take the previous examples to show samples.
+- This information is very useful: All of these terms will be named later.
+
+```js
+[ // TPD data
+	{ // TPD property
+		name: 'sentence',
+		type: 'string', // TPD type
+		label: 'Sentence'
+	},
+	// ...
+];
+```
+
+### TPD type
+
+Determines the kind of info. It can be whatever you can think. No limits.
+
+### TPD property
+
+This is each of instances of a certain [TPD type](#tpd-type) (and other several fits) whose a double [TPD values](#tpd-value) are part of.
+
+### TPD data
+
+Grouping of [TPD properties](#tpd-property).
+
+```js
+{ // TPD JSON values
+	sentence: 'Hello, world!',
+	startDay: '2021-09-13',
+	isOk: true
+}
+```
+
+```js
+{ // TPD formatted values
+	// ...
+	startDay: new Date('2021-09-13'),
+	// ...
+}
+```
+
+### TPD value
+
+Handled in conversions whose two kinds are:
+
+#### JSON
+
+Original values arranged in JSON.
+
+#### Formatted
+
+Transformed (if is needed) from aforesaid and gave back too (cyclic process).
+
+```html
+<form><!-- TPD component -->
+	<!-- TPD content -->
+	<div><!-- TPD container -->
+		<label for="...">...</label>
+		<input type="text" id="...">
+	</div>
+	...
+	<div><label><input type="checkbox"> ...</label></div><!-- ETC -->
+	<button>Submit</button>
+	<!-- End of TPD content -->
+</form>
+```
+
+### TPD component
+
+Any tag with any classname, attribute, parent...
+
+### TPD content
+
+Full internal HTML included in [TPD components](#tpd-component); concatenation of [TPD container](#tpd-container) and extra elements.
+
+### TPD container
+
+The repeated tags, corresponding each to a [TPD property](#tpd-property), that contains an appropriate HTML content.
+
+#### ETC
+
+It may happen that, for a concrete [TPD component](#tpd-component), we find a particular [TPD type](#tpd-type) which is not structured than regularly.
+
+We know it as exceptional [TPD container](#tpd-container) (ETC).
+
+## Advantages
+
+Why to use Typrod?:
+- Code extremely simplified. On the principle of "Write less, do more".
+- Clear distinction between representation (HTML structure, class names, styles, etc.) and logical (what kind of data is it, param name, labelling, requirement, etc.). And in consequence:
+  - Centralization. Full logics are dumped into controllers, not also partially in its views.
+  - Abstraction of core data, assuming that [TPD properties](#tpd-property) can share homologous behaviours.
+- More maintainable and reliable source code.
+  - Integrated reutilization of mechanisms.
+  - Uniformity, homogeneity and consistency.
+  - Possible human mistakes avoided on bad-writing, forgetting...
+  - Easy and fast to migrate CSS frameworks.
+- Unlimited customization. Not adaptive to any particular CSS dependencies.
+- Well-known system, not new or weird:
+  - Specifications of [TPD data](#tpd-data) are similar to databases', like in SQL table creations (column name, datatype, mandatory...).
+  - Use of a worldwide standard data-interchange format such as JSON.
+  - [TPD components](#tpd-component) are descripted by CSS syntax.
+- Flexibility, adaptability and variety on function arguments and option values.
+
+## API
+
+Typrod sets and gets by a provider and a service.
 
 ### Provider
 
@@ -299,25 +236,25 @@ It is named `tpdProvider`, whose methods (of which the setters and deleters retu
 
 #### `.type( name, opts )`
 
-Sets a TPD type.
+Sets a [TPD type](#tpd-type).
 
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
-<tr><td rowspan="2"><code>name</code></td><td>String</td><td>Name.</td></tr>
-<tr><td>Array</td><td>List of names.</td></tr>
-<tr><td rowspan="4"><code>opts</code></td><td>Object</td><td>Options (see the next section).</td></tr>
-<tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original (without defaults) options.</li><li>Return: new ones (obj.).</li></ul></td></tr>
-<tr><td>Array</td><td>Name of copied TPD type and options (obj. or fn., like above).</td></tr>
-<tr><td>Null</td><td>To remove just as <code>removeType</code> does.</td></tr>
+<tr><td rowspan="2"><code>name</code></td><td>String</td><td>Name. The <code>'*'</code> is reserved to apply globally.</td></tr>
+<tr><td>Array</td><td>List of these.</td></tr>
+<tr><td rowspan="4"><code>opts</code></td><td>Object</td><td><a href="#options">Options</a>.</td></tr>
+<tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original (without defaults) <a href="#options">options</a>.</li><li>Return: new ones (obj.).</li></ul></td></tr>
+<tr><td>Array</td><td>To copy. Whose items are:<ul><li>Name of copied <a href="#tpd-type">TPD type</a>.</li><li><a href="#options">Options</a> (obj. or fn., like above).</li></ul>Besides, <a href="#etc">ETCs</a> are duplicated.</td></tr>
+<tr><td>Null</td><td>To remove just as <a href="#removetype-name-"><code>removeType</code></a> does.</td></tr>
 </table>
 
 ##### Options
 
 <table>
 <tr><th>Key(s)</th><th>Type</th><th colspan="2">Details</th><th>Default</th></tr>
-<tr><td><code>fromJson</code></td><td rowspan="2">Function</td><td>TPD value conversion from JSON.</td><td rowspan="2"><ul><li>Argument: TPD value to convert.</li><li>Return: converted one.</li></ul></td><td><code>angular.identity</code></td></tr>
-<tr><td><code>toJson</code></td><td>The same to JSON.</td><td>Caller of own <code>toJSON</code> method (if exists)</td></tr>
-<tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="5">HTML template.</td><td>Tagged <a href="https://api.jquery.com/Types/#htmlString">HTML string</a>. If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <code>'string'</code> TPD type</td></tr>
+<tr><td><code>fromJson</code></td><td rowspan="2">Function</td><td><a href="#tpd-value">TPD value</a> conversion from <a href="#json">JSON</a>.</td><td rowspan="2"><ul><li>Argument: <a href="#tpd-value">TPD value</a> to convert.</li><li>Return: converted one.</li></ul></td><td><code>angular.identity</code></td></tr>
+<tr><td><code>toJson</code></td><td>The same to <a href="#json">JSON</a>.</td><td>Caller of own <code>toJSON</code> method (if exists)</td></tr>
+<tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="5">HTML template.</td><td>If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <a href="#tpd-type">TPD type</a> <code>'string'</code></td></tr>
 <tr><td>Object</td><td>DOM element</td></tr>
 <tr><td>Function</td><td><ul><li>Argument: directive's scope.</li><li>Return: templ. (str., obj. or array).</li></ul></td></tr>
 <tr><td>Array</td><td>Collection of the mentioned types (string, function... or even, allowing unlimited nesting, another array!) that will be joined.</td></tr>
@@ -330,23 +267,23 @@ Gets it.
 
 #### `.removeType( name )`
 
-Removes it and also in ETCs. Exceptionally, `'string'` is undeletable.
+Removes it and also in [ETCs](#etc). Exceptionally, `'string'` is undeletable.
 
 #### `.component( selector, content [, ec ] )`
 
-Sets a TPD component.
+Sets a [TPD component](#tpd-component).
 
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
-<tr><td rowspan="3"><code>content</code></td><td>Same as option <code>input</code>, except for the following</td><td>TPD content. Functions can be used inside joining arrays, with selector's element as argument.</td></tr>
+<tr><td rowspan="3"><code>content</code></td><td>Same as <a href="#options">option</a> <code>input</code>, except for the following</td><td><a href="#tpd-content">TPD content</a>. Functions can be used inside joining arrays, with selector's element as argument.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one.</li></ul></td></tr>
-<tr><td>Null</td><td>To remove just as <code>removeComponent</code> does.</td></tr>
-<tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td>Exceptional TPD containers. With keys as TPD type names while each value are composed by its TPD container with types like previous <code>content</code>.</td></tr>
+<tr><td>Null</td><td>To remove just as <a href="#removecomponent-selector-"><code>removeComponent</code></a> does.</td></tr>
+<tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td><a href="#etc">ETCs</a>. With keys as <a href="#tpd-type">TPD type</a> names while each value are formed by its <a href="#tpd-container">TPD container</a> with types like previous <code>content</code>.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (obj.).</li></ul></td></tr>
 </table>
 
-When Typrod activates, collects the coincidences and priors the TPD component of most [CSS specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) and oldest.
+When Typrod activates, collects the coincidences and priors the [TPD component](#tpd-component) of most [CSS specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) and oldest.
 
 #### `.component( selector )`
 
@@ -358,43 +295,53 @@ Removes it.
 
 ### Service
 
-`tpd` has two methods that return the corresponding read-only stored (all types transformed to unified-as-possible string except functions) register: `.types()` (as object) and `.components()` (array). Its direct execution (`tpd()`) proportinates an object with both registers.
+`tpd` has two methods that return the corresponding read-only stored (all types transformed as possible to string) register: `.types()` (as object) and `.components()` (array).
 
-### Directives
+Its direct execution (`tpd()`) proportinates an object with both registers.
 
-All of these should only be used in TPD contents and ETCs, except the first one (whose utilitation is free).
+## Directives
 
-#### `tpd-data`
+All of these should only be used in [TPD contents](#tpd-content) and [ETCs](#etc), except the first one (whose utilitation is free).
 
-Put this attribute over the TPD component tag you want to locate the concerning TPD content. It contains an array where each object must to be formed as:
+### `tpd-data`
+
+Put this attribute over the [TPD component](#tpd-component) tag you want to locate the concerning [TPD content](#tpd-content). It contains an array where each object must to be formed as:
 
 Key(s) | Type | Details
 ------ | ---- | -------
-`type` (optional) | String | Name of registered TPD type. Defaults to `'string'`.
-`name` | String | Name of param (where TPD value is stored).
-`label` | String | Caption text (HTML markup available) of tag with `tpd-label`.
+`type` (optional) | String | Name of registered [TPD type](#tpd-type). Defaults to `'string'`.
+`name` | String | Name of param (where [TPD value](#tpd-value) is stored).
+`label` | String | Caption text (HTML markup available) of tag with [`tpd-label`](#tpd-label).
 `required` (optional) | Boolean | Input mandatority.
-`min`/`max` (optional) | Any | Minimum/maximum of TPD value.
+`min`/`max` (optional) | Any | Minimum/maximum of [TPD value](#tpd-value).
 
 And other custom ones are permitted for a not-generic using.
 
-Also it is possible to shorthand it putting an array, instead of the object, following this order: `name`, `label`, `required`, `type` and the rest (in an object). So `['isForeign', 'foreign?', false, 'boolean', { customKey1: 'one', customKey2: 'two' }]` equals to `{ type: 'boolean', name: 'isForeign', label: 'foreign?', required: false, customKey1: 'one', customKey2: 'two' }`.
+#### Shorthand
 
-Besides, accompanying this directive, in the same tag, `tpd-values` is placed, determining the TPD JSON values (manipulated by `fromJson` and `toJson`). This pure attribute is optative but its exclusion has no much sense.
+Also it is possible to reduce it putting an array (instead of the entire object) following this order: `name`, `label`, `required`, `type` and the rest (in an object).
 
-#### `tpd-prop`
+So, `['isOk', 'OK?', false, 'boolean', { customKey1: 'one', customKey2: 'two' }]` equals to `{ type: 'boolean', name: 'isOk', label: 'OK?', required: false, customKey1: 'one', customKey2: 'two' }`.
 
-Ubicated as attribute solely on TPD containers, Typrod turns these into a repeatedly rendered element by `ng-repeat` that generates `$tpdProp` as local scope variable derived from each `tpd-data`'s item (saving TPD formatted value in `value` property).
+#### `tpd-values`
+
+Besides, accompanying this directive, in the same tag, `tpd-values` is placed, determining the [TPD JSON values](#json) (manipulated by `fromJson` and `toJson`). This pure attribute is optative but its exclusion has no much sense.
+
+### `tpd-prop`
+
+Ubicated as attribute solely on [TPD containers](#tpd-container), Typrod turns these into a repeatedly instantiated element by `ng-repeat` that generates `$tpdProp` as local scope variable derived from each [`tpd-data`](#tpd-data-1)'s item (saving [TPD formatted value](#formatted) in `value` key).
+
+### `tpd-prop-start`/`tpd-prop-end`
 
 If a serie of adjacent elements must to be repeated (instead of just one), substitute this directive with `tpd-prop-start` and `tpd-prop-end` as [`ng-repeat-start` and `ng-repeat-end` do](https://docs.angularjs.org/api/ng/directive/ngRepeat#special-repeat-start-and-end-points).
 
-#### `tpd-label`
+### `tpd-label`
 
 Labels the attributed element.
 
-#### `tpd-input`/`tpd-output`
+### `tpd-input`/`tpd-output`
 
-As tagnames, these ones are substituted by the HTML of correspondent options of TPD types.
+As tagnames, these ones are substituted by the extracted HTML of correspondent [options](#options) of [TPD types](#tpd-type).
 
 ## Predefinitions
 
@@ -402,19 +349,19 @@ Typrod proportions some built-in registrations:
 
 ### TPD types
 
-Name | Details
----- | -------
+Name | Details | Extra [`tpd-data`](#tpd-data-1)'s keys
+---- | ------- | -----------------------
 `'string'` | For single-line text.
 `'search'` | Text too but within `<input type="search">`.
-`'password'` | Outputs hiding chars too.
-`'text'` | Multi-line. To define the rows number, transfer `rows` key to `tpd-data`'s item.
+`'password'` | Outputs hiding characters.
+`'text'` | Multi-line. | To define the rows number, `rows`.
 `'number'`
 `'range'` | Percentage.
 `'boolean'`
 `'date'`
 `'time'`
 `'datetime'`
-`'option'` | Single `<select>`. You only must to transfer a string of scope's array (formed by objects with pairs `id`-`label`) to `options` key.
+`'option'` | Single `<select>`. | To fill its list, `options` with a string of scope's array (formed by objects with pairs `id`-`label`).
 `'options'` | The same but multiple.
 `'color'` | Hexadecimal color.
 `'url'` | URL.
@@ -433,6 +380,6 @@ You have namesake `'form'`. It rawly prints `<div>`s with `<label>` and input, a
 
 #### Tables
 
-- `'table'`: shows a labeled head and record rows. Place attribute `data-tpd-values` as we make on simple `tpd-values` but with an array.
+- `'table'`: shows a labeled head and record rows. Place attribute `data-tpd-values` with an array whose every item will be captured by [`tpd-values`](#tpd-values).
 - `'thead, tfoot'`: labels `<th>`s.
 - `'tbody > tr'`: outputs `<td>`s.
