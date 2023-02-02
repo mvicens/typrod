@@ -47,10 +47,10 @@ function config(tpdProvider) {
 								0: function (str) { return str.replace('<label', '<label class="col-sm-2 col-form-label"'); }
 							}, undefined, [3]);
 						},
-						2: function (arr) {
+						3: function (arr) {
 							return ['<div class="col-sm-10">', arr, '</div>'];
 						}
-					});
+					}, undefined, [2]);
 				},
 				1: function (arr) {
 					return overwrite(arr, {
@@ -66,8 +66,12 @@ function config(tpdProvider) {
 						return overwrite(arr, {
 							0: function (str) { return str.replace('<label', '<label class="form-check mb-3"'); },
 							1: function (str) { return str.replace('<tpd-input', '<tpd-input class="form-check-input"'); },
-							3: function (str) { return str.replace('<span', '<span class="form-check-label"'); }
-						});
+							3: function (arr) {
+								return overwrite(arr, {
+									1: ' class="form-check-label"'
+								});
+							}
+						}, undefined, [2]);
 					}
 				}, undefined, [0, 2])
 			};

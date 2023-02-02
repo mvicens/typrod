@@ -6,6 +6,7 @@ angular
 
 function config(tpdProvider) {
 	var COLOR_INPUT_HTML = '<input type="color">',
+		IF_LABEL_ATTR = ' ng-if="$tpdProp.label"',
 		OUTPUT_HTML = '<tpd-output />',
 		TPD_VALUES_VAR = '$tpdValues';
 	tpdProvider
@@ -84,7 +85,8 @@ function config(tpdProvider) {
 		.component('form', [
 			[
 				'<div tpd-prop>',
-				['<label ng-attr-for="', getLabelableId, '"', ' ng-if="$tpdProp.label"', ' tpd-label></label>'],
+				['<label ng-attr-for="', getLabelableId, '"', IF_LABEL_ATTR, ' tpd-label></label>'],
+				' ',
 				['<tpd-input ng-attr-id="', getLabelableId, '" />'],
 				'</div>'
 			],
@@ -92,7 +94,13 @@ function config(tpdProvider) {
 		], {
 			boolean: [
 				'<div>',
-				['<label>', '<tpd-input></tpd-input>', ' ', '<span tpd-label></span>', '</label>'],
+				[
+					'<label>',
+					'<tpd-input></tpd-input>',
+					['<span', IF_LABEL_ATTR, '> </span>'],
+					['<span', IF_LABEL_ATTR, ' tpd-label></span>'],
+					'</label>'
+				],
 				'</div>'
 			]
 		})
