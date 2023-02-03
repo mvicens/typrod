@@ -199,7 +199,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 
 	function setComponent(selector, content, ec) {
-		if (!angular.isString(selector)) {
+		if (!_.isString(selector)) {
 			tpdRegisterUtilsProvider.showError('CRS');
 			return;
 		}
@@ -231,7 +231,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 
 		var args = [content];
 		if (ec) {
-			if (!angular.isObject(ec) || angular.isArray(ec)) {
+			if (!_.isPlainObject(ec)) {
 				tpdRegisterUtilsProvider.showError('CRE', selector);
 				return;
 			}

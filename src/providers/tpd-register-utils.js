@@ -30,21 +30,21 @@ function tpdRegisterUtilsProvider() {
 	}
 
 	function toString(v, arg) {
-		if (angular.isString(v))
+		if (_.isString(v))
 			return v;
 		if (angular.isFunction(v)) {
 			if (arg) // No functions remains
 				return toString(v(arg));
 			return v;
 		}
-		if (angular.isElement(v))
+		if (_.isElement(v))
 			return $(v).appendTo('<div>').parent().html();
 		if (angular.isArray(v)) { // Joining array
 			var result = [],
 				isLastStr = false;
 			angular.forEach(v, function (v2) {
 				v2 = toString(v2, arg);
-				if (angular.isString(v2)) {
+				if (_.isString(v2)) {
 					if (isLastStr)
 						result[result.length - 1] += v2;
 					else
