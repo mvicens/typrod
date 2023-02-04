@@ -18,13 +18,19 @@ function tpdRegisterUtilsProvider() {
 		var txts = {
 			TRN: 'TPD type refused, due to: wrong type of argument "name"',
 			TRO: 'TPD type "' + v + '" refused, due to: wrong type of argument "opts"',
+			TROF: 'TPD type "' + v + '" refused, due to: wrong type of option "fromJson"',
+			TROT: 'TPD type "' + v + '" refused, due to: wrong type of option "toJson"',
+			TROI: 'TPD type "' + v + '" refused, due to: wrong type of option "input"',
+			TROO: 'TPD type "' + v + '" refused, due to: wrong type of option "output"',
 			TNR: 'TPD type "' + v + '" is not registered',
 			TSU: 'TPD type "' + v + '" is undeletable',
+			TSI: 'TPD type "' + v + '" must to define option "input"',
 			CRS: 'TPD component refused, due to: wrong type of argument "selector"',
-			CRC: 'TPD component "' + v + '" refused, due to: wrong type of argument "content"',
-			CNR: 'TPD component "' + v + '" is not registered',
-			CRE: 'TPD component "' + v + '" refused, due to: wrong type of argument "ec"',
-			CNM: 'TPD component is not matched'
+			CRC: 'TPD component with selector "' + v + '" refused, due to: wrong type of argument "content"',
+			CRE: 'TPD component with selector "' + v + '" refused, due to: wrong type of argument "ec"',
+			CNR: 'TPD component with selector "' + v + '" is not registered',
+			CNM: 'No matched TPD component',
+			PRT: 'TPD property refused due to unregistered TPD type "' + v + '"'
 		};
 		return console.error(txts[code]);
 	}
@@ -41,8 +47,9 @@ function tpdRegisterUtilsProvider() {
 			return $(v).appendTo('<div>').parent().html();
 		if (angular.isArray(v)) { // Joining array
 			var result = [],
-				isLastStr = false;
-			angular.forEach(v, function (v2) {
+				isLastStr = false,
+				hasNull = false;
+			_.forEach(v, function (v2) {
 				v2 = toString(v2, arg);
 				if (_.isString(v2)) {
 					if (isLastStr)
@@ -50,14 +57,20 @@ function tpdRegisterUtilsProvider() {
 					else
 						result.push(v2);
 					isLastStr = true;
+				} else if (v2 === null) {
+					hasNull = true;
+					return false;
 				} else { // Fn. or array with some
 					result.push(v2);
 					isLastStr = false;
 				}
 			});
+			if (hasNull)
+				return null;
 			if (result.length == 1)
 				return result[0];
 			return result;
 		}
+		return null;
 	}
 }

@@ -151,6 +151,27 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			opts = opts(angular.copy(original[copiedType]));
 		}
 
+		if (!isSomeType(['undefined', 'function'], opts.fromJson)) {
+			tpdRegisterUtilsProvider.showError('TROF', name);
+			return;
+		}
+		if (!isSomeType(['undefined', 'function'], opts.toJson)) {
+			tpdRegisterUtilsProvider.showError('TROT', name);
+			return;
+		}
+		if (!isSomeType(['undefined', 'string', 'element', 'function', 'array'], opts.input)) {
+			tpdRegisterUtilsProvider.showError('TROI', name);
+			return;
+		}
+		if (name == DEF_TYPE_NAME && opts.input === undefined) {
+			tpdRegisterUtilsProvider.showError('TSI', name);
+			return;
+		}
+		if (!isSomeType(['undefined', 'string', 'element', 'function', 'array'], opts.output)) {
+			tpdRegisterUtilsProvider.showError('TROO', name);
+			return;
+		}
+
 		var origOpts = angular.copy(opts);
 
 		opts = opts || {};
@@ -158,11 +179,19 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			opts[prop] = opts[prop] || defOpt;
 		});
 
-		original[name] = origOpts;
-
 		angular.forEach(['input', 'output'], function (prop) {
 			opts[prop] = tpdRegisterUtilsProvider.toString(opts[prop]);
 		});
+		if (opts.input === null) {
+			tpdRegisterUtilsProvider.showError('TROI', name);
+			return;
+		}
+		if (opts.output === null) {
+			tpdRegisterUtilsProvider.showError('TROO', name);
+			return;
+		}
+
+		original[name] = origOpts;
 		types.stored[name] = opts;
 
 		if (name == DEF_TYPE_NAME)
@@ -207,6 +236,10 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			tpdRegisterUtilsProvider.showError('CRC', selector);
 			return;
 		}
+		if (!isSomeType(['undefined', 'object', 'function'], ec)) {
+			tpdRegisterUtilsProvider.showError('CRE', selector);
+			return;
+		}
 
 		var overwritten = angular.copy(registers.components.original[selector]),
 			isNew = !overwritten;
@@ -220,6 +253,10 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 				return;
 			}
 			content = content(overwritten[0]);
+			if (!isSomeType(['string', 'element', 'array'], content)) {
+				tpdRegisterUtilsProvider.showError('CRC', selector);
+				return;
+			}
 		}
 		if (angular.isFunction(ec)) {
 			if (!overwritten) {
@@ -227,16 +264,15 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 				return;
 			}
 			ec = ec(overwritten[1]);
-		}
-
-		var args = [content];
-		if (ec) {
-			if (!_.isPlainObject(ec)) {
+			if (!isSomeType(['undefined', 'object'], ec)) {
 				tpdRegisterUtilsProvider.showError('CRE', selector);
 				return;
 			}
-			args.push(ec);
 		}
+
+		var args = [content];
+		if (ec)
+			args.push(ec);
 		forEachComponentsList(function (components, isStored) {
 			var savedArgs = [];
 			if (isStored) {
@@ -257,6 +293,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 
 function isSomeType(types, v) {
 	var methodByType = {
+		undefined: 'isUndefined',
 		string: 'isString',
 		function: 'isFunction',
 		array: 'isArray',

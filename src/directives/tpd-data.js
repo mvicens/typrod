@@ -40,7 +40,7 @@ function tpdDataCompile(tpd, tpdRegisterUtils) {
 	}
 }
 
-function tpdDataLink(tpd, $sce, tpdUtils) {
+function tpdDataLink(tpd, $sce, tpdUtils, tpdRegisterUtils) {
 	return {
 		restrict: 'A',
 		scope: true,
@@ -65,21 +65,30 @@ function tpdDataLink(tpd, $sce, tpdUtils) {
 			}
 
 			property.type = property.type || 'string';
+
+			var type = tpdUtils.getTypeByProp(property);
+			if (!type) {
+				tpdRegisterUtils.showError('PRT', property.type);
+				data[i] = null;
+				return;
+			}
+
 			property.label = $sce.trustAsHtml(property.label);
 			if (values) {
 				var NAME = property.name;
 				scope.$watch(function () {
 					return values[NAME];
 				}, function (value) {
-					property.value = tpdUtils.getTypeByProp(property).fromJson(value);
+					property.value = type.fromJson(value);
 				});
 				scope.$watch(function () {
 					return property.value;
 				}, function (value) {
-					values[NAME] = tpdUtils.getTypeByProp(property).toJson(value);
+					values[NAME] = type.toJson(value);
 				});
 			}
 		});
+		_.remove(data, function (property) { return !property; });
 		scope.$$tpdData = data;
 
 		scope.$$tpdEc = component[1];
