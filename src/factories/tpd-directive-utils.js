@@ -2,13 +2,13 @@ angular
 	.module('tpd')
 	.factory('tpdDirectiveUtils', tpdDirectiveUtils);
 
-function tpdDirectiveUtils(tpdRegisterUtils) {
+function tpdDirectiveUtils(tpdRegisterUtils) { // Getter of dir. definition objects
 	return {
-		getPropDirectiveDefinitionObj: getPropDirectiveDefinitionObj,
-		getInputDirectiveDefinitionObj: getInputDirectiveDefinitionObj
+		getForProp: getForProp,
+		getForIo: getForIo // IO: input/output
 	};
 
-	function getPropDirectiveDefinitionObj($compile, callback) {
+	function getForProp($compile, callback) {
 		return {
 			restrict: 'A',
 			link: link
@@ -28,7 +28,7 @@ function tpdDirectiveUtils(tpdRegisterUtils) {
 		}
 	}
 
-	function getInputDirectiveDefinitionObj(linkFn) {
+	function getForIo(linkFn) {
 		return {
 			restrict: 'E',
 			link: linkFn,

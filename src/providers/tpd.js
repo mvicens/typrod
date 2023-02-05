@@ -174,7 +174,6 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 
 		var origOpts = angular.copy(opts);
 
-		opts = opts || {};
 		angular.forEach(defOpts, function (defOpt, prop) {
 			opts[prop] = opts[prop] || defOpt;
 		});
@@ -195,7 +194,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 		types.stored[name] = opts;
 
 		if (name == DEF_TYPE_NAME)
-			defOpts.input = (origOpts || {}).input;
+			defOpts.input = origOpts.input;
 	}
 
 	function component(selector, content, ec) {
