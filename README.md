@@ -279,7 +279,7 @@ Sets a [TPD component](#tpd-component).
 <tr><td rowspan="3"><code>content</code></td><td>Same as <a href="#options">option</a> <code>input</code>, except for the following</td><td><a href="#tpd-content">TPD content</a>. Functions can be used inside joining arrays, with selector's element as argument.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one.</li></ul></td></tr>
 <tr><td>Null</td><td>To remove just as <a href="#removecomponent-selector-"><code>removeComponent</code></a> does.</td></tr>
-<tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td><a href="#etc">ETCs</a>. With keys as <a href="#tpd-type">TPD type</a> names while each value are formed by its <a href="#tpd-container">TPD container</a> with types like previous <code>content</code>.</td></tr>
+<tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td><a href="#etc">ETCs</a>. With keys as <a href="#tpd-type">TPD type</a> names while each value are formed by its <a href="#tpd-container">TPD container</a> with types like <a href="#options">option</a> <code>input</code>.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (obj.).</li></ul></td></tr>
 </table>
 
@@ -310,7 +310,7 @@ Put this attribute over the [TPD component](#tpd-component) tag you want to loca
 Key(s) | Type | Details
 ------ | ---- | -------
 `type` (optional) | String | Name of registered [TPD type](#tpd-type). Defaults to `'string'`.
-`name` | String | Name of param (where [TPD value](#tpd-value) is stored).
+`name` | String | Name of param (where [TPD value](#tpd-value) is saved) and a glue between [its directive](#tpd-data-1) and this current one.
 `label` | String | Caption text (HTML markup available) of tag with [`tpd-label`](#tpd-label).
 `required` (optional) | Boolean | Input mandatority.
 `min`/`max` (optional) | Any | Minimum/maximum of [TPD value](#tpd-value).
