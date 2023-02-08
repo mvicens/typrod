@@ -110,7 +110,7 @@ function config(tpdProvider) {
 			]
 		})
 		.component('dl', [
-			'<dt tpd-prop-start tpd-label></dt>',
+			['<dt', IF_LABEL_ATTR, ' tpd-prop-start tpd-label></dt>'],
 			['<dd tpd-prop-end>', OUTPUT_HTML, '</dd>']
 		])
 		.component('table', [
