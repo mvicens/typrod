@@ -276,10 +276,10 @@ Sets a [TPD component](#tpd-component).
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
-<tr><td rowspan="3"><code>content</code></td><td>Same as <a href="#options">option</a> <code>input</code>, except for the following</td><td><a href="#tpd-content">TPD content</a>. Functions can be used inside joining arrays, with selector's element as argument.</td></tr>
+<tr><td rowspan="3"><code>content</code></td><td>Same as <a href="#options">option <code>input</code></a>, except for the following</td><td><a href="#tpd-content">TPD content</a>. Functions can be used inside joining arrays, with selector's element as argument.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one.</li></ul></td></tr>
 <tr><td>Null</td><td>To remove just as <a href="#removecomponent-selector-"><code>removeComponent</code></a> does.</td></tr>
-<tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td><a href="#etc">ETCs</a>. With keys as <a href="#tpd-type">TPD type</a> names while each value are formed by its <a href="#tpd-container">TPD container</a> with types like <a href="#options">option</a> <code>input</code>.</td></tr>
+<tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td><a href="#etc">ETCs</a>. With keys as <a href="#tpd-type">TPD type</a> names while each value are formed by its <a href="#tpd-container">TPD container</a> with types like <a href="#options">option <code>input</code></a>.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one (obj.).</li></ul></td></tr>
 </table>
 
