@@ -37,7 +37,7 @@ function config(tpdProvider) {
 			input: '<input type="checkbox">',
 			output: getOutput(' ? \'✓\' : \'✗\'')
 		})
-		.type(['date', 'datetime', 'month'], {
+		.type(['date', 'datetime', 'week', 'month'], {
 			fromJson: getFromJsonFn(),
 			toJson: getToJsonFn(0),
 			input: '<input type="date">',
@@ -53,6 +53,11 @@ function config(tpdProvider) {
 			delete opts.toJson;
 			opts.input = opts.input.replace('date', 'datetime-local');
 			opts.output[3] = ' | date:\'medium\'';
+			return opts;
+		})
+		.type('week', function (opts) {
+			opts.input = opts.input.replace('date', 'week');
+			opts.output[3] = ' | date:\'w, y\'';
 			return opts;
 		})
 		.type('month', function (opts) {

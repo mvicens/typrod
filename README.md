@@ -361,6 +361,7 @@ Name | Details | Extra [`tpd-data`](#tpd-data-1)'s keys
 `'date'`
 `'time'`
 `'datetime'`
+`'week'`
 `'month'`
 `'option'` | Single `<select>`. | To fill its list, `options` with a string of scope's array (formed by objects with pairs `id`-`label`).
 `'options'` | The same but multiple.
