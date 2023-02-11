@@ -240,8 +240,7 @@ Sets a [TPD type](#tpd-type).
 
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
-<tr><td rowspan="2"><code>name</code></td><td>String</td><td>Name. The <code>'*'</code> is reserved to apply globally.</td></tr>
-<tr><td>Array</td><td>List of these.</td></tr>
+<tr><td><code>name</code></td><td>String</td><td>Name. The <code>'*'</code> is reserved to apply globally.</td></tr>
 <tr><td rowspan="4"><code>opts</code></td><td>Object</td><td><a href="#options">Options</a>.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original (without defaults) <a href="#options">options</a>.</li><li>Return: new ones (obj.).</li></ul></td></tr>
 <tr><td>Array</td><td>To copy. Whose items are:<ul><li>Name of copied <a href="#tpd-type">TPD type</a>.</li><li><a href="#options">Options</a> (obj. or fn., like above).</li></ul>Besides, <a href="#etc">ETCs</a> are duplicated.</td></tr>
@@ -268,6 +267,8 @@ Gets it.
 #### `.removeType( name )`
 
 Removes it and also in [ETCs](#etc). Exceptionally, `'string'` is undeletable.
+
+With `name` as array of strings, it can be applied over more than one [TPD type](#tpd-type).
 
 #### `.component( selector, content [, ec ] )`
 

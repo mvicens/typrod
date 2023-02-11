@@ -37,47 +37,19 @@ function config(tpdProvider) {
 			input: '<input type="checkbox">',
 			output: getOutput(' ? \'✓\' : \'✗\'')
 		})
-		.type(['date', 'datetime', 'week', 'month'], {
-			fromJson: getFromJsonFn(),
-			toJson: getToJsonFn(0),
-			input: '<input type="date">',
-			output: getOutput(' | date') // "mediumDate"
-		})
-		.type('time', {
-			fromJson: getFromJsonFn(true),
-			toJson: getToJsonFn(1),
-			input: '<input type="time">',
-			output: getOutput(' | date:\'mediumTime\'')
-		})
-		.type('datetime', function (opts) {
-			delete opts.toJson;
-			opts.input = opts.input.replace('date', 'datetime-local');
-			opts.output[3] = ' | date:\'medium\'';
-			return opts;
-		})
-		.type('week', function (opts) {
-			opts.input = opts.input.replace('date', 'week');
-			opts.output[3] = ' | date:\'w, y\'';
-			return opts;
-		})
-		.type('month', function (opts) {
-			opts.input = opts.input.replace('date', 'month');
-			opts.output[3] = ' | date:\'MMM/y\'';
-			return opts;
-		})
-		.type(['option', 'options'], {
-			input: '<select ng-options="item.id as item.label for item in {{$tpdProp.options}}"></select>',
-			output: function (scope) {
-				return getOutput(' | tpdOption:' + scope.$tpdProp.options);
-			}
-		})
-		.type('options', function (opts) {
-			opts.input = opts.input.replace('><', ' multiple><');
-			opts.output = function (scope) {
-				return '<ul><li ng-repeat="str in $tpdProp.value | tpdOptions:' + scope.$tpdProp.options + '">{{str}}</li></ul>';
-			};
-			return opts;
-		})
+		.type('date', getDateOpts('date',
+			'date', // "mediumDate"
+			0))
+		.type('time', getDateOpts('time', 'date:\'mediumTime\'', 1, true))
+		.type('datetime', getDateOpts('datetime-local', 'date:\'medium\''))
+		.type('week', getDateOpts('week', 'date:\'w, y\'', 0))
+		.type('month', getDateOpts('month', 'date:\'MMM/y\'', 0))
+		.type('option', getOptionsOpts(function (scope) {
+			return getOutput(' | tpdOption:' + scope.$tpdProp.options);
+		}))
+		.type('options', getOptionsOpts(function (scope) {
+			return '<ul><li ng-repeat="str in $tpdProp.value | tpdOptions:' + scope.$tpdProp.options + '">{{str}}</li></ul>';
+		}, 'multiple'))
 		.type('color', {
 			input: COLOR_INPUT_HTML,
 			output: COLOR_INPUT_HTML.replace('>', ' ng-model="$tpdProp.value" disabled>')
@@ -87,10 +59,10 @@ function config(tpdProvider) {
 			output: ['<a', ' ng-href="{{$tpdProp.value}}" target="_blank"', '>', '{{', '$tpdProp.value', '}}', '</a>']
 		})
 		.type('email', ['url', function (opts) {
-			return getOpts(opts, 'email', 'mailto');
+			return getOverwrittenOpts(opts, 'email', 'mailto');
 		}])
 		.type('tel', ['url', function (opts) {
-			return getOpts(opts, 'tel');
+			return getOverwrittenOpts(opts, 'tel');
 		}])
 		.component('form', [
 			[
@@ -162,24 +134,48 @@ function config(tpdProvider) {
 		return Boolean(v);
 	}
 
-	function getFromJsonFn(isTime) {
-		return function toDate(v) {
-			return v && new Date(
-				(isTime ? getJsonDatePortion(new Date, 0) + 'T' : '') +
-				v +
-				(isTime ? 'Z' : '')
-			);
+	function getDateOpts(inputType, filterOutput, toJsonIndex, isTime) {
+		return {
+			fromJson: getFromJsonFn(),
+			toJson: getToJsonFn(),
+			input: '<input type="' + inputType + '">',
+			output: getOutput(' | ' + filterOutput)
+		};
+
+		function getFromJsonFn() {
+			return function toDate(v) {
+				return v && new Date(
+					(isTime ? getJsonDatePortion(new Date, 0) + 'T' : '') +
+					v +
+					(isTime ? 'Z' : '')
+				);
+			};
+		}
+
+		function getToJsonFn() {
+			if (toJsonIndex !== undefined)
+				return function toJsonDate(v) {
+					if (v)
+						return getJsonDatePortion(v, toJsonIndex);
+				};
+		}
+
+		function getJsonDatePortion(date, i) {
+			var str = _DatetoJSON.call(date).split('T')[i];
+			if (i == 1)
+				str = str.slice(0, -1); // Removes "Z"
+			return str;
+		}
+	}
+
+	function getOptionsOpts(outputFn, attr) {
+		return {
+			input: '<select ng-options="item.id as item.label for item in {{$tpdProp.options}}"' + (attr ? ' ' + attr : '') + '></select>',
+			output: outputFn
 		};
 	}
 
-	function getToJsonFn(i) {
-		return function toJsonDate(v) {
-			if (v)
-				return getJsonDatePortion(v, i);
-		};
-	}
-
-	function getOpts(opts, type, protocol) {
+	function getOverwrittenOpts(opts, type, protocol) {
 		opts.input = '<input type="' + type + '">';
 		opts.output[1] = opts.output[1].replace(' target="_blank"', '').replace('"', '"' + (protocol || type) + ':');
 		return opts;
@@ -197,12 +193,5 @@ function config(tpdProvider) {
 
 	function getTpdValuesArray(elem) {
 		return $(elem).data('tpdValues');
-	}
-
-	function getJsonDatePortion(date, i) {
-		var str = _DatetoJSON.call(date).split('T')[i];
-		if (i == 1)
-			str = str.slice(0, -1); // Removes "Z"
-		return str;
 	}
 }

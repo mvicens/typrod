@@ -23,6 +23,7 @@ function tpdRegisterUtilsProvider() {
 			TROI: 'TPD type "' + v + '" refused, due to: wrong type of option "input"',
 			TROO: 'TPD type "' + v + '" refused, due to: wrong type of option "output"',
 			TNR: 'TPD type "' + v + '" is not registered',
+			TNRN: 'TPD type not removed due to: wrong type of argument "name"',
 			TSU: 'TPD type "' + v + '" is undeletable',
 			TSI: 'TPD type "' + v + '" must to define option "input"',
 			CRS: 'TPD component refused, due to: wrong type of argument "selector"',

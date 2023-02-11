@@ -83,9 +83,19 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 
 	function removeType(name) {
+		if (!isSomeType(['string', 'array'], name)) {
+			tpdRegisterUtilsProvider.showError('TNRN');
+			return;
+		}
+
 		if (name == DEF_TYPE_NAME)
 			tpdRegisterUtilsProvider.showError('TSU', name);
 		else {
+			if (angular.isArray(name)) {
+				angular.forEach(name, removeType);
+				return;
+			}
+
 			if (getType(name)) {
 				angular.forEach(registers.types, function (list) {
 					delete list[name];
@@ -103,7 +113,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 	}
 
 	function setType(name, opts) {
-		if (!isSomeType(['string', 'array'], name)) {
+		if (!_.isString(name)) {
 			tpdRegisterUtilsProvider.showError('TRN');
 			return;
 		}
@@ -115,10 +125,8 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 		var types = registers.types,
 			original = types.original;
 
-		if (name == '*')
-			name = _.keys(original);
-		if (angular.isArray(name)) {
-			angular.forEach(name, function (name) {
+		if (name == '*') {
+			angular.forEach(_.keys(original), function (name) {
 				var origOpts = angular.copy(opts);
 				setType(name, origOpts);
 			});
