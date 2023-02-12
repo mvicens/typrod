@@ -1,5 +1,3 @@
-var _DatetoJSON = Date.prototype.toJSON;
-
 angular
 	.module('tpd')
 	.config(config);
@@ -38,12 +36,11 @@ function config(tpdProvider) {
 			output: getOutput(' ? \'✓\' : \'✗\'')
 		})
 		.type('date', getDateOpts('date',
-			'date', // "mediumDate"
-			0))
-		.type('time', getDateOpts('time', 'date:\'mediumTime\'', 1, true))
-		.type('datetime', getDateOpts('datetime-local', 'date:\'medium\''))
-		.type('week', getDateOpts('week', 'date:\'w, y\'', 0))
-		.type('month', getDateOpts('month', 'date:\'MMM/y\'', 0))
+			'date')) // "mediumDate"
+		.type('time', getDateOpts('time', 'date:\'mediumTime\'', false, true))
+		.type('datetime', getDateOpts('datetime-local', 'date:\'medium\'', true))
+		.type('week', getDateOpts('week', 'date:\'w, y\''))
+		.type('month', getDateOpts('month', 'date:\'MMM/y\''))
 		.type('option', getOptionsOpts(function (scope) {
 			return getOutput(' | tpdOption:' + scope.$tpdProp.options);
 		}))
@@ -134,34 +131,33 @@ function config(tpdProvider) {
 		return Boolean(v);
 	}
 
-	function getDateOpts(inputType, filterOutput, toJsonIndex, isTime) {
-		return {
-			fromJson: getFromJsonFn(),
-			toJson: getToJsonFn(),
+	function getDateOpts(inputType, filterOutput, withWholeJsonDate, isTime) {
+		var opts = {
+			fromJson: toDate,
 			input: '<input type="' + inputType + '">',
 			output: getOutput(' | ' + filterOutput)
 		};
+		if (!withWholeJsonDate)
+			opts.toJson = toJsonDate;
+		return opts;
 
-		function getFromJsonFn() {
-			return function toDate(v) {
-				return v && new Date(
-					(isTime ? getJsonDatePortion(new Date, 0) + 'T' : '') +
-					v +
-					(isTime ? 'Z' : '')
-				);
-			};
+		function toDate(v) {
+			if (_.isString(v) && v) {
+				if (isTime)
+					v = getJsonDatePortion(new Date, 0) + 'T' + v + 'Z';
+				v = new Date(v);
+				if (!isNaN(v)) // Not invalid date
+					return v;
+			}
 		}
 
-		function getToJsonFn() {
-			if (toJsonIndex !== undefined)
-				return function toJsonDate(v) {
-					if (v)
-						return getJsonDatePortion(v, toJsonIndex);
-				};
+		function toJsonDate(v) {
+			if (v)
+				return getJsonDatePortion(v, isTime ? 1 : 0);
 		}
 
 		function getJsonDatePortion(date, i) {
-			var str = _DatetoJSON.call(date).split('T')[i];
+			var str = Date.prototype.toJSON.call(date).split('T')[i];
 			if (i == 1)
 				str = str.slice(0, -1); // Removes "Z"
 			return str;
