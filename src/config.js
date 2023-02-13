@@ -51,16 +51,9 @@ function config(tpdProvider) {
 			input: COLOR_INPUT_HTML,
 			output: COLOR_INPUT_HTML.replace('>', ' ng-model="$tpdProp.value" disabled>')
 		})
-		.type('url', {
-			input: '<input type="url">',
-			output: ['<a', ' ng-href="{{$tpdProp.value}}" target="_blank"', '>', '{{', '$tpdProp.value', '}}', '</a>']
-		})
-		.type('email', ['url', function (opts) {
-			return getOverwrittenOpts(opts, 'email', 'mailto');
-		}])
-		.type('tel', ['url', function (opts) {
-			return getOverwrittenOpts(opts, 'tel');
-		}])
+		.type('url', getLinkOpts('url'))
+		.type('email', getLinkOpts('email', 'mailto'))
+		.type('tel', getLinkOpts('tel', 'tel'))
 		.component('form', [
 			[
 				'<div tpd-prop>',
@@ -171,10 +164,16 @@ function config(tpdProvider) {
 		};
 	}
 
-	function getOverwrittenOpts(opts, type, protocol) {
-		opts.input = '<input type="' + type + '">';
-		opts.output[1] = opts.output[1].replace(' target="_blank"', '').replace('"', '"' + (protocol || type) + ':');
-		return opts;
+	function getLinkOpts(type, protocol) {
+		var TPD_PROP_VALUE = '{{$tpdProp.value}}',
+			output = ['<a', ' ng-href="' + (protocol ? protocol + ':' : '') + TPD_PROP_VALUE + '"'];
+		if (!protocol)
+			output.push(' target="_blank"');
+		output.push('>', TPD_PROP_VALUE, '</a>');
+		return {
+			input: '<input type="' + type + '">',
+			output: output
+		};
 	}
 
 	function getLabelableId(elem) {
