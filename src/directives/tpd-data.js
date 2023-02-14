@@ -20,7 +20,7 @@ function tpdDataCompile(tpd, tpdRegisterUtils) {
 		element = $(element);
 
 		var content = component[0];
-		content = tpdRegisterUtils.toString(content, element.get(0));
+		content = tpdRegisterUtils.toString(content, angular.copy(element.get(0)));
 
 		var ATTR_CONTENT = '$tpdProp in $$tpdData';
 		element.html(

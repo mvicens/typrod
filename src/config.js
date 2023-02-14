@@ -41,11 +41,11 @@ function config(tpdProvider) {
 		.type('datetime', getDateOpts('datetime-local', 'date:\'medium\'', true))
 		.type('week', getDateOpts('week', 'date:\'w, y\''))
 		.type('month', getDateOpts('month', 'date:\'MMM/y\''))
-		.type('option', getOptionsOpts(function (scope) {
-			return getOutput(' | tpdOption:' + scope.$tpdProp.options);
+		.type('option', getOptionsOpts(function ($tpdProp) {
+			return getOutput(' | tpdOption:' + $tpdProp.options);
 		}))
-		.type('options', getOptionsOpts(function (scope) {
-			return '<ul><li ng-repeat="str in $tpdProp.value | tpdOptions:' + scope.$tpdProp.options + '">{{str}}</li></ul>';
+		.type('options', getOptionsOpts(function ($tpdProp) {
+			return '<ul><li ng-repeat="str in $tpdProp.value | tpdOptions:' + $tpdProp.options + '">{{str}}</li></ul>';
 		}, 'multiple'))
 		.type('color', {
 			input: COLOR_INPUT_HTML,

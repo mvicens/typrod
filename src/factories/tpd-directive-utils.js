@@ -20,7 +20,7 @@ function tpdDirectiveUtils(tpdRegisterUtils) { // Getter of dir. definition obje
 				ec = ec[scope.$tpdProp.type];
 				if (ec) {
 					element = $(element);
-					ec = tpdRegisterUtils.toString(ec, element.closest('[tpd-data]').get(0));
+					ec = tpdRegisterUtils.toString(ec, angular.copy(element.closest('[tpd-data]').get(0)));
 					(callback || angular.noop)(element);
 					element.replaceWith($compile(ec)(scope));
 				}

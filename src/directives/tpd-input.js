@@ -5,7 +5,7 @@ angular
 function tpdInput(tpdDirectiveUtils, tpdUtils, tpdRegisterUtils, $compile) {
 	return tpdDirectiveUtils.getForIo(function link(scope, element, attrs) {
 		var input = tpdUtils.getTypeByProp(scope.$tpdProp).input;
-		input = tpdRegisterUtils.toString(input, scope);
+		input = tpdRegisterUtils.toString(input, angular.copy(scope.$tpdProp));
 
 		input = $(input);
 		var targetElem = input.find('[tpd-target]'),

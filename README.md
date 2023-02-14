@@ -255,7 +255,7 @@ Sets a [TPD type](#tpd-type).
 <tr><td><code>toJson</code></td><td>The same to <a href="#json">JSON</a>.</td><td>Caller of own <code>toJSON</code> method (if exists)</td></tr>
 <tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="5">HTML template.</td><td>If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <a href="#tpd-type">TPD type</a> <code>'string'</code></td></tr>
 <tr><td>Object</td><td>DOM element</td></tr>
-<tr><td>Function</td><td><ul><li>Argument: directive's scope.</li><li>Return: templ. (str., obj. or array).</li></ul></td></tr>
+<tr><td>Function</td><td><ul><li>Argument: read-only <code>$tpdProp</code>.</li><li>Return: templ. (str., obj. or array).</li></ul></td></tr>
 <tr><td>Array</td><td>Collection of the mentioned types (string, function... or even, allowing unlimited nesting, another array!) that will be joined.</td></tr>
 <tr><td><code>output</code></td><td>Same as above</td><td>Use <code>$tpdProp.value</code> to manage the value.</td><td><code>'&lt;span&gt;{{$tpdProp.value}}&lt;/span&gt;'</code></td></tr>
 </table>
@@ -277,7 +277,7 @@ Sets a [TPD component](#tpd-component).
 <table>
 <tr><th>Param</th><th>Type</th><th>Details</th></tr>
 <tr><td><code>selector</code></td><td>String</td><td>CSS selector.</td></tr>
-<tr><td rowspan="3"><code>content</code></td><td>Same as <a href="#options">option <code>input</code></a>, except for the following</td><td><a href="#tpd-content">TPD content</a>. Functions can be used inside joining arrays, with selector's element as argument.</td></tr>
+<tr><td rowspan="3"><code>content</code></td><td>Same as <a href="#options">option <code>input</code></a>, except for the following</td><td><a href="#tpd-content">TPD content</a>. Functions can be used inside joining arrays, with selector's element (read-only) as argument.</td></tr>
 <tr><td>Function</td><td>To overwrite:<ul><li>Argument: the original.</li><li>Return: new one.</li></ul></td></tr>
 <tr><td>Null</td><td>To remove just as <a href="#removecomponent-selector-"><code>removeComponent</code></a> does.</td></tr>
 <tr><td rowspan="2"><code>ec</code> (optional)</td><td>Object</td><td><a href="#etc">ETCs</a>. With keys as <a href="#tpd-type">TPD type</a> names while each value are formed by its <a href="#tpd-container">TPD container</a> with types like <a href="#options">option <code>input</code></a>.</td></tr>
