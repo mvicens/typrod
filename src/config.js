@@ -40,7 +40,9 @@ function config(tpdProvider) {
 		.type('time', getDateOpts('time', 'date:\'mediumTime\'', false, true))
 		.type('datetime', getDateOpts('datetime-local', 'date:\'medium\'', true))
 		.type('week', getDateOpts('week', 'date:\'w, y\''))
-		.type('month', getDateOpts('month', 'date:\'MMM/y\''))
+		.type('month', getDateOpts('month', 'date:\'MMM, y\'', false, false, function (v) {
+			return v.slice(0, -3);
+		}))
 		.type('option', getOptionsOpts(function ($tpdProp) {
 			return getOutput(' | tpdOption:' + $tpdProp.options);
 		}))
@@ -124,7 +126,7 @@ function config(tpdProvider) {
 		return Boolean(v);
 	}
 
-	function getDateOpts(inputType, filterOutput, withWholeJsonDate, isTime) {
+	function getDateOpts(inputType, filterOutput, withWholeJsonDate, isTime, toJsonDateFn) {
 		var opts = {
 			fromJson: toDate,
 			input: '<input type="' + inputType + '">',
@@ -145,8 +147,12 @@ function config(tpdProvider) {
 		}
 
 		function toJsonDate(v) {
-			if (v)
-				return getJsonDatePortion(v, isTime ? 1 : 0);
+			if (v) {
+				v = getJsonDatePortion(v, isTime ? 1 : 0);
+				if (toJsonDateFn)
+					v = toJsonDateFn(v);
+				return v;
+			}
 		}
 
 		function getJsonDatePortion(date, i) {
