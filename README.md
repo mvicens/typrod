@@ -255,9 +255,9 @@ Sets a [TPD type](#tpd-type).
 <tr><td><code>toJson</code></td><td>The same to <a href="#json">JSON</a>.</td><td>Caller of own <code>toJSON</code> method (if exists)</td></tr>
 <tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="5">HTML template.</td><td>If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <a href="#tpd-type">TPD type</a> <code>'string'</code></td></tr>
 <tr><td>Object</td><td>DOM element</td></tr>
-<tr><td>Function</td><td><ul><li>Argument: read-only <code>$tpdProp</code>.</li><li>Return: templ. (str., obj. or array).</li></ul></td></tr>
+<tr><td>Function</td><td><ul><li>Argument: read-only <a href="#tpdprop"><code>$tpdProp</code></a>.</li><li>Return: templ. (str., obj. or array).</li></ul></td></tr>
 <tr><td>Array</td><td>Collection of the mentioned types (string, function... or even, allowing unlimited nesting, another array!) that will be joined.</td></tr>
-<tr><td><code>output</code></td><td>Same as above</td><td>Use <code>$tpdProp.value</code> to manage the value.</td><td><code>'&lt;span&gt;{{$tpdProp.value}}&lt;/span&gt;'</code></td></tr>
+<tr><td><code>output</code></td><td>Same as above</td><td>Use <a href="#tpdvalue"><code>$tpdValue</code></a> to manage the value.</td><td><code>'&lt;span&gt;{{$tpdValue}}&lt;/span&gt;'</code></td></tr>
 </table>
 
 #### `.type( name )`
@@ -330,7 +330,15 @@ Besides, accompanying this directive, in the same tag, `tpd-values` is placed, d
 
 ### `tpd-prop`
 
-Ubicated as attribute solely on [TPD containers](#tpd-container), Typrod turns these into a repeatedly instantiated element by `ng-repeat` that generates `$tpdProp` as local scope variable derived from each [`tpd-data`](#tpd-data-1)'s item (saving [TPD formatted value](#formatted) in `value` key).
+Ubicated as attribute solely on [TPD containers](#tpd-container), Typrod turns these into a repeatedly instantiated element by `ng-repeat` that generates, relative to each [`tpd-data`](#tpd-data-1)'s item, these scope variables:
+
+#### `$tpdProp`
+
+Formed by object of [TPD property](#tpd-property).
+
+#### `$tpdValue`
+
+The correspondent [TPD formatted value](#formatted).
 
 ### `tpd-prop-start`/`tpd-prop-end`
 

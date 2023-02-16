@@ -47,11 +47,11 @@ function config(tpdProvider) {
 			return getOutput(' | tpdOption:' + $tpdProp.options);
 		}))
 		.type('options', getOptionsOpts(function ($tpdProp) {
-			return '<ul><li ng-repeat="str in $tpdProp.value | tpdOptions:' + $tpdProp.options + '">{{str}}</li></ul>';
+			return '<ul><li ng-repeat="str in $tpdValue | tpdOptions:' + $tpdProp.options + '">{{str}}</li></ul>';
 		}, 'multiple'))
 		.type('color', {
 			input: COLOR_INPUT_HTML,
-			output: COLOR_INPUT_HTML.replace('>', ' ng-model="$tpdProp.value" disabled>')
+			output: COLOR_INPUT_HTML.replace('>', ' ng-model="$tpdValue" disabled>')
 		})
 		.type('url', getLinkOpts('url'))
 		.type('email', getLinkOpts('email', 'mailto'))
@@ -105,7 +105,7 @@ function config(tpdProvider) {
 		}]);
 
 	function getOutput(str) {
-		return ['<span>', '{{', '$tpdProp.value', str, '}}', '</span>'];
+		return ['<span>', '{{', '$tpdValue', str, '}}', '</span>'];
 	}
 
 	function toString(v) {
@@ -171,7 +171,7 @@ function config(tpdProvider) {
 	}
 
 	function getLinkOpts(type, protocol) {
-		var TPD_PROP_VALUE = '{{$tpdProp.value}}',
+		var TPD_PROP_VALUE = '{{$tpdValue}}',
 			output = ['<a', ' ng-href="' + (protocol ? protocol + ':' : '') + TPD_PROP_VALUE + '"'];
 		if (!protocol)
 			output.push(' target="_blank"');

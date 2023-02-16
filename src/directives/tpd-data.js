@@ -53,7 +53,8 @@ function tpdDataLink(tpd, $sce, tpdUtils, tpdRegisterUtils) {
 			return; // Error is shown before
 
 		var data = angular.copy(scope.$eval(attrs[this.name])),
-			values = scope.$eval(attrs.tpdValues);
+			jsonValues = scope.$eval(attrs.tpdValues),
+			formattedValues = jsonValues ? {} : undefined;
 		angular.forEach(data, function (property, i) {
 			if (angular.isArray(property)) {
 				var keys = ['name', 'label', 'required', 'type'],
@@ -74,22 +75,23 @@ function tpdDataLink(tpd, $sce, tpdUtils, tpdRegisterUtils) {
 			}
 
 			property.label = $sce.trustAsHtml(property.label);
-			if (values) {
+			if (jsonValues) {
 				var NAME = property.name;
 				scope.$watch(function () {
-					return values[NAME];
+					return jsonValues[NAME];
 				}, function (value) {
-					property.value = type.fromJson(value);
+					formattedValues[NAME] = type.fromJson(value);
 				});
 				scope.$watch(function () {
-					return property.value;
+					return formattedValues[NAME];
 				}, function (value) {
-					values[NAME] = type.toJson(value);
+					jsonValues[NAME] = type.toJson(value);
 				});
 			}
 		});
 		_.remove(data, function (property) { return !property; });
 		scope.$$tpdData = data;
+		scope.$$tpdValues = formattedValues;
 
 		scope.$$tpdEc = component[1];
 	}

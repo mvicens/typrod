@@ -12,7 +12,7 @@ function tpdInput(tpdDirectiveUtils, tpdUtils, tpdRegisterUtils, $compile) {
 			propStr = '$tpdProp';
 		input.attr(tpdUtils.getAttrs(attrs));
 		(targetElem.length ? targetElem : input).attr({
-			'ng-model': propStr + '.value',
+			'ng-model': '$tpdValue',
 			'ng-required': propStr + '.required',
 			'ng-attr-min': '{{' + propStr + '.min}}',
 			'ng-attr-max': '{{' + propStr + '.max}}'

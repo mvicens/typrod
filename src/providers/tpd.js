@@ -23,7 +23,7 @@ function tpdProvider(tpdRegisterUtilsProvider) {
 			return v;
 		},
 		input: undefined,
-		output: '<span>{{$tpdProp.value}}</span>'
+		output: '<span>{{$tpdValue}}</span>'
 	},
 		DEF_TYPE_NAME = 'string';
 
