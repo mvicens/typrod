@@ -2,8 +2,9 @@ angular
 	.module('tpd')
 	.config(config);
 
-function config(tpdProvider) {
-	var COLOR_INPUT_HTML = '<input type="color">',
+function config(dateFilterProvider, tpdProvider) {
+	var dateFilter = dateFilterProvider.$get(),
+		COLOR_INPUT_HTML = '<input type="color">',
 		IF_LABEL_ATTR = ' ng-if="$tpdProp.label"',
 		OUTPUT_HTML = '<tpd-output />',
 		TPD_VALUES_VAR = '$tpdValues';
@@ -36,12 +37,30 @@ function config(tpdProvider) {
 			output: getOutput(' ? \'✓\' : \'✗\'')
 		})
 		.type('date', getDateOpts('date',
-			'date')) // "mediumDate"
-		.type('time', getDateOpts('time', 'date:\'mediumTime\'', false, true))
-		.type('datetime', getDateOpts('datetime-local', 'date:\'medium\'', true))
-		.type('week', getDateOpts('week', 'date:\'w, y\''))
-		.type('month', getDateOpts('month', 'date:\'MMM, y\'', false, false, function (v) {
-			return v.slice(0, -3);
+			'date', // "mediumDate"
+			getJsonDatePortion))
+		.type('time', getDateOpts('time', 'date:\'mediumTime\'', function (date) {
+			return getJsonDatePortion(date, true);
+		}, function (v) {
+			return getJsonDatePortion(new Date) + 'T' + v + 'Z';
+		}))
+		.type('datetime', getDateOpts('datetime-local', 'date:\'medium\'')) // Implicit call to "toJSON"
+		.type('week', getDateOpts('week', 'date:\'w, y\'', function (date) {
+			return dateFilter(date, "yyyy-'W'ww");
+		}, function (v) {
+			v = v.split('-W');
+			var YEAR = v[0],
+				weekday = new Date(YEAR, 0, 1).getDay(),
+				THURSDAY = 4,
+				WEEKDAYS_AMOUNT = 7;
+			if (weekday > THURSDAY)
+				weekday -= WEEKDAYS_AMOUNT;
+			v = new Date(YEAR, 0, 1 + THURSDAY - weekday + (v[1] - 1) * WEEKDAYS_AMOUNT);
+			if (!isNaN(v)) // Not invalid date
+				return v.toJSON();
+		}))
+		.type('month', getDateOpts('month', 'date:\'MMM, y\'', function (date) {
+			return getJsonDatePortion(date).slice(0, -3);
 		}))
 		.type('option', getOptionsOpts(function ($tpdProp) {
 			return getOutput(' | tpdOption:' + $tpdProp.options);
@@ -126,41 +145,33 @@ function config(tpdProvider) {
 		return Boolean(v);
 	}
 
-	function getDateOpts(inputType, filterOutput, withWholeJsonDate, isTime, toJsonDateFn) {
+	function getDateOpts(inputType, outputFilter, toJsonFn, fromJsonFn) {
 		var opts = {
-			fromJson: toDate,
+			fromJson: function toDate(v) {
+				if (_.isString(v) && v) {
+					if (fromJsonFn)
+						v = fromJsonFn(v);
+					v = new Date(v);
+					if (!isNaN(v))
+						return v;
+				}
+			},
 			input: '<input type="' + inputType + '">',
-			output: getOutput(' | ' + filterOutput)
+			output: getOutput(' | ' + outputFilter)
 		};
-		if (!withWholeJsonDate)
-			opts.toJson = toJsonDate;
+		if (toJsonFn)
+			opts.toJson = function toJsonDate(v) {
+				if (v)
+					return toJsonFn(v);
+			};
 		return opts;
+	}
 
-		function toDate(v) {
-			if (_.isString(v) && v) {
-				if (isTime)
-					v = getJsonDatePortion(new Date, 0) + 'T' + v + 'Z';
-				v = new Date(v);
-				if (!isNaN(v)) // Not invalid date
-					return v;
-			}
-		}
-
-		function toJsonDate(v) {
-			if (v) {
-				v = getJsonDatePortion(v, isTime ? 1 : 0);
-				if (toJsonDateFn)
-					v = toJsonDateFn(v);
-				return v;
-			}
-		}
-
-		function getJsonDatePortion(date, i) {
-			var str = Date.prototype.toJSON.call(date).split('T')[i];
-			if (i == 1)
-				str = str.slice(0, -1); // Removes "Z"
-			return str;
-		}
+	function getJsonDatePortion(date, isTime) {
+		var str = date.toJSON().split('T')[isTime ? 1 : 0];
+		if (isTime)
+			str = str.slice(0, -1); // Removes "Z"
+		return str;
 	}
 
 	function getOptionsOpts(outputFn, attr) {
