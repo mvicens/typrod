@@ -15,14 +15,15 @@ function tpdDirectiveUtils(tpdRegisterUtils) { // Getter of dir. definition obje
 		};
 
 		function link(scope, element) {
-			scope.$watch('$$tpdValues[$tpdProp.name]', function (value) {
-				scope.$tpdValue = value;
-			});
-			var NAME = scope.$tpdProp.name;
-			scope.$watch('$tpdValue', function (value) {
-				if (scope.$$tpdValues)
-					scope.$$tpdValues[NAME] = value;
-			});
+			if (scope.$tpdValues) {
+				scope.$watch('$tpdValues[$tpdProp.name]', function (value) {
+					scope.$tpdValue = value;
+				});
+				var NAME = scope.$tpdProp.name;
+				scope.$watch('$tpdValue', function (value) {
+					scope.$tpdValues[NAME] = value;
+				});
+			}
 
 			var ec = scope.$$tpdEc;
 			if (ec) {

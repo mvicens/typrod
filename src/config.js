@@ -7,7 +7,7 @@ function config(dateFilterProvider, tpdProvider) {
 		COLOR_INPUT_HTML = '<input type="color">',
 		IF_LABEL_ATTR = ' ng-if="$tpdProp.label"',
 		OUTPUT_HTML = '<tpd-output />',
-		TPD_VALUES_VAR = '$tpdValues';
+		TPD_ROW_VALUES_VAR = '$tpdRowValues';
 	tpdProvider
 		.type('string', {
 			fromJson: toString,
@@ -105,7 +105,7 @@ function config(dateFilterProvider, tpdProvider) {
 			['<thead', ' ', getTpdDataAttr, '></thead>'],
 			[
 				'<tbody>',
-				['<tr ng-repeat="' + TPD_VALUES_VAR + ' in ', getTpdValuesArray, '"', ' ', getTpdDataAttr, ' tpd-values="' + TPD_VALUES_VAR + '"></tr>'],
+				['<tr ng-repeat="' + TPD_ROW_VALUES_VAR + ' in ', getTpdValuesArray, '"', ' ', getTpdDataAttr, ' tpd-values="' + TPD_ROW_VALUES_VAR + '"></tr>'],
 				'</tbody>'
 			]
 		])

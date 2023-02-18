@@ -91,7 +91,7 @@ function tpdDataLink(tpd, $sce, tpdUtils, tpdRegisterUtils) {
 		});
 		_.remove(data, function (property) { return !property; });
 		scope.$$tpdData = data;
-		scope.$$tpdValues = formattedValues;
+		scope.$tpdValues = formattedValues;
 
 		scope.$$tpdEc = component[1];
 	}

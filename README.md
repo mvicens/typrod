@@ -330,15 +330,19 @@ Besides, accompanying this directive, in the same tag, `tpd-values` is placed, d
 
 ### `tpd-prop`
 
-Ubicated as attribute solely on [TPD containers](#tpd-container), Typrod turns these into a repeatedly instantiated element by `ng-repeat` that generates, relative to each [`tpd-data`](#tpd-data-1)'s item, these scope variables:
+Ubicated as attribute solely on [TPD containers](#tpd-container), Typrod turns these into a repeatedly instantiated element by `ng-repeat` and generates these scope variables:
+
+#### `$tpdValues`
+
+[TPD formatted values](#formatted), opposite reflection of [`tpd-values`](#tpd-values)'s.
 
 #### `$tpdProp`
 
-Formed by object of [TPD property](#tpd-property).
+Relative to each [`tpd-data`](#tpd-data-1)'s item, it is formed by object of [TPD property](#tpd-property).
 
 #### `$tpdValue`
 
-The correspondent [TPD formatted value](#formatted).
+The correspondent [TPD formatted value](#formatted), of each item too.
 
 ### `tpd-prop-start`/`tpd-prop-end`
 
