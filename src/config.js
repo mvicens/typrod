@@ -123,14 +123,14 @@ function config(dateFilterProvider, tpdProvider) {
 			return opts;
 		}]);
 
-	function getOutput(str) {
-		return ['<span>', '{{', '$tpdValue', str, '}}', '</span>'];
-	}
-
 	function toString(v) {
 		if (v == null)
 			return v;
 		return String(v);
+	}
+
+	function getOutput(str) {
+		return ['<span>', '{{', '$tpdValue', str, '}}', '</span>'];
 	}
 
 	function toNumber(v) {

@@ -17,7 +17,7 @@ angular
 function tpdProvider(tpdRegisterUtilsProvider) {
 	var defOpts = {
 		fromJson: angular.identity,
-		toJson: function (v) {
+		toJson: function toJson(v) {
 			if (v && v.toJSON)
 				return v.toJSON();
 			return v;
