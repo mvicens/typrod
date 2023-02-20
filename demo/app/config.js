@@ -4,15 +4,6 @@ angular
 
 function config(tpdProvider) {
 	tpdProvider
-		.type('*', function (opts) {
-			var input = $(opts.input);
-			if (input.prop('type') == 'checkbox')
-				input.addClass('form-check-input');
-			else
-				input.addClass('form-control');
-			opts.input = input.get(0);
-			return opts;
-		})
 		.type('options', function (opts) {
 			opts.fromJson = function (v) {
 				return (v || '').split(',');
@@ -41,54 +32,27 @@ function config(tpdProvider) {
 			return overwrite(content, {
 				0: function (arr) {
 					return overwrite(arr, {
-						0: function (str) { return str.replace('<div', '<div class="row mb-3"'); },
 						1: function (arr) {
-							return overwrite(arr, {
-								0: function (str) { return str.replace('<label', '<label class="col-sm-2 col-form-label"'); }
-							}, undefined, [3]);
-						},
-						3: function (arr) {
-							return ['<div class="col-sm-10">', arr, '</div>'];
+							return overwrite(arr, undefined, undefined, [3]);
 						}
-					}, undefined, [2]);
+					});
 				},
 				1: function (arr) {
 					return overwrite(arr, {
-						0: function (str) { return str.replace('<button', '<button class="btn btn-primary"'); },
 						1: 'Filter'
 					});
 				}
 			});
-		}, function (ec) {
-			return {
-				boolean: overwrite(ec.boolean, {
-					1: function (arr) {
-						return overwrite(arr, {
-							0: function (str) { return str.replace('<label', '<label class="form-check mb-3"'); },
-							1: function (str) { return str.replace('<tpd-input', '<tpd-input class="form-check-input"'); },
-							3: function (arr) {
-								return overwrite(arr, {
-									1: ' class="form-check-label"'
-								});
-							}
-						}, undefined, [2]);
-					}
-				}, undefined, [0, 2])
-			};
-		})
-		.component('thead, tfoot', function (content) {
-			return overwrite(content, undefined, { 2: '<th></th>' });
 		})
 		.component('tbody > tr', function (content) {
 			return overwrite(content, { 1: HTML }, {
 				3: '<td>',
-				4: '<button type="button" class="btn" ng-class="\'btn-\'+(' + TPD_ROW_VALUES_VAR + '.$$isEditing?\'primary\':\'secondary\')" ng-click="vm.toggleEdit(' + TPD_ROW_VALUES_VAR + ')">{{' + TPD_ROW_VALUES_VAR + '.$$isEditing?\'Save\':\'Edit\'}}</button>',
+				4: '<button type="button" ng-click="vm.toggleEdit(' + TPD_ROW_VALUES_VAR + ')">{{' + TPD_ROW_VALUES_VAR + '.$$isEditing?\'Save\':\'Edit\'}}</button>',
 				5: '</td>'
 			});
 		}, function (ec) {
 			return {
 				number: overwrite(ec.number, {
-					1: ' class="text-end"',
 					3: HTML
 				})
 			};

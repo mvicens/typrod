@@ -1,0 +1,22 @@
+body {
+	padding: 0 1rem;
+}
+
+header,
+section {
+	margin-bottom: 1.5rem;
+}
+
+form > div {
+	margin-bottom: .5rem;
+}
+
+select {
+	vertical-align: top;
+}
+
+th,
+td {
+	padding: .5rem;
+	border: 1px solid;
+}

@@ -31,7 +31,6 @@
     "specificity": "0.4.1"
   },
   "devDependencies": {
-    "bootstrap": "5.2.3",
     "chance": "1.1.9",
     "css-loader": "6.7.2",
     "gulp": "4.0.2",
