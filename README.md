@@ -224,7 +224,7 @@ Why to use Typrod?:
   - Specifications of [TPD data](#tpd-data) are similar to databases', like in SQL table creations (column name, datatype, mandatory...).
   - Use of a worldwide standard data-interchange format such as JSON.
   - [TPD components](#tpd-component) are descripted by CSS syntax.
-- Flexibility, adaptability and variety on function arguments and option values.
+- Flexibility, adaptability and variety on function arguments and data types.
 
 ## API
 
@@ -312,7 +312,7 @@ Key(s) | Type | Details
 ------ | ---- | -------
 `type` (optional) | String | Name of registered [TPD type](#tpd-type). Defaults to `'string'`.
 `name` | String | Name of param (where [TPD value](#tpd-value) is saved) and a glue between [its directive](#tpd-data-1) and this current one.
-`label` | String | Caption text (HTML markup available) of tag with [`tpd-label`](#tpd-label).
+`label` (optional) | String | Caption text (HTML markup available) of tag with [`tpd-label`](#tpd-label).
 `required` (optional) | Boolean | Input mandatority.
 `min`/`max` (optional) | Any | Minimum/maximum of [TPD value](#tpd-value).
 
@@ -395,6 +395,6 @@ You have namesake `'form'`. It rawly prints `<div>`s with `<label>` and input, a
 
 #### Tables
 
-- `'table'`: shows a labeled head and record rows. Place attribute `data-tpd-values` with an array whose every item will be captured by [`tpd-values`](#tpd-values).
+- `'table'`: shows a labeled head and record rows. Place attribute `data-tpd-values` with an array whose every item will be captured by [`tpd-values`](#tpd-values)s with scope variable `$tpdRowValues`.
 - `'thead, tfoot'`: labels `<th>`s.
 - `'tbody > tr'`: outputs `<td>`s.
