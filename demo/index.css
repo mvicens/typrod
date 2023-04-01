@@ -1,10 +1,19 @@
+* {
+	box-sizing: border-box;
+}
+
 body {
-	padding: 0 1rem;
+	padding: 1rem;
 }
 
 header,
+h1,
 section {
 	margin-bottom: 1.5rem;
+}
+
+h1 {
+	margin-top: 0;
 }
 
 form > div {
@@ -12,11 +21,21 @@ form > div {
 }
 
 select {
-	vertical-align: top;
+	vertical-align: text-top;
+}
+
+table {
+	width: 100%;
+	table-layout: fixed;
 }
 
 th,
 td {
 	padding: .5rem;
 	border: 1px solid;
+}
+
+td input,
+td select {
+	max-width: 100%;
 }
