@@ -30,13 +30,6 @@ function config(tpdProvider) {
 	tpdProvider
 		.component('form', function (content) {
 			return overwrite(content, {
-				0: function (arr) {
-					return overwrite(arr, {
-						1: function (arr) {
-							return overwrite(arr, undefined, undefined, [3]);
-						}
-					});
-				},
 				1: function (arr) {
 					return overwrite(arr, {
 						1: 'Filter'
@@ -58,7 +51,7 @@ function config(tpdProvider) {
 			};
 		});
 
-	function overwrite(array, replacements, addings, removings) {
+	function overwrite(array, replacements, addings/*, removings*/) {
 		angular.forEach(replacements, function (v, i) {
 			if (angular.isFunction(v))
 				v = v(array[i]);
@@ -72,12 +65,12 @@ function config(tpdProvider) {
 			n++;
 		});
 
-		n = 0;
-		angular.forEach(removings, function (i) {
-			i -= n;
-			array = array.slice(0, i).concat(array.slice(i + 1));
-			n++;
-		});
+		// n = 0;
+		// angular.forEach(removings, function (i) {
+		// 	i -= n;
+		// 	array = array.slice(0, i).concat(array.slice(i + 1));
+		// 	n++;
+		// });
 
 		return array;
 	}
