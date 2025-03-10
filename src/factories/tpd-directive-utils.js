@@ -2,7 +2,7 @@ angular
 	.module('tpd')
 	.factory('tpdDirectiveUtils', tpdDirectiveUtils);
 
-function tpdDirectiveUtils(tpdRegisterUtils) { // Getter of dir. definition objects
+function tpdDirectiveUtils(tpdMaximumDirectivePriority, tpdRegisterUtils) { // Getter of dir. definition objects
 	return {
 		getForProp: getForProp,
 		getForIo: getForIo // IO: input/output
@@ -11,7 +11,8 @@ function tpdDirectiveUtils(tpdRegisterUtils) { // Getter of dir. definition obje
 	function getForProp($compile, callback) {
 		return {
 			restrict: 'A',
-			link: link
+			link: link,
+			priority: 900 // Between 600 ("ngIf") and 999 (less than "ngRepeat")
 		};
 
 		function link(scope, element) {
@@ -42,7 +43,7 @@ function tpdDirectiveUtils(tpdRegisterUtils) { // Getter of dir. definition obje
 		return {
 			restrict: 'E',
 			link: linkFn,
-			priority: 601 // To avoid previous execution of directive "ngIf"
+			priority: tpdMaximumDirectivePriority
 		};
 	}
 }

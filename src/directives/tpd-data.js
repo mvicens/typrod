@@ -3,11 +3,11 @@ angular
 	.directive('tpdData', tpdDataCompile)
 	.directive('tpdData', tpdDataLink); // To get scope of "ngRepeat"
 
-function tpdDataCompile(tpd, tpdRegisterUtils) {
+function tpdDataCompile(tpd, tpdMaximumDirectivePriority, tpdRegisterUtils) {
 	return {
 		restrict: 'A',
 		compile: compile,
-		priority: 1010 // Executed before directive "ngRepeat" and other custom ones
+		priority: tpdMaximumDirectivePriority
 	};
 
 	function compile(element) {
