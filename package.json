@@ -1,22 +1,21 @@
 {
   "name": "typrod",
-  "version": "1.5.1",
-  "description": "AngularJS library to automate and synthetize data handling based on templates and value conversions.",
+  "version": "1.5.2",
+  "description": "AngularJS library to automate and synthetize data handling based on templates and value conversions",
   "main": "index.js",
   "scripts": {
     "serve": "webpack serve",
     "build": "gulp",
-    "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mvicens/typrod.git"
   },
   "keywords": [
-    "type",
+    "data",
     "property",
-    "data"
+    "type"
   ],
   "author": "Miquel Alejandro Vicens Dalmau",
   "license": "ISC",
@@ -42,7 +41,7 @@
     "gulp-rename": "2.0.0",
     "gulp-uglify": "3.0.2",
     "html-webpack-plugin": "5.5.0",
-    "normalize.css": "^8.0.1",
+    "normalize.css": "8.0.1",
     "style-loader": "3.3.1",
     "webpack": "5.75.0",
     "webpack-cli": "5.0.0",
