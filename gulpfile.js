@@ -20,6 +20,7 @@ function build() {
 		.pipe($.rename({ suffix: '.min' }))
 		.pipe(dest(path));
 }
+build.description = 'Build to NPM publish.';
 
 exports.build = build;
 exports.default = build;
