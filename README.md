@@ -38,7 +38,7 @@ angular.module('myApp', ['tpd']);
 
 ### Usage
 
-Register, in a controller, this array with such object...
+Register, in a controller, this array with such object…
 
 ```js
 $scope.data = [
@@ -50,7 +50,7 @@ $scope.data = [
 ];
 ```
 
-... and bind it to a form in this way:
+… and bind it to a form in this way:
 
 ```html
 <form tpd-data="data"></form>
@@ -94,14 +94,14 @@ It finally results:
 </form>
 ```
 
-Well, you are taking built the visual montage, nice, but you cannot manage the logic yet. To achieve it, you must to use a 2nd attribute...
+Well, you are taking built the visual montage, nice, but you cannot manage the logic yet. To achieve it, you must to use a 2nd attribute…
 
 ```diff
 -	<form tpd-data="data"></form>
 +	<form tpd-data="data" tpd-values="values"></form>
 ```
 
-... with an object like:
+… with an object like:
 
 ```js
 {
@@ -131,7 +131,7 @@ It looks some needy to get styles, right? No problem! Load your favorite CSS fra
 		type: 'string', // TPD type
 		label: 'Sentence'
 	},
-	// ...
+	// …
 ];
 ```
 
@@ -157,9 +157,9 @@ Grouping of [TPD properties](#tpd-property).
 
 ```js
 { // TPD formatted values
-	// ...
+	// …
 	startDay: new Date('2021-09-13'),
-	// ...
+	// …
 }
 ```
 
@@ -179,11 +179,11 @@ Transformed (if is needed) from aforesaid and gave back too (cyclic process).
 <form><!-- TPD component -->
 	<!-- TPD content -->
 	<div><!-- TPD container -->
-		<label for="...">...</label>
-		<input type="text" id="...">
+		<label for="…">…</label>
+		<input type="text" id="…">
 	</div>
-	...
-	<div><label><input type="checkbox"> ...</label></div><!-- ETC -->
+	…
+	<div><label><input type="checkbox"> …</label></div><!-- ETC -->
 	<button>Submit</button>
 	<!-- End of TPD content -->
 </form>
@@ -191,7 +191,7 @@ Transformed (if is needed) from aforesaid and gave back too (cyclic process).
 
 ### TPD component
 
-Any tag with any classname, attribute, parent...
+Any tag with any classname, attribute, parent…
 
 ### TPD content
 
@@ -217,11 +217,11 @@ Why to use Typrod?:
 - More maintainable and reliable source code.
   - Integrated reutilization of mechanisms.
   - Uniformity, homogeneity and consistency.
-  - Possible human mistakes avoided on bad-writing, forgetting...
+  - Possible human mistakes avoided on bad-writing, forgetting…
   - Easy and fast to migrate CSS frameworks.
 - Unlimited customization. Not adaptive to any particular CSS dependencies.
 - Well-known system, not new or weird:
-  - Specifications of [TPD data](#tpd-data) are similar to databases', like in SQL table creations (column name, datatype, mandatory...).
+  - Specifications of [TPD data](#tpd-data) are similar to databases', like in SQL table creations (column name, datatype, mandatory…).
   - Use of a worldwide standard data-interchange format such as JSON.
   - [TPD components](#tpd-component) are descripted by CSS syntax.
 - Flexibility, adaptability and variety on function arguments and data types.
@@ -256,7 +256,7 @@ Sets a [TPD type](#tpd-type).
 <tr><td rowspan="4"><code>input</code></td><td>String</td><td rowspan="5">HTML template.</td><td>If multi-level or multiple tags, you have to mark the main input element by <code>tpd-target</code> attribute.</td><td rowspan="4">Current definition of <a href="#tpd-type">TPD type</a> <code>'string'</code></td></tr>
 <tr><td>Object</td><td>DOM element</td></tr>
 <tr><td>Function</td><td><ul><li>Argument: read-only <a href="#tpdprop"><code>$tpdProp</code></a>.</li><li>Return: templ. (str., obj. or array).</li></ul></td></tr>
-<tr><td>Array</td><td>Collection of the mentioned types (string, function... or even, allowing unlimited nesting, another array!) that will be joined.</td></tr>
+<tr><td>Array</td><td>Collection of the mentioned types (string, function… or even, allowing unlimited nesting, another array!) that will be joined.</td></tr>
 <tr><td><code>output</code></td><td>Same as above</td><td>Use <a href="#tpdvalue"><code>$tpdValue</code></a> to manage the value.</td><td><code>'&lt;span&gt;{{$tpdValue}}&lt;/span&gt;'</code></td></tr>
 </table>
 
